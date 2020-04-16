@@ -1,0 +1,89 @@
+% !TeX spellcheck = ru_RU
+\documentclass{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[]{amsmath}
+
+
+\title{}
+\author{Пищулёнок Максим}
+\date{29 марта 2020 г.}
+
+
+\begin{document}
+
+\maketitle
+
+\textbf{1.15} 
+Определить, является ли множество открытым, замкнутым в пространстве $l_p$, $p \ge 1$.
+
+\[ A = \left\{ x \in l_1 \ : x = (x_1, x_2, \dots, x_i, \dots), |x_i| \le \frac{1}{i}, i = 1, 2, \right\} \]
+
+\emph{Решение}
+
+Покажем, что множество $A$ не является открытым. 
+Рассмотрим точку $x_0 = \left(1, \frac{1}{2}, \frac{1}{4}, \dots \right) \in A$. $\forall r > 0 \ \exists \beta(r), \ 0 < \beta < r : \ $ $y = \left( 1 + \beta, \frac{1}{2}, \frac{1}{4}, \dots \right) \in B(x_0, r)$, но $y \notin A$.
+
+Покажем, что множество является замкнутым. Пусть $(x^n(t)) \subset A$ сходящаяся в $l_1$ последовательность. 
+
+
+$\| x^n - x \| = \sum_{i = 0}^\infty |x_i^n - x_i| \xrightarrow[n \to \infty]{} 0$ 
+$\Rightarrow$ 
+
+$|x_i^n - x_i| \xrightarrow[n \to \infty]{} 0$ 
+$\Rightarrow$
+
+$|x_i| = |\lim_{n \to \infty} x_i^n| \le \frac{1}{i}$
+$\Rightarrow x \in A$
+
+\textbf{2.1} 
+Определить, является ли множество выпуклым в пространстве \newline $l_p, p \ge 1$.
+
+\[A = \left\{ A = x \in l_1 \ : x = (x_1, \dots, x_i, \dots ), |x_i| \le \frac{1}{2^{i-1}}, \ i = 1, 2, \dots \right\} \]
+
+\emph{Решение}
+
+Да. Множество выпукло, если вместе с каждыми точками $x, \ y \in A$ множеству принадлежит отрезок $[x, y] = \alpha x + (1 - \alpha) y$, $\alpha \in [0, \ 1]$. Пусть $z = \alpha x + (1 - \alpha) y$. Покажем, что $z \in A$.
+
+$z = (z_1, z_2, \dots) = \alpha (x_1, x_2, \dots) + (1 - \alpha ) (y_1, y_2, \dots)$
+
+$z_i = \alpha x_i + (1 - \alpha) y_i \le \alpha \frac{1}{2^{i-1}} + (1 - \alpha) \frac{1}{2^{i-1}} = \frac{1}{2^{i-1}}$
+
+Следовательно, множество $A$ выпукло.
+
+\textbf{3.15}
+Образуют ли в пространстве $C[-1, 1]$ подпространство следующие множества функций:
+
+Многочлены степени не выше 4.
+
+
+\emph{Решение}
+
+Да. Пусть $x(t), y(t) \in L $, где $L$ -- множество многочленов степени не выше 4.
+Проверим, что $L$ -- линейное многообразие.
+
+$\alpha x(t) + \beta t(t) = \alpha  \sum_{i = 0}^4 a_i t^i +  \beta \sum_{i = 0}^4 b_i t^i =  \sum_{i = 0}^4 (a_i + b_i) t^i \in L$
+
+Проверим, что $L$ замкнуто. Пусть $x^n(t) \subset L$ -- сходящаяся к $x(t)$ последовательность.
+
+$\| x^n(t) - x(t) \| = \max_{-1 \le t \le 1} | \sum_{i=0}^4 (a^n_i - a_i) t^i | = \\
+= [k_i^n = a_i^n - a_i] = \max_{-1 \le t \le 1} |\sum k_i^n t^i| \xrightarrow[n \to \infty]{} 0$
+
+Возьмём произвольные, попарно не равные, точки из $[-1, 1]$, например $T = \{0, 1, -1, 1/2, 1/3\}$.
+ Из сходимости $x^n(t)$ следует сходимость $\sum_{i = 0}^4 k_i^n t^i, t\in T$ к нулю.
+
+\[
+\begin{cases}
+	k_0^n + 0 k_1^n + 0 k_2^n + 0 k_3^n + 0 k_4^n & \xrightarrow[n \to \infty]{} 0\\
+	k_0^n + k_1^n + k_2^n + k_3^n + k_4^n & \xrightarrow[n \to \infty]{} 0\\
+	k_0^n - k_1^n + k_2^n - k_3^n + k_4^n & \xrightarrow[n \to \infty]{} 0\\
+	k_0^n + 1/2*k_1^n + 1/4*k_2^n + 1/8*k_3^n + 1/16*k_4^n & \xrightarrow[n \to \infty]{} 0\\
+	k_0^n + 1/3*k_1^n + 1/9*k_2^n + 1/27*k_3^n + 1/81*k_4^n & \xrightarrow[n \to \infty]{} 0
+\end{cases}
+\]
+
+Решив систему, получим, что $k_i^n \xrightarrow[n \to \infty]{} 0 \  \forall i = \overline{0, 4}$ $\Rightarrow a_i^n \xrightarrow[n \to \infty]{} a_i \Rightarrow  x(t) \in L$
+
+\end{document}

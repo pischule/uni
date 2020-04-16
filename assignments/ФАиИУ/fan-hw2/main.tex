@@ -1,0 +1,238 @@
+% !TeX spellcheck = ru_RU
+\documentclass[a4paper]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[left=30mm,right=15mm, top=25mm, bottom=25mm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+
+
+\begin{document}
+\begin{titlepage}
+
+
+  \newgeometry{margin=1cm}
+  
+  \centerline{\large \bf МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ИНФОРМАТИКИ}
+  \vfill
+  \vfill
+  \vfill
+  \centerline{\Large \bf ФУНКЦИОНАЛЬНЫЙ АНАЛИЗ И ИНТЕГРАЛЬНЫЕ УРАВНЕНИЯ}
+  \bigskip
+  \bigskip
+  \vfill
+  \begin{centering}
+    {\large
+    Домашняя работа\\
+    студента 2 курса 2 группы \\}
+  \end{centering}
+  \centerline{\large \bf Пищулёнка Максима Сергеевича}
+  \vfill
+  \vfill
+  \hfill
+  \begin{minipage}{0.25\textwidth}
+    {\large{\bf Преподаватель} \\
+  {\it Дайняк Виктор \\ Владимирович}}
+  \end{minipage}
+  \vfill
+  \vfill
+  \centerline{\Large \bf Минск, 2020}
+  
+  \end{titlepage}
+
+\begin{center}
+\end{center}
+
+\section*{1.15}
+
+\[F(x) = \lambda \int_0^1 t^2 s^2 x(s) ds + t^3 \]
+
+Рассмотрим пространство $C[0, 1]$
+
+$\| F(x) - F(y) \| = \| \lambda \int_0^1 t^2 s^2 \left( x(s) - y(s) \right) ds =$
+
+$= \max_{0 \le t \le 1} t^2 \lambda \int_0^1  s^2 \left( x(s) - y(s) \right) ds | \le$
+
+$\le | \lambda | \max_{0 \le t \le 1} |s|^2 |x(s) - y(s)| ds \le$
+
+$\le | \lambda | \| x-y \| [\frac{s^3}{3}]_0^1 = \frac{|\lambda|}{3} \| x-y \| $
+
+$\frac{|\lambda|}{3} < 1$; $-3 < \lambda < 3$
+
+При $\lambda = \frac{1}{2}$  $F(x)$ будет сжимающим
+
+Найдем достаточное количество итераций
+
+$ \|x_n - a \| \le \frac{\alpha^n}{1-\alpha} \| x_0 - x_1 \|$
+
+$\alpha = \frac{1}{6}\ x_0 = 0\ x_1 = t^3$
+
+$\| x_n - a\| \le \frac{1/6^n}{1 - 1/6} * 1 \le 0.001$
+
+$n = 4$ -- достаточное количество итераций
+
+$x_2 = \frac{1}{2} t^2 \int_0^1 s^2 s^3 ds + t^3 = 
+\frac{1}{2} t^2 [\frac{s^6}{6}]_0^1 + t^3 = 
+\frac{t^2}{12} + t^3$
+
+$x_3 = \frac{1}{2} t^2 \int_0^1 s^2 \left( \frac{s^2}{12} + s^3 \right) ds + t^3 = 
+\frac{1}{2} t^2 [\frac{s^5}{60} + \frac{s^6}{6}]_0^1 + t^3 = \frac{11}{120} t^2 + t^3$
+
+$x_4 = \frac{1}{2} t^2 \int_0^1 s^2 \left( \frac{11}{120} s^2 + s^3  \right)ds + t^3 =
+\frac{1}{2} t^2 [\frac{11 s^5}{600} + \frac{s^6}{6}]_0^1 + t^3 = \frac{37}{400} t^2 + t^3$
+
+Найдем точное решение уравнения 
+
+$x(t) = \frac{t^2}{2} \int_0^1 s^2 x(s) ds + t^3$
+
+$x(t) = \frac{t^2}{2} C + t^3$
+
+$C = \int_0^1 s^2 x(s) ds = \int_0^1 s^2 \left( \frac{s^2}{2} C + s^3 \right) ds = $
+
+$= \int_0^1 \left( \frac{s^4}{2} c + s^5 \right)ds = [\frac{s^5}{10} C + \frac{s^6}{6}]_0^1 =
+\frac{1}{10}C + \frac{1}{6}$
+
+$\frac{9}{10} C + \frac{1}{6}$; $C = \frac{5}{27}$
+
+$x(t) = \frac{t^2}{2} \frac{5}{27} + t^3 = \frac{10}{108} t^2 + t^3$
+
+$\| x(t) - x_4(t) \| = \| \frac{37}{400} - \frac{10}{108} \| =  \max_{[0, 1]} |\frac{t}{10800}|  = \frac{1}{10800} < 0.001$
+
+
+Рассмотрим пространство $L_2[0, 1]$.
+
+Оценим ядро $k(t, s) = \lambda t^2 s^2$
+
+$\int_0^1 \int_0^1 |k(t,s)|^2 ds dt = |\lambda|^2 \int_0^1 \int_0^1 t^4 s^4 ds dt = 
+|\lambda|^2 \frac{1}{25} < + \infty$
+
+$F(x)$ отображает $L_2[0, 1]$ в себя и является сжимающим преобразованием при $|\lambda| < 5$.
+
+При $\lambda = \frac{1}{2}$ можно применить принцип сжимающих отображений. Оценим достаточное
+число итераций.
+
+$\frac{(\frac{1}{2*5})^2}{1 - \frac{1}{25}} \left( \int_0^1 |x_1(t) - x_0(t)|^2dt \right)^{1/2} < 0.001$
+
+$\frac{1}{9*\sqrt{7} * 10^n-1} < 0.001$
+
+$n = 3$ -- достаточное количество итераций
+
+\newpage
+
+\section*{2.4}
+
+\[ g(x) = 2x^2 + 8x + 5,  \ \ \epsilon = 0.01\]
+
+Приведем уравнение к виду $x = F(x)$, найдем  $x_0$ и $r$ такие, что $B[x_0, r] = [a,b]$
+инвариантен относительно отображения $F$. Отображение $F$ должно быть сжимающим.
+
+$x = -\frac{1}{8}(2x^2 + 5)$
+
+$F(x) = -\frac{1}{8}(2x^2 + 5)$
+
+Т. к. $F$ дифференцируема, то в качестве константы Липшица возьмём 
+
+$\alpha = \max_{a\le x \le b} |F'(x)|$
+
+$F'(x) = -\frac{x}{2}$
+
+Условие $|F'(x)| < 1$ выполнено, если $|x| < 2$. Выберем точку в центре промежутка $x_0 = 0$. Радиус $r$ шара, в
+котором существует неподвижная точка, выберем из условий:
+
+\[
+\begin{cases}
+  \|x_0 - F(x_0)\| \le r(1-\alpha (r)) \\
+  \alpha(r)  < 1
+\end{cases}
+\]
+
+$\alpha(r) = \max_{-r \le x \le r} |F'(x)| = \frac{r}{2}$
+
+$x_1 = F(x_0) = -\frac{5}{8}$
+
+\[
+\begin{cases}
+\frac{5}{8} \le r(1 - \frac{r}{2})\\
+\frac{r}{2} < 1
+\end{cases}
+\]
+
+(допустим, что система имеет решение, хотя это не так)
+
+Выберем одно из решений этой системы.
+
+$r = 1$
+
+Отрезок $[-1, 1]$ инвариантен относительно отображения $F$, и на нем отображение $F$ 
+является сжимающим с $\alpha = 1/2$. Оценим количество итераций, достаточных для
+достижения заданной точности.
+
+$\| x_n - a \| \le \left( \frac{1}{2} \right)^n-1 \frac{5}{8} \le \frac{1}{100}$
+
+$n = 2$ -- минимальное количество итераций.
+
+$x_2 = F(x_1) = -\frac{1}{9} \left( 2 (-\frac{5}{8})^2 + 5 \right) = -\frac{185}{256}$
+
+
+\section*{3.1}
+
+\[ E = C[-1; 1], f(x)(t) = \frac{1}{3} \cos(x(t)) + e^t \]
+
+$\|F(x) - F(y)\| = \| \frac{1}{3} \cos x(t) - \frac{1}{3} \cos y(t) \| = $
+
+$=\frac{1}{3} \| \cos x(t) - \cos y(t) \| = \frac{1}{3} \| 2 \sin \frac{y(t) + x(t)}{2} 
+\sin  \frac{y(t) - x(t)}{2} \| \le$
+
+
+$\le [|\sin x | \le |x|, |\sin x| \le 1] = \frac{1}{3} \| x(t) - y(t) \|$
+
+$\alpha = \frac{1}{3} < 1 \Rightarrow$ $F$ -- сжимающее отображение
+
+$x_0 = 0$
+
+$x_1 = F(x_0) = \frac{1}{3} + e^t$
+
+$x_2 = F(x_2) = \frac{1}{3} \cos \left( \frac{1}{3} + e^t \right) + e^t$
+
+$x_3 = \frac{1}{3} \cos \left( \frac{1}{3} \cos \left( \frac{1}{3} + e^t \right) + e^t \right) + e^t$
+
+Оценим расстояние от $x_3$ до неподвижной точки $a$
+
+$\| x_3 - a \| \le \frac{(1/3)^3}{1 - 1/3} \| x_0 - x_1 \| = \frac{1}{18}
+ \| \frac{1}{3} + e^t \| =  \frac{1}{18} \left( \frac{1}{3} + e \right) \le 0.17$
+
+
+ \section*{4.1}
+
+ \[ X = C[0, 1],\ Y = C[0,1],\ F(x) = x^3 \]
+
+ Покажем, что условие Липшица не выполняется.
+
+ $\forall L > 0\ \exists x=0\ y=L+1 \in C[0, 1]$, для которых
+ 
+ $\|F(x) - F(x)\| > L \| x - y \|$
+
+ $\|(L+1)^3\| > L \| L+1\|$
+
+ $L^3 + 3L^2 + 3L+1 > L^2 + L$
+
+ $L^3 + 2L^2 + 2L + 1 > 0$ -- выполнено $\forall L > 0$
+
+ Покажем, что отображение не является равномерно-непрерывным.
+
+ Предположим обратное. По критерию Гейне, если $x_n \to x_0$ и $y_n \to y_0$, то $\| x_n - y_n\| \xrightarrow[n\to \infty]{}0$. Покажем, что это не так. Пусть $x_n = n+ 1/n, \ y_n = n \in C[0,1]$
+
+ $\| x_n - y_n\| = \| 1/n \| \xrightarrow[n\to \infty]{} 0$
+
+ $\| F(x_n) - F(y_n) \| = \| 1 + 3n + 3/n\| > 1$
+
+
+\end{document}
