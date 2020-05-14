@@ -15,7 +15,7 @@ eps = 10**(-4)
 
 
 # коэффициенты для правила Рунге
-theta_vals = {'right_rect': 1/3, 'trapezium': 1/3,
+theta_vals = {'right_rect': 1, 'trapezium': 1/3,
               'simps': 1/15}
 
 
@@ -46,8 +46,9 @@ def trapezium(n):
 def simps(n):
     points = np.linspace(a, b, n+1)
     h = points[1:] - points[:-1]
-    return np.sum((f(points[:-1]) + f(points[1:]) +
-                   4 * f((points[:-1] + points[1:])/2)) * h / 6)
+    return np.sum((f(points[:-1]) + 
+        4 * f((points[:-1] + points[1:])/2) +
+        f(points[1:])) * h / 6)
 
 
 # функция для замены переменной в формуле Гаусса
