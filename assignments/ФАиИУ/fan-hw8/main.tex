@@ -1,0 +1,167 @@
+\documentclass[a4paper, 12pt]{report}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+
+\begin{document}
+
+\begin{titlepage}
+    \newgeometry{margin=1cm}
+    
+    \bigskip
+    \centerline{\large МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+    \bigskip
+    \centerline{\large БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+    \bigskip
+    \centerline{\large Факультет прикладной математики и информатики}
+    \vfill
+    \vfill
+    \vfill
+    \centerline{\LARGE Домашнее задание}
+    \bigskip
+    \bigskip
+    \centerline{\large На тему:}
+    \centerline{\large \bf \sc Сопряженное пространство}
+    \bigskip
+    \vfill
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+        {\large{\bf Подготовил:} \\
+        {\it Пищулёнок Максим \\ Сергеевич}\\
+        {студент 2 курса 2 группы}}
+    \end{minipage}
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+      {\large{\bf Проверил:} \\
+    {\it Дайняк Виктор \\ Владимирович}}
+    \end{minipage}
+    \vfill
+    \vfill
+    \centerline{\large Минск, 2020}
+\end{titlepage}
+  
+\newpage
+\subsection*{Задание 1.15.} 
+
+Выяснить, задает ли следующая формула линейный ограниченный функционал. При 
+положительном ответе вычислить норму $f$ для $x(t) \in L_p [a, b], p \ge 1$.
+
+\[f(x) = \int_{0}^{\frac{1}{2}} tx (t^2) dt +
+ \int_{\frac{1}{2}}^{1} t^2 x(t) dt,\ x(t) \in L_{\frac{5}{2}} [ - 1, 1]\]
+
+ \subsubsection*{Решение.}
+
+ Функционал линеен в силу свойств интеграла Римана. 
+
+ Преобразуем первый интеграл.
+
+  \[\int_{0}^{\frac{1}{2}} tx(t^2)dt = 
+  \left[ t = \sqrt{\tau},\ dt = \frac{d\tau}{2 \sqrt{\tau}} \right] = 
+  \frac{1}{2} \int_{0}^{\frac{1}{\sqrt{2}}} x(\tau) d \tau\]
+
+  Функционал примет следующий вид:
+
+  \begin{multline*}
+    f(x) = \frac{1}{2} \int_{0}^{\frac{1}{\sqrt{2}}} x(t) dt - 
+    \int_{\frac{1}{2}}^{1} t^2 x(t) dt = 
+    \int_{ - 1}^{1} \left( \frac{\chi_{[0, 1 / \sqrt{2}]}(t)}{2} - 
+    t^2 \chi_{[1 / 2]}(t)\right) x(t) dt
+  \end{multline*}
+
+
+  \begin{equation*}
+    y(t) = 
+    \begin{cases}
+      0, t \in [ - 1, 0)\\
+      \frac{1}{2}, t \in [0, \frac{1}{2})\\
+      \frac{1}{2} - t^2, t \in [\frac{1}{2}, \frac{1}{\sqrt{2}})\\
+      - t^2, t \in [\frac{1}{\sqrt{2}}, 1]
+    \end{cases}
+  \end{equation*}
+
+  \[\| f \| = \| y \| = \left( \int_{ 0}^{\frac{1}{2}} \Big| \frac{1}{2} \Big|^{\frac{5}{2}}dt +
+  \int_{\frac{1}{2}}^{\frac{1}{\sqrt{2}}} \Big| \frac{1}{2} - t^2 \Big|^{\frac{5}{2}}dt +
+  \int_{\frac{1}{\sqrt{2}}}^{1} \Big| t^2 \Big|^{\frac{5}{2}} dt \right)^{\frac{2}{5}} 
+  \approx 0.5615\]
+
+  \textbf{Ответ:} 0.5615.
+
+\newpage
+\subsection*{Задание 3.15}
+
+Используя теорему об общем виде линейного ограниченного функционала в гильбертовом
+пространстве, вычислить норму функционала в $L_2[-1, 1]$.
+
+\[f(x) = \int_{ - 1}^{0} t^3 x(t^2) dt + 
+3 \int_{\frac{1}{2}}^{1} tx (\sqrt{t}) dt\]
+
+\subsubsection*{Решение}
+
+\[f(x) = \int_{ - 1}^{0} t^3 x(t^2) dt + 
+3 \int_{\frac{1}{2}}^{1} tx (\sqrt{t}) dt\]
+
+\begin{multline*}
+\int_{ -1}^0t^3 x(t^2)dt = - \int_0^1 t^3 x(t^2)dt = \\=
+\left[ t^2 = \tau,\ t = \sqrt{\tau},\ dt = \frac{d \tau}{2 \sqrt{\tau}} \right] =
+- \frac{1}{2}\int_{0}^{1}\tau x(\tau) d \tau
+\end{multline*}
+
+\begin{equation*}
+\int_{\frac{1}{2}}^{1} tx(\sqrt{t})dt = 
+\left[ \sqrt{t} = \tau,\  t = \tau^2,\ dt = 2\tau d \tau \right] = 
+2 \int_{\frac{1}{4}}^{1} \tau^3 x(\tau) d \tau
+\end{equation*}
+
+\begin{multline*}
+f(x) = - \frac{1}{2} \int_{0}^{1} t x(t) dt + 6 \int_{\frac{1}{4}}^{1} t^3 x(t) dt =
+\int_{ - 1}^{1} \left( - \frac{1}{2} t \chi_{[0, 1]} (t) + 6 t^3 \chi_{[\frac{1}{4}, 1]} \right) x(t) dt
+\end{multline*}
+
+\begin{equation*}
+  y(t) = 
+  \begin{cases}
+    0, t \in [ - 1, 0)\\
+    - \frac{t}{2}, t \in [0, \frac{1}{4})\\
+    - \frac{t}{2} + 6 t^3, t\in [\frac{1}{4}, 1]
+  \end{cases}
+\end{equation*}
+
+\begin{equation*}
+  \| f \| = \| y \| = \left( \int_{0}^{\frac{1}{4}} \left( - \frac{t}{2} \right)^2 dt +
+  \int_{\frac{1}{4}}^{1} \left( - \frac{t}{2} + 6 t^3\right)^2 dt \right)^\frac{1}{2}
+  \approx 2.006
+\end{equation*}
+
+\textbf{Ответ:} 2.006.
+\newpage
+\subsection*{Задание 4.15}
+
+Вычислить норму функционала в гильбертовом пространстве $l_2$, используя теорему
+Рисса
+
+\[f(x) = \sum_{k=1}^{10} x_{k^2} - x_{101},\ \ x(x_1, x_2, \dots ) \in l_2\]
+
+\subsubsection*{Решение.}
+
+\[f(x) = \sum_{k=1}^{10} x_{k^2} - x_{101} = (x, y) = \sum_{k = 1}^{\infty} x_k y_k \]
+
+\begin{equation*}
+  y_i = 
+  \begin{cases}
+    1, i \in \{1, 4, 9, \dots , 81, 100\}\\
+    - 1, i = 101\\
+    0
+  \end{cases}
+\end{equation*}
+
+\[\| f(x) \| = \| y_k \|_{l_2} = \left( \sum_{k = 1}^{\infty} y_k^2 \right) = \sqrt{11}\]
+
+\textbf{Ответ: } $\sqrt{11}$.
+
+\end{document}

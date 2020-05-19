@@ -1,0 +1,215 @@
+\documentclass[a4paper, 12pt]{report}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+
+\begin{document}
+
+\begin{titlepage}
+    \newgeometry{margin=1cm}
+    
+    \bigskip
+    \centerline{\large МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+    \bigskip
+    \centerline{\large БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+    \bigskip
+    \centerline{\large Факультет прикладной математики и информатики}
+    \vfill
+    \vfill
+    \vfill
+    \centerline{\LARGE Домашнее задание}
+    \bigskip
+    \bigskip
+    \centerline{\large На тему:}
+    \centerline{\large \bf \sc Обратные операторы}
+    \bigskip
+    \vfill
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+        {\large{\bf Подготовил:} \\
+        {\it Пищулёнок Максим \\ Сергеевич}\\
+        {студент 2 курса 2 группы}}
+    \end{minipage}
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+      {\large{\bf Проверил:} \\
+    {\it Дайняк Виктор \\ Владимирович}}
+    \end{minipage}
+    \vfill
+    \vfill
+    \centerline{\large Минск, 2020}
+\end{titlepage}
+  
+
+
+\subsection*{Задание 1.3}
+Пусть $A : L \to C[0, 1]$ Выяснить, при каких $\lambda$ к оператору $A$ существует обратный
+и построить его.
+
+\[ L = \{ x(t) \in C^1[0, 1]: x(0) = 0\}, Ax(t) = x'(t) - \lambda tx(t)\]
+
+\subsection*{Решение.}
+
+\[A x(t) = x'(t) - \lambda t x(t) = y(t)\]
+
+Решим однородное уравнение.
+
+\[x'(t) - \lambda t x(t) = 0\]
+\[\frac{dx}{x} = \lambda t dt \Rightarrow\]
+\[\ln x = \frac{\lambda t^2}{2} + \ln C\]
+\[x = C e^{ \frac{\lambda t^2}{2}}\]
+
+\[x' = e^{\lambda \frac{t^2}{2}} (C' + C \lambda t)\]
+
+Подставим в неоднородное.
+
+\[e^{ \frac{\lambda t^2}{2}} (C' + C \lambda t) - \lambda t C e^{ \frac{\lambda t^2}{2}} = y(t)\]
+\[C' = y(x)e^{ - \frac{\lambda t^2}{2}}\]
+
+Получим
+
+\[C = (t) = \int_{0}^{t} e^{ - \frac{\lambda \tau^2}{2}} y(\tau) d \tau\]
+
+В итоге имеем:
+
+\[x(t) = e^{\frac{\lambda t^2}{2}} \int_{0}^{t} e^{ - \frac{\lambda \tau^2}{2}} y(\tau) d\tau =
+A^{ - 1} y(t)\]
+
+\textbf{Ответ: } $A^{ - 1} y(t) = e^{\frac{\lambda t^2}{2}} \int_{0}^{t} e^{ - \frac{\lambda \tau^2}{2}} y(\tau) d\tau$.
+
+\subsection*{Задание 2.15}
+Пусть $A: C[0, 1] \to C[0, 1]$. Используя теорему Банаха об обратном операторе,
+показать, что оператор $A$ непрерывно обратим, найти $A^{-1}$.
+
+\[Ax(t) = x(t) + \int_{0}^{1} (t^2 - 1) sx(s) ds\]
+
+\subsection*{Решение.}
+
+По теореме Банаха, оператор $A$ должен быть линейным ограниченным:
+
+\begin{multline*}
+A(\alpha x + \beta y)(t) = \alpha x(t) + \beta y(t) + 
+\alpha \int_{0}^{1} (t^2 - 1) s x(s) ds + 
+\beta \int_{0}^{1} (t^2 - 1) sx(s) ds = \\ =
+\alpha A x(t) + \beta A y(t)
+\end{multline*}
+
+Линейность доказана.
+
+\begin{multline*}
+\| A x\|_{C[0, 1]} = \max_{0 \le t \le 1}
+\Big| x(t) + (t^2 - 1)\int_{0}^{1} sx(s) ds \Big| \le \\ \le
+\max_{0 \le t \le 1} | x(t) | + \max_{0 \le t \le 1}
+| t^2 - 1| \max_{0 \le t \le 1}
+| x(s) | \Big| \int_{0}^{1} s ds \Big| =
+\frac{3}{2} \| x \|_{C[0, 1]}
+\end{multline*}
+
+Оператор $A$ ограничен. Значит, по теореме Банаха $A$ непрерывно обратим.
+
+\[x(t) + (t^2 - 1) \int_{0}^{1} s x(s) ds = y(t)\]
+\[x(t) = y(t) - (t^2 - 1)\int_{0}^{1} s x(s) ds = 
+y(t) - (t^2 - 1) C\]
+
+\begin{multline*}
+C = \int_{0}^{1} s x(s) ds = \int_{0}^{1} s (y(s) - (s^2 - 1)c)ds =\\=
+\int_{0}^{1} s y(s) ds - c \int_{0}^{1} s^3 ds + c \int_{0}^{1 }s ds =
+\int_{0}^{1} s y(s) ds + \frac{c}{4}
+\end{multline*}
+
+\[\Rightarrow C = \frac{4}{3} \int_{0}^{1} s y(s) ds\]
+\[x(t) = y(t) - \frac{4}{3}(t^2 - 1) \int_{0}^{1} s y(s) ds\]
+
+\textbf{Ответ:} $A^{-1} y(t) = y(t) - \frac{4}{3}(t^2 - 1) \int_{0}^{1} s y(s) ds$.
+
+\subsection*{Задание 3.15}
+
+Проверить, существует ли непрерывный обратный к оператору $A: \ell_2 \to \ell_2$.
+В случае положительного ответа указать его.
+
+\[ Ax = (x_1 - x_2 + x_3, 2x_1 + 3x_2 + 4x_3, 3x_1 + x_3, x_4, \dots ) \]
+
+\subsection*{Решение.}
+
+Нетрудно заметить, что оператор является ограниченным. Докажем его ограниченность:
+
+\[ Ax = (x_1 - x_2 + x_3, 2x_1 + 3x_2 + 4x_3, 3x_1 + x_3, x_4, \dots ) \]
+
+Следовательно, существует непрерывный обратный оператор $A^{-1}$.
+
+\begin{multline*}
+    \| A x \|_{\ell_2}^2 = |x_1 - x_2 + x_3 |^2 + |2 x_1 + 3 x_2 + 4 x_3 |^2 +
+    | 3 x_1 + x_3 |^2 + | x_4 |^2 + \dots \le\\
+    28 |x_1|^2 + 20 |x_2|^2 + 36 |x_3|^2 + |x_4|^2 + \dots \le
+    36 \sum_{k = 1}^{\infty} |x_k|^2 = 36 \| x \|_{\ell_2}^2 \\
+    \Rightarrow \| Ax \|_{\ell_2} \le 6 \| x \|_{\ell_2}
+\end{multline*}
+
+\[Ax = y = (y_1, y_2, y_3, y_4, \dots )\]
+
+\begin{equation*}
+    \begin{cases}
+        y_1 = x_1 - x_2 + x_3\\
+        y_2 = 2 x_1 + 3 x_2 + 4 x_3\\
+        y_3 = 3 x_1 + x_3\\
+        y_4 = x_4\\
+        \cdots 
+    \end{cases}
+    \Leftrightarrow
+    \begin{cases}
+        x_1 = - \frac{3}{16} y_1 - \frac{1}{16} y_2 + \frac{7}{16}\\
+        x_2 = - \frac{5}{8} y_1 + \frac{1}{8} y_2 + \frac{1}{8} y_3\\
+        x_3 = \frac{9}{16} y_1 + \frac{3}{16} y_2 - \frac{5}{16} y_3\\
+        x_4 = y_4\\
+        \cdots
+    \end{cases}
+\end{equation*}
+
+\textbf{ Ответ: }$ A^{-1} y$ $= 
+(- \frac{3}{16} y_1 - \frac{1}{16} y_2 + \frac{7}{16}$,
+$- \frac{5}{8} y_1 + \frac{1}{8} y_2 + \frac{1}{8} y_3$,
+$ y_1 + \frac{3}{16} y_2 - \frac{5}{16} y_3,$
+$ y_4$,$ \dots)$
+
+\subsection*{Задание 4.15}
+Пусть $A: X \to Y$. Какие из операторов $A_l^{-1}, A_r^{-1}, A^{-1}$ существует? Если $A_{-1}$
+существует на $\mathscr{R}(A)$, будет ли $A^{-1}$ ограничен.
+
+\[A:m\to l_1,\ A x = \left( x_1, \frac{1}{2^2}\vec{x_2},\dots, 
+\frac{1}{2^k} x_k, \dots \right)\]
+
+\subsection*{Решение.}
+
+Покажем, что $Ker\ A$ является нулевым вектором. Рассмотрим уравнение $A x = y$:
+
+\[\left( x_1, \frac{1}{2^2} x_2, \dots , \frac{1}{2^k} x_k, \dots \right) = 
+\left( 0, 0, \dots  \right)\]
+\[( x_1, x_2, \dots\, ) = (0, 0, \dots )\]
+
+Таким образом, уравнение $A x = y$ имеет единственное нулевое решение, а, следовательно,
+существует обратный левый оператор.
+
+Определим обратный правый оператор:
+
+\[A_r^{ - 1} y = (y_1, 2^2 y_2, \dots , 2^k y_k, \dots )\]
+
+Рассмотрим последовательность $y_k \in \ell_1$
+
+\[y_k = \left( \frac{2}{3} \right)^k\]
+
+\[\| A_r^{ - 1} y \|_m = \sup_k | A_r^{ - 1} y_k | = \sup_k \left( \frac{4}{3} \right)^k > + \infty\]
+
+Таким образом $\| A_r^{-1}y \notin m$, но $y\in \ell_1$, т.е. множество значений
+оператора A не совпадает с пространством $l_2$, поэтому не существует обратного правого
+оператора к $A$. Следовательно, не существует и обратного оператора.
+
+\textbf{Ответ:} к оператору $A$ существует левый обратный оператор, но не существует
+правого обратного и обратного операторов.
+
+\end{document}
