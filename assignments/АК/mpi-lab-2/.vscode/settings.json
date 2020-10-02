@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "iomanip": "cpp",
+        "iostream": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "random": "cpp",
+        "numeric": "cpp",
+        "utility": "cpp",
+        "string": "cpp"
+    }
+}
