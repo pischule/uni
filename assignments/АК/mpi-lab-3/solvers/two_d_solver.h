@@ -46,7 +46,6 @@ public:
         Block u((t.n - 2) / y_blocks, (t.n - 2) / x_blocks);
         PositionTransformer pt(yh, xh, block_pos_y, block_pos_x, u.y, u.x);
 
-
         if (block_pos_y == 0) {
             for (int i = 1; i < u.x + 1; ++i) {
                 u[0][i] = t.f3(pt.x(i)); //u(0, x)
@@ -77,7 +76,7 @@ public:
                 for (int j = 1; j < u.x + 1; ++j) {
                     double old_u = u[i][j];
                     u[i][j] = .25 * (u[i][j - 1] + u[i][j + 1] +
-                                     u[(i - 1)][j] + u[(i + 1)][j] -
+                                     u[i - 1][j] + u[i + 1][j] -
                                      t.F(pt.y(i), pt.x(j)) * yh * xh);
                     accuracy = std::max(std::abs(u[i][j] - old_u), accuracy);
                 }
@@ -117,7 +116,6 @@ public:
                 u.set_col(helper_col, u.x + 1);
             }
 
-            MPI_Barrier(MPI_COMM_WORLD);
 
         } while (accuracy > t.eps);
 

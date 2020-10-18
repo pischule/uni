@@ -22,16 +22,12 @@ public:
               block_size_y(blockSizeY) {}
 
     double y(int cell_y) const {
-        double offset = block_pos_y * block_size_y;
-        return (offset + cell_y) * yh;
+        return (block_pos_y * block_size_y + cell_y) * yh;
     }
 
     double x(int cell_x) const {
-        double offset = block_pos_x * block_size_x;
-        return (offset + cell_x) * xh;
+        return (block_pos_x * block_size_x + cell_x) * xh;
     }
-
-
 };
 
 #endif //MPI_LAB_3_CLION_POSITION_TRANSFORMER_H

@@ -39,8 +39,8 @@ struct Block {
     }
 
     // starting from x = 1
-    double *row_ptr(int y) {
-        return &v[y * (x + 2) + 1];
+    double *row_ptr(int y_) {
+        return &v[y_ * (x + 2)];
     }
 };
 
