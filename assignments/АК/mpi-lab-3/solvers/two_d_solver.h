@@ -29,6 +29,7 @@ public:
             MPI_Abort(MPI_COMM_WORLD, 3);
         }
 
+        // current block position among other blocks
         block_pos_x = world_rank % x_blocks;
         block_pos_y = world_rank / x_blocks;
     }
@@ -42,10 +43,12 @@ public:
         double yh = t.b / t.n;
         double xh = t.a / t.n;
 
-
         Block u((t.n - 2) / y_blocks, (t.n - 2) / x_blocks);
+
+        // transforms local cell coords to absolute double
         PositionTransformer pt(yh, xh, block_pos_y, block_pos_x, u.y, u.x);
 
+        // set block borders (only for blocks that lie on border(again))
         if (block_pos_y == 0) {
             for (int i = 1; i < u.x + 1; ++i) {
                 u[0][i] = t.f3(pt.x(i)); //u(0, x)
@@ -67,6 +70,7 @@ public:
             }
         }
 
+        // used as temp buffer
         vector<double> helper_col(u.y);
 
         double accuracy;
@@ -81,8 +85,11 @@ public:
                     accuracy = std::max(std::abs(u[i][j] - old_u), accuracy);
                 }
             }
+
+            // sync max absolute difference between processes
             MPI_Allreduce(&accuracy, &accuracy, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
 
+            // send block borders
             if (block_pos_y != 0) {
                 MPI_Send(u.row_ptr(1), u.x, MPI_DOUBLE, world_rank - x_blocks, kUp, MPI_COMM_WORLD);
             }
@@ -97,6 +104,7 @@ public:
                          MPI_COMM_WORLD);
             }
 
+            // receive block borders
             if (block_pos_y != 0) {
                 MPI_Recv(u.row_ptr(0), u.x, MPI_DOUBLE, world_rank - x_blocks, kDown, MPI_COMM_WORLD,
                          MPI_STATUS_IGNORE);
@@ -124,17 +132,18 @@ public:
         if (world_rank == 0) result = Block(t.n - 2, t.n - 2);
 
         MPI_Barrier(MPI_COMM_WORLD);
-        if (world_rank == 0) {
 
+        if (world_rank == 0) {
+            // copy first block to result
             for (int i = 0; i < u.y + 2; ++i) {
                 for (int j = 0; j < u.x + 2; ++j) {
                     result[i][j] = u[i][j];
                 }
             }
 
+            // receive blocks from other processes and copy to result
             for (int i = 1; i < world_size; ++i) {
                 MPI_Recv(u.v.data(), u.v.size(), MPI_DOUBLE, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
 
                 int offset_x = i % x_blocks;
                 int offset_y = i / x_blocks;
@@ -144,19 +153,17 @@ public:
                 bool x_start = offset_x != 0;
                 bool x_end = offset_x != (x_blocks - 1);
 
-
                 for (int j = y_start; j < u.y + 2 - y_end; ++j) {
                     for (int k = x_start; k < u.x + 2 - x_end; ++k) {
                         result[j + offset_y * u.y][k + offset_x * u.x] = u[j][k];
                     }
                 }
-
             }
 
         } else {
+            // send block to process with rank = 0
             MPI_Send(u.v.data(), u.v.size(), MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
         }
-
 
         return result.v;
     }

@@ -20,6 +20,7 @@ struct Block {
 
     }
 
+    // allows access via [][]
     double *operator[](int y) { return &v[y * (x + 2)]; }
 
     // with (max_y - 2) elements

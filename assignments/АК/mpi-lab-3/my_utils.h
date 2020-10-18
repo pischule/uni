@@ -10,7 +10,6 @@
 #include <iomanip>
 #include <cmath>
 
-
 void print(std::vector<double> &a) {
     int k = (int) sqrt(a.size());
     for (int i = 0; i < k; ++i) {

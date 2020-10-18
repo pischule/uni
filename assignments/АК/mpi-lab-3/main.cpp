@@ -8,6 +8,7 @@
 #include "solvers/one_d_solver.h"
 #include "solvers/two_d_solver.h"
 
+// program mode
 enum Mode {
     kSingle = 0,
     k1d = 1,
@@ -82,7 +83,10 @@ int main(int argc, char **argv) {
     if (world_rank == 0)
         time_start = MPI_Wtime();
 
+    // instantiate task
     ActualTask task(n, eps);
+
+    // create solver and solve the task
     switch (mode) {
         case kSingle:
             result = OneThreadSolver().solve(task);
@@ -95,11 +99,13 @@ int main(int argc, char **argv) {
             break;
     }
 
+    // print result if user asked to
     if (world_rank == 0 && verbose) {
         print(result);
         cout << endl;
     }
 
+    // print time if user asked to
     if (world_rank == 0 && show_time) {
         cout << MPI_Wtime() - time_start << endl;
     }

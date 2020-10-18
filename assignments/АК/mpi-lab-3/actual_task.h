@@ -12,18 +12,23 @@ struct ActualTask : public AbstractTask {
     ActualTask(int n, double eps)
             : AbstractTask(1, 1, n, eps) {}
 
+
+    // u(y, 0)
     double f1(double y) override {
         return y * y;
     }
 
+    // u(y, b)
     double f2(double y) override {
         return y;
     }
 
+    // u(0, x)
     double f3(double x) override {
         return std::sin(x);
     }
 
+    // u(a, x)
     double f4(double x) override {
         return x;
     }
