@@ -9,3 +9,5 @@ Repository for university labs on [FAMCS](http://fpmi.bsu.by/), [BSU](https://bs
 - [Теория алгоритмов](ТА/) - С++, Python, Java
 - [Учебная практика](УП/) - Python
 - [Функциональный анализ и интегральные уравнения](ФАиИУ/) - TeX
+- [Операционные системы](ОС/) - git,bash
+
