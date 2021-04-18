@@ -1,5 +1,9 @@
 # bsu
 
+<p>
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/pischule/bsu">
+</p>
+
 Repository for university labs on [FAMCS](http://fpmi.bsu.by/), [BSU](https://bsu.by/).
 
 ---
