@@ -2,6 +2,7 @@
 
 <p>
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/pischule/bsu">
+  <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/pischule/bsu">
 </p>
 
 Repository for university labs on [FAMCS](http://fpmi.bsu.by/), [BSU](https://bsu.by/).
