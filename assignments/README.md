@@ -15,4 +15,5 @@ Repository for university labs on [FAMCS](http://fpmi.bsu.by/), [BSU](https://bs
 - [Учебная практика](УП/) - Python
 - [Функциональный анализ и интегральные уравнения](ФАиИУ/) - TeX
 - [Операционные системы](ОС/) - git,bash
+- [Компьютерные сети](КС/) - Packet Tracer, C++
 
