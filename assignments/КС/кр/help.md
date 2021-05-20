@@ -147,7 +147,9 @@ property|value
 **mask** |           255.255.255.0
 **number of users** | 5
 
+```
 save
+```
 
 ---
 
