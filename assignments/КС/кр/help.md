@@ -112,7 +112,6 @@ no shutdown
 
 router rip
 version 2
-network 10.0.0.0
 network 200.200.3.0
 network 200.200.5.0
 network 200.200.6.0
