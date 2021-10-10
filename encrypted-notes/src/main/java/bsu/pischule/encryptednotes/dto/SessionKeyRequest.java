@@ -10,5 +10,5 @@ public class SessionKeyRequest {
     @NotNull
     private Long userId;
     @NotBlank
-    private String publicKey;
+    private String publicKeyPem;
 }
