@@ -55,7 +55,7 @@ public class NotesService {
         IvParameterSpec iv = encryptionService.generateIv();
         byte[] encryptedArray = encryptionService.encryptAes(plainText, key, iv);
         return EncryptedNoteResponse.builder()
-                .encryptedText(Base64.getEncoder().encodeToString(encryptedArray))
+                .encryptedNote(Base64.getEncoder().encodeToString(encryptedArray))
                 .iv(Base64.getEncoder().encodeToString(iv.getIV()))
                 .build();
     }
