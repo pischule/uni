@@ -1,11 +1,17 @@
 package bsu.pischule.encryptednotes.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
 
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
 public class SessionKeyResponse {
-    private String encryptedSessionKey;
+    private byte[] encryptedSessionKey;
+    private UUID userToken;
 }

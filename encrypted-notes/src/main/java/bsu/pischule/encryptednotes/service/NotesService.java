@@ -1,62 +1,81 @@
 package bsu.pischule.encryptednotes.service;
 
+import bsu.pischule.encryptednotes.dto.CreateEncryptedNoteRequest;
 import bsu.pischule.encryptednotes.dto.EncryptedNoteResponse;
-import bsu.pischule.encryptednotes.dto.SessionKeyRequest;
-import bsu.pischule.encryptednotes.dto.SessionKeyResponse;
 import bsu.pischule.encryptednotes.entity.Note;
 import bsu.pischule.encryptednotes.entity.User;
+import bsu.pischule.encryptednotes.exception.AuthorizationException;
 import bsu.pischule.encryptednotes.repository.NoteRepository;
-import bsu.pischule.encryptednotes.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.transaction.Transactional;
-import java.security.PublicKey;
-import java.util.Base64;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class NotesService {
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final NoteRepository noteRepository;
-    private final EncryptionService encryptionService;
 
-    @SneakyThrows
-    @Transactional
-    public SessionKeyResponse getSessionKey(SessionKeyRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        byte[] sessionKey = encryptionService.generateAesKey().getEncoded();
-        user.setSessionKey(sessionKey);
-        userRepository.save(user);
-        PublicKey publicKey = encryptionService.readPublicKey(request.getPublicKeyPem());
-        byte[] encryptedSessionKey = encryptionService.encryptRsa(sessionKey, publicKey);
-        return SessionKeyResponse.builder()
-                .encryptedSessionKey(Base64.getEncoder().encodeToString(encryptedSessionKey))
-                .build();
+    @Autowired
+    private EncryptionService encryptionService;
+
+    public EncryptedNoteResponse getNote(UUID noteId, UUID sessionToken) {
+        User user = userService.getAndCheckUserBySessionToken(sessionToken);
+        Note note = noteRepository.findByIdAndUser(noteId, user).orElseThrow(() -> new EntityNotFoundException("note not found"));
+        return encryptNote(user, note);
     }
 
-    @SneakyThrows
-    public EncryptedNoteResponse getEncryptedNotes(Long noteId, Long userId) {
-        Note note = noteRepository.findById(noteId)
-                .orElseThrow(() -> new IllegalArgumentException("Note not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        byte[] sessionKey = Optional.ofNullable(user.getSessionKey())
-                .orElseThrow(() -> new IllegalArgumentException("User doesn't have session key"));
-        String plainText = note.getText();
+    public EncryptedNoteResponse createNote(CreateEncryptedNoteRequest request, UUID sessionToken) {
+        User user = userService.getAndCheckUserBySessionToken(sessionToken);
 
-        SecretKey key = encryptionService.fromBytes(user.getSessionKey());
+        String text = decryptNote(user, request.getEncryptedNote(), request.getIv());
+        Note note = new Note(null, user, text);
+        noteRepository.save(note);
+        return encryptNote(user, note);
+    }
+
+    public EncryptedNoteResponse updateNote(UUID noteId, CreateEncryptedNoteRequest request, UUID sessionToken) {
+        User user = userService.getAndCheckUserBySessionToken(sessionToken);
+        Note note = noteRepository.findByIdAndUser(noteId, user).orElseThrow(() -> new EntityNotFoundException("note not found"));
+        String text = decryptNote(user, request.getEncryptedNote(), request.getIv());
+        note.setText(text);
+        noteRepository.save(note);
+        return encryptNote(user, note);
+    }
+
+    public void deleteNote(UUID noteId, UUID sessionToken) {
+        User user = userService.getAndCheckUserBySessionToken(sessionToken);
+        noteRepository.deleteByIdAndUser(noteId, user);
+    }
+
+    public List<EncryptedNoteResponse> getNotes(UUID sessionToken) {
+        User user = userService.getAndCheckUserBySessionToken(sessionToken);
+        List<Note> notes = noteRepository.findAllByUser(user);
+        return notes.stream().map(it -> encryptNote(user, it)).collect(Collectors.toList());
+    }
+
+    private String decryptNote(User user, byte[] encryptedText, byte[] ivBytes) {
+        SecretKey sessionKey = encryptionService.getSessionKey(user.getSessionKey());
+        IvParameterSpec iv = new IvParameterSpec(ivBytes);
+        return encryptionService.decryptAes(encryptedText, sessionKey, iv);
+    }
+
+    private EncryptedNoteResponse encryptNote(User user, Note note) {
+        if (Instant.now().isAfter(user.getSessionExpirationDate())) {
+            throw new AuthorizationException("session key has expired");
+        }
+        SecretKey key = encryptionService.getSessionKey(user.getSessionKey());
         IvParameterSpec iv = encryptionService.generateIv();
-        byte[] encryptedArray = encryptionService.encryptAes(plainText, key, iv);
-        return EncryptedNoteResponse.builder()
-                .encryptedNote(Base64.getEncoder().encodeToString(encryptedArray))
-                .iv(Base64.getEncoder().encodeToString(iv.getIV()))
-                .build();
+        byte[] encryptedArray = encryptionService.encryptAes(note.getText(), key, iv);
+        return new EncryptedNoteResponse(note.getId(), encryptedArray, iv.getIV());
     }
 }

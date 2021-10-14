@@ -7,8 +7,10 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class SessionKeyRequest {
+    @NotBlank
+    private String username;
     @NotNull
-    private Long userId;
+    private String password;
     @NotBlank
     private String publicKeyPem;
 }

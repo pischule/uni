@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,7 +15,11 @@ import java.util.Objects;
 @Entity
 public class Note {
     @Id
-    private long noteId;
+    @GeneratedValue
+    private UUID id;
+
+    @ManyToOne
+    private User user;
 
     @Lob
     private String text;
@@ -24,7 +29,7 @@ public class Note {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Note note = (Note) o;
-        return Objects.equals(noteId, note.noteId);
+        return Objects.equals(id, note.id);
     }
 
     @Override
