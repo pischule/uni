@@ -17,7 +17,6 @@ import java.util.UUID;
 public class EncryptedNoteController {
     private final NotesService notesService;
 
-    @GetMapping("/")
     public List<EncryptedNoteResponse> getNotes(@RequestHeader("Authorization") UUID sessionToken) {
         return notesService.getNotes(sessionToken);
     }
