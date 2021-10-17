@@ -19,6 +19,8 @@
   </div>
 </template>
 <script>
+import M from 'materialize-css';
+
 export default {
   props: ['text', 'noteId'],
   emits: ['deleteNote', 'updateNote'],
@@ -32,10 +34,22 @@ export default {
     updateNote() {
       this.$emit('updateNote', {noteId: this.noteId, text: this.updatedText});
       this.readMode = !this.readMode;
-    }
+    },
   },
-  created() {
-    M.textareaAutoResize($('#textarea1'));
+  triggerInput() {
+    this.$nextTick(() => {
+      this.$refs.resize.$el.dispatchEvent(new Event("input"));
+    });
+  },
+  watch: {
+    readMode() {
+      // Wait until the template has updated
+      this.$nextTick(() => {
+        [...document.querySelectorAll('textarea')].forEach(textarea => {
+          M.textareaAutoResize(textarea)
+        });
+      });
+    }
   }
 }
 </script>
