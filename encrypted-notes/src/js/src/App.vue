@@ -2,7 +2,10 @@
 
   <nav>
     <div class="nav-wrapper teal">
-      <a href="#" class="brand-logo center">Защищенный блокнот</a>
+      <a href="#" class="brand-logo center">Encrypted notes</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a @click="logOut">Log out</a></li>
+      </ul>
     </div>
   </nav>
 
@@ -26,6 +29,7 @@
 <script>
 
 import * as l from "./logic";
+import M from 'materialize-css';
 import LoginForm from './components/LoginForm.vue';
 import CreateNoteForm from './components/CreateNoteForm';
 import NoteComponent from "@/components/NoteComponent";
@@ -48,6 +52,9 @@ export default {
       return !(this.sessionKey && this.sessionToken);
     }
   },
+  created() {
+    M.AutoInit();
+  },
   methods: {
     loggedInHandler(sessionData) {
       this.sessionToken = sessionData.sessionToken;
@@ -58,7 +65,8 @@ export default {
       console.log('saving note: ');
       console.log(text);
       l.saveNote(text, this.sessionKey, this.sessionToken)
-          .then(this.refreshNoteList);
+          .then(this.refreshNoteList)
+          .catch(this.handleStatusCode);
     },
     deleteNote(noteId) {
       console.log(`delete ${noteId}`);
@@ -66,23 +74,33 @@ export default {
           .then(() => {
             this.notes = this.notes
                 .filter(value => value.noteId !== noteId);
-          });
+          })
+          .catch(this.handleStatusCode);
     },
     refreshNoteList() {
       l.getNotes(this.sessionKey, this.sessionToken)
-          .then(value => this.notes = value);
+          .then(value => this.notes = value)
+          .catch(this.handleStatusCode);
     },
     updateNote(noteId, text) {
       l.updateNote(noteId, text, this.sessionKey, this.sessionToken)
-          .then(this.refreshNoteList);
+          .then(this.refreshNoteList)
+          .catch(this.handleStatusCode);
+    },
+    logOut() {
+      this.sessionToken = null;
+      this.sessionKey = null;
+      this.notes = [];
+      M.toast({html: 'You\'ve been logged out'});
+    },
+    handleStatusCode(code) {
+      if (code === 403) {
+        this.logOut();
+      } else {
+        M.toast({html: `Server returned ${code}`});
+      }
     }
-  },
-  // created() {
-  //   l.generateKeyPair()
-  //       .then((keyPair) => {
-  //         this.keyPair = keyPair;
-  //       });
-  // }
+  }
 }
 </script>
 

@@ -33,6 +33,9 @@ export default {
       this.$emit('updateNote', {noteId: this.noteId, text: this.updatedText});
       this.readMode = !this.readMode;
     }
+  },
+  created() {
+    M.textareaAutoResize($('#textarea1'));
   }
 }
 </script>

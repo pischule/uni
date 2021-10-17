@@ -22,6 +22,6 @@ public class AppErrorHandler {
     @ExceptionHandler(AuthorizationException.class)
     public ResponseEntity<ErrorDetails> handleAuthorizationError(AuthorizationException e) {
         ErrorDetails errorDetails = new ErrorDetails(e.getMessage(), "authorization error");
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
     }
 }

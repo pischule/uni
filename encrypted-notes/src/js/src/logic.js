@@ -12,8 +12,11 @@ async function getSessionKeyResponse(username, password, keyPair) {
         password: password,
         publicKeyPem: publicKeyPem(keyPair.publicKey)
     });
+    if (response.status !== 200) {
+        throw response.status;
+    }
     console.log('response: ');
-    console.log(response.data);
+    console.log(response);
     const encryptedSessionKey = response.data.encryptedSessionKey;
     const sessionToken = response.data.sessionToken;
     const sessionKey = decryptSessionKey(encryptedSessionKey, keyPair);
@@ -89,6 +92,9 @@ async function saveNote(text, sessionKey, sessionToken) {
             iv: iv
         },
         {headers: {'Authorization': sessionToken}})
+    if (response.status !== 200) {
+        throw response.status;
+    }
     console.log('receiving:');
     console.log(response.data);
     return response.data;
@@ -102,17 +108,24 @@ async function updateNote(noteId, text, sessionKey, sessionToken) {
             iv: iv
         },
         {headers: {'Authorization': sessionToken}});
+    if (response.status !== 200) {
+        throw response.status;
+    }
     console.log('updateNote')
     console.log(response.data);
     return response.data;
 }
 
 async function deleteNote(noteId, sessionToken) {
-    return await axios.delete(`${prefix}/api/note/${noteId}`, {
+    const response = await axios.delete(`${prefix}/api/note/${noteId}`, {
         headers: {
             'Authorization': sessionToken
         }
     });
+    if (response.status !== 200) {
+        throw response.status;
+    }
+    return response.data;
 }
 
 async function getNotes(sessionKey, sessionToken) {
@@ -130,18 +143,17 @@ async function getNotes(sessionKey, sessionToken) {
 }
 
 // if (prefix !== '') {
-//     // const kp = await generateKeyPair();
-//     // const sessionKeyResponse = await getSessionKeyResponse('admin', 'admin', kp);
+//     const kp = await generateKeyPair();
+//     const sessionKeyResponse = await getSessionKeyResponse('admin', 'admin', kp);
 //     // const text = '123';
 //     // console.log(sessionKeyResponse);
 //     // const saved = await saveNote(text, sessionKeyResponse.sessionKey, sessionKeyResponse.sessionToken);
-//     const result = encryptNote('123', 'TzCPfbR9peAO0wMdMTtXkQ==', 'MP1WdsrMxpV1hNVLWZ2RgA==');
-//     const decr = decryptNote(result, 'TzCPfbR9peAO0wMdMTtXkQ==', 'MP1WdsrMxpV1hNVLWZ2RgA==');
-//     console.log(result);
-//     console.log(decr);
+//     // const result = encryptNote('123', 'TzCPfbR9peAO0wMdMTtXkQ==', 'MP1WdsrMxpV1hNVLWZ2RgA==');
+//     // const decr = decryptNote(result, 'TzCPfbR9peAO0wMdMTtXkQ==', 'MP1WdsrMxpV1hNVLWZ2RgA==');
+//     // console.log(result);
+//     // console.log(decr);
 // }
 
 export {
-    getNotes, getSessionKeyResponse, generateKeyPair, decryptSessionKey, saveNote, updateNote, deleteNote,
-    decryptNote, generateIv, encryptNote
+    getNotes, generateKeyPair, getSessionKeyResponse, saveNote, updateNote, deleteNote
 };

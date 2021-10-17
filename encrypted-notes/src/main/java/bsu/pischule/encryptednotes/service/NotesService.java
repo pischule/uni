@@ -8,7 +8,6 @@ import bsu.pischule.encryptednotes.exception.AuthorizationException;
 import bsu.pischule.encryptednotes.repository.NoteRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -26,8 +25,6 @@ import java.util.stream.Collectors;
 public class NotesService {
     private final UserService userService;
     private final NoteRepository noteRepository;
-
-    @Autowired
     private EncryptionService encryptionService;
 
     public EncryptedNoteResponse getNote(UUID noteId, UUID sessionToken) {
