@@ -22,6 +22,7 @@ public class Note {
     private User user;
 
     @Lob
+    @Convert(converter = NoteTextConverter.class)
     private String text;
 
     @Override
