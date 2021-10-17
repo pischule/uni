@@ -13,5 +13,5 @@ import java.util.UUID;
 @Data
 public class SessionKeyResponse {
     private byte[] encryptedSessionKey;
-    private UUID userToken;
+    private UUID sessionToken;
 }

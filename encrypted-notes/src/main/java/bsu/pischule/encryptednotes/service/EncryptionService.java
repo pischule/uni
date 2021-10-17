@@ -35,8 +35,8 @@ public class EncryptionService {
         try {
             Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, key, iv);
-            return new String(plainText);
-        } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException e) {
+            return new String(cipher.doFinal(plainText));
+        } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
             throw new EncryptionException("aes decrypt exception");
         }

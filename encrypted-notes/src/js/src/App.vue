@@ -1,105 +1,88 @@
 <template>
-  <div id="app" class="container">
-    <h2>Защищенный блокнот</h2>
 
-    <p>Публичный ключ</p>
-    <pre style="overflow-wrap: break-word">{{ publicKey }}</pre>
-    <p>Приватный ключ</p>
-    <pre style="overflow-wrap: break-word">{{ privateKey }}</pre>
-    <button class="btn" @click="getSessionKey">Получить сеансовый ключ</button>
-
-    <div v-if="encryptedSessionKey">
-      <p>Зашифрованный сеансовый ключ:</p>
-      <code style="overflow-wrap: break-word"> {{ encryptedSessionKey }} </code>
-      <p>Расшифрованный сеансовый ключ:</p>
-      <code style="overflow-wrap: break-word"> {{ decryptedSessionKey }} </code>
-      <p></p>
-
-      <label for="noteId">ID файла</label>
-      <input id="noteId" v-model="noteId" type="number" placeholder="1">
-      <button class="btn" @click="getNote">Получить файл</button>
-
-      <div v-if="encryptedNote">
-
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">Зашифрованный файл</span>
-            <code style="overflow-wrap: break-word"> {{ encryptedNote }}</code>
-            <span class="card-title">IV</span>
-            <code style="overflow-wrap: break-word"> {{ iv }}</code>
-          </div>
-        </div>
-
-        <div class="card teal darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">Расшифрованный файл</span>
-            <p>{{ decryptedNote }}</p>
-          </div>
-        </div>
-      </div>
+  <nav>
+    <div class="nav-wrapper teal">
+      <a href="#" class="brand-logo center">Защищенный блокнот</a>
     </div>
+  </nav>
 
-  </div>
+  <main id="app" class="container">
+
+    <login-form v-if="loggedOut" @logged-in="loggedInHandler($event)"/>
+
+    <template v-else>
+      <create-note-form @save-note="saveNote($event)"/>
+      <note-component
+          v-for="note in notes"
+          :key="note.noteId"
+          :text="note.text"
+          :noteId="note.noteId"
+          @delete-note="deleteNote($event)"
+          @update-note="updateNote($event.noteId, $event.text)"/>
+    </template>
+  </main>
 </template>
 
 <script>
 
 import * as l from "./logic";
+import LoginForm from './components/LoginForm.vue';
+import CreateNoteForm from './components/CreateNoteForm';
+import NoteComponent from "@/components/NoteComponent";
 
 export default {
   name: 'App',
-  components: {},
+  components: {
+    NoteComponent,
+    LoginForm, CreateNoteForm
+  },
   data() {
     return {
-      userId: 1,
-      keyPair: null,
-      iv: null,
-      noteId: 1,
-      encryptedNote: null,
-      encryptedSessionKey: null
+      sessionKey: null,
+      sessionToken: null,
+      notes: []
     }
   },
   computed: {
-    publicKey() {
-      return l.publicKeyPem(this.keyPair);
-    },
-    privateKey() {
-      return l.privateKeyPem(this.keyPair);
-    },
-    decryptedSessionKey() {
-      return l.decryptSessionKey(this.encryptedSessionKey, this.keyPair);
-    },
-    decryptedNote() {
-      return l.decryptNote(this.encryptedNote, this.iv, this.decryptedSessionKey);
+    loggedOut() {
+      return !(this.sessionKey && this.sessionToken);
     }
   },
   methods: {
-    getSessionKey() {
-      l.getSessionKeyEncrypted(1, this.keyPair)
-          .then((value) => this.encryptedSessionKey = value);
+    loggedInHandler(sessionData) {
+      this.sessionToken = sessionData.sessionToken;
+      this.sessionKey = sessionData.sessionKey;
+      this.refreshNoteList();
     },
-    getNote() {
-      l.getEncryptedNoteAndIv(this.noteId, this.userId)
-          .then(value => {
-            this.encryptedNote = value.encryptedNote;
-            this.iv = value.iv;
+    saveNote(text) {
+      console.log('saving note: ');
+      console.log(text);
+      l.saveNote(text, this.sessionKey, this.sessionToken)
+          .then(this.refreshNoteList);
+    },
+    deleteNote(noteId) {
+      console.log(`delete ${noteId}`);
+      l.deleteNote(noteId, this.sessionToken)
+          .then(() => {
+            this.notes = this.notes
+                .filter(value => value.noteId !== noteId);
           });
     },
-    getPrevNote() {
-      this.noteId -= 1;
-      this.getNote();
+    refreshNoteList() {
+      l.getNotes(this.sessionKey, this.sessionToken)
+          .then(value => this.notes = value);
     },
-    getNextNote() {
-      this.noteId += 1;
-      this.getNote();
+    updateNote(noteId, text) {
+      l.updateNote(noteId, text, this.sessionKey, this.sessionToken)
+          .then(this.refreshNoteList);
     }
   },
-  created() {
-    l.generateKeyPair()
-        .then((keyPair) => {
-          this.keyPair = keyPair;
-        });
-  }
+  // created() {
+  //   l.generateKeyPair()
+  //       .then((keyPair) => {
+  //         this.keyPair = keyPair;
+  //       });
+  // }
 }
 </script>
 

@@ -7,17 +7,20 @@ import bsu.pischule.encryptednotes.entity.User;
 import bsu.pischule.encryptednotes.exception.AuthorizationException;
 import bsu.pischule.encryptednotes.repository.NoteRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class NotesService {
@@ -33,11 +36,10 @@ public class NotesService {
         return encryptNote(user, note);
     }
 
-
     public EncryptedNoteResponse createNote(CreateEncryptedNoteRequest request, UUID sessionToken) {
         User user = userService.getAndCheckUserBySessionToken(sessionToken);
-
         String text = decryptNote(user, request.getEncryptedNote(), request.getIv());
+        log.info("text: {}", text);
         Note note = new Note(null, user, text);
         noteRepository.save(note);
         return encryptNote(user, note);
@@ -52,6 +54,7 @@ public class NotesService {
         return encryptNote(user, note);
     }
 
+    @Transactional
     public void deleteNote(UUID noteId, UUID sessionToken) {
         User user = userService.getAndCheckUserBySessionToken(sessionToken);
         noteRepository.deleteByIdAndUser(noteId, user);
