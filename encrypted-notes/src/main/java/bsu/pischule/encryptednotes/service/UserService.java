@@ -19,6 +19,7 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +34,8 @@ public class UserService {
 
     @Transactional
     public SessionKeyResponse getSessionKey(SessionKeyRequest request) {
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new EntityNotFoundException("no such user"));
-        if (!userPasswordMatches(user, request.getPassword())) {
+        User user = userRepository.findByUsername(request.username()).orElseThrow(() -> new EntityNotFoundException("no such user"));
+        if (!userPasswordMatches(user, request.password())) {
             throw new AuthorizationException("incorrect password");
         }
 
@@ -42,7 +43,7 @@ public class UserService {
             renewSession(user);
         }
 
-        PublicKey publicKey = encryptionService.readPublicKey(request.getPublicKeyPem());
+        PublicKey publicKey = encryptionService.readPublicKey(request.publicKeyPem());
         byte[] encryptedSessionKey = encryptionService.encryptRsa(user.getSessionKey(), publicKey);
 
         return new SessionKeyResponse(encryptedSessionKey, user.getSessionToken());
@@ -71,7 +72,7 @@ public class UserService {
             byte[] salt = generateSalt();
             byte[] passwordHash = hashPassword(password, salt);
             byte[] sessionKey = encryptionService.generateAesKey().getEncoded();
-            Instant sessionExpirationDate = Instant.now().plus(config.defaultSessionTtl());
+            Instant sessionExpirationDate = Instant.now().plus(getSessionTtl());
             return new User(null, username, passwordHash, salt, sessionKey, UUID.randomUUID(), sessionExpirationDate, List.of());
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
@@ -83,7 +84,7 @@ public class UserService {
     public void renewSession(User user) {
         byte[] sessionKey = encryptionService.generateAesKey().getEncoded();
         user.setSessionKey(sessionKey);
-        user.setSessionExpirationDate(Instant.now().plus(config.defaultSessionTtl()));
+        user.setSessionExpirationDate(Instant.now().plus(getSessionTtl()));
         user.setSessionToken(UUID.randomUUID());
         userRepository.save(user);
     }
@@ -96,6 +97,10 @@ public class UserService {
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         return factory.generateSecret(spec).getEncoded();
+    }
+
+    private Duration getSessionTtl() {
+        return Duration.ofDays(config.sessionTtlDays);
     }
 
     private byte[] generateSalt() {

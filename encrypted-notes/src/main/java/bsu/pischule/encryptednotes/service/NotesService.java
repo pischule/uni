@@ -35,7 +35,7 @@ public class NotesService {
 
     public EncryptedNoteResponse createNote(CreateEncryptedNoteRequest request, UUID sessionToken) {
         User user = userService.getAndCheckUserBySessionToken(sessionToken);
-        String text = decryptNote(user, request.getEncryptedNote(), request.getIv());
+        String text = decryptNote(user, request.encryptedNote(), request.iv());
         log.info("text: {}", text);
         Note note = new Note(null, user, text);
         noteRepository.save(note);
@@ -45,7 +45,7 @@ public class NotesService {
     public EncryptedNoteResponse updateNote(UUID noteId, CreateEncryptedNoteRequest request, UUID sessionToken) {
         User user = userService.getAndCheckUserBySessionToken(sessionToken);
         Note note = noteRepository.findByIdAndUser(noteId, user).orElseThrow(() -> new EntityNotFoundException("note not found"));
-        String text = decryptNote(user, request.getEncryptedNote(), request.getIv());
+        String text = decryptNote(user, request.encryptedNote(), request.iv());
         note.setText(text);
         noteRepository.save(note);
         return encryptNote(user, note);

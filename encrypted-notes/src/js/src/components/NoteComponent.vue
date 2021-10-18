@@ -4,7 +4,7 @@
       <p>{{ text }}</p>
     </div>
     <div class="card-action">
-      <a @click="readMode=!readMode">Edit</a>
+      <a @click="updatedText=text; readMode=!readMode">Edit</a>
       <a @click="$emit('deleteNote', noteId)">Delete</a>
     </div>
   </div>
