@@ -1,9 +1,7 @@
 package bsu.pischule.encryptednotes.dto;
 
-import lombok.Data;
-
-@Data
-public class CreateEncryptedNoteRequest {
-    private byte[] encryptedNote;
-    private byte[] iv;
+public record CreateEncryptedNoteRequest(
+        byte[] encryptedNote,
+        byte[] iv
+) {
 }

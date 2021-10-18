@@ -1,5 +1,6 @@
 package bsu.pischule.encryptednotes;
 
+import bsu.pischule.encryptednotes.configuration.AppConfig;
 import bsu.pischule.encryptednotes.entity.Note;
 import bsu.pischule.encryptednotes.entity.User;
 import bsu.pischule.encryptednotes.repository.NoteRepository;
@@ -10,12 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
+@EnableConfigurationProperties(AppConfig.class)
 @SpringBootApplication
 @AllArgsConstructor
 public class EncryptedNotesApplication implements CommandLineRunner {
