@@ -1,6 +1,6 @@
 ![image](https://user-images.githubusercontent.com/41614960/137797585-b62e7b0a-7d29-4769-b6db-bb8d4415c087.png)
 
-![image](https://user-images.githubusercontent.com/41614960/137798555-c16184b7-d337-483e-a640-bfd76036dccd.png)
+![image](https://user-images.githubusercontent.com/41614960/137798793-71c35cec-b348-4a90-94e5-c668d9adc622.png)
 
 
 1.Серверная часть программы:
