@@ -1,0 +1,53 @@
+INSERT INTO public.family (family_id, family_name) VALUES (1, 'Быковы');
+INSERT INTO public.family (family_id, family_name) VALUES (2, 'Сидоровы');
+INSERT INTO public.family (family_id, family_name) VALUES (3, 'Лебедеы');
+INSERT INTO public.family (family_id, family_name) VALUES (4, 'Морозовы');
+INSERT INTO public.family (family_id, family_name) VALUES (5, 'Ивановы');
+INSERT INTO public.family (family_id, family_name) VALUES (6, 'Смирновы');
+INSERT INTO public.family (family_id, family_name) VALUES (7, 'Поповы');
+
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (1, 'Вадим', 'Быков', '2021-09-27 20:45:41.294666', 1);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (2, 'Иван', 'Сидоров', '2021-09-27 20:45:41.740637', 2);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (3, 'Нил', 'Лебедев', '2021-09-27 20:45:42.184663', 3);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (4, 'Саид', 'Морозов', '2021-09-27 20:45:42.626684', 4);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (5, 'Филипп', 'Иванов', '2021-09-27 20:45:43.074688', 5);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (6, 'Ярослав', 'Смирнов', '2021-09-27 20:45:43.516641', 6);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (7, 'Станислав', 'Попов', '2021-09-27 20:45:43.956568', 7);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (8, 'Тихомир', 'Попов', '2021-09-27 20:46:22.411658', 7);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (9, 'Ада', 'Быкова', '2021-09-27 20:46:22.855725', 1);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (10, 'Анджела', 'Сидорова', '2021-09-27 20:46:23.296704', 2);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (11, 'Глория', 'Лебедева', '2021-09-27 20:46:23.737904', 3);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (12, 'Доминика', 'Морозова', '2021-09-27 20:46:24.183661', 4);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (13, 'Ева', 'Смирнова', '2021-09-27 20:46:24.627721', 6);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (14, 'Клеопатра', 'Иванова', '2021-09-27 20:46:25.079706', 7);
+INSERT INTO public."user" (user_id, first_name, last_name, register_date, family_id) VALUES (15, 'Лола', 'Сидорова', '2021-09-27 20:46:25.526689', 2);
+
+INSERT INTO public.currency (currency_id, name, symbol, rate_to_base_currency, decimal_numbers) VALUES (1, 'Доллар США', 'USD', 1, 2);
+INSERT INTO public.currency (currency_id, name, symbol, rate_to_base_currency, decimal_numbers) VALUES (2, 'Белорусский рубль', 'BYN', 2.5, 2);
+INSERT INTO public.currency (currency_id, name, symbol, rate_to_base_currency, decimal_numbers) VALUES (3, 'Евро', 'EUR', 0.85, 2);
+INSERT INTO public.currency (currency_id, name, symbol, rate_to_base_currency, decimal_numbers) VALUES (5, 'Китайский юань', 'CNY', 0.15, 2);
+INSERT INTO public.currency (currency_id, name, symbol, rate_to_base_currency, decimal_numbers) VALUES (6, 'Иена', 'JPY', 0.009, 3);
+INSERT INTO public.currency (currency_id, name, symbol, rate_to_base_currency, decimal_numbers) VALUES (7, 'Биткойн', 'BTC', 42870.6, 8);
+
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (1, 'Зарплата', true);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (2, 'ЖКУ', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (3, 'Услуги связи', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (4, 'Мобильная связь', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (5, 'Образование', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (6, 'Штрафы', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (7, 'Страхование', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (8, 'Налоги', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (9, 'Авто', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (10, 'Продовольственные товары', false);
+INSERT INTO public.opration_type (operation_type_id, name, is_income) VALUES (11, 'Недвижимость', false);
+
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (1, '2021-09-28 00:01:31.000000', '2021-09-28 00:01:33.000000', null, false, 2.000000000000000, 7, 1, 1);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (4, '2021-09-28 00:04:14.000000', '2021-09-28 00:04:16.000000', null, true, 900.000000000000000, 2, 5, 1);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (6, '2021-09-28 00:05:19.000000', '2021-09-28 00:05:20.000000', null, false, -40.000000000000000, 2, 1, 3);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (9, '2021-09-28 00:05:19.000000', '2021-09-28 00:05:20.000000', 'продукты', true, -100.000000000000000, 2, 5, 10);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (3, '2021-09-28 00:02:41.000000', '2021-09-28 00:02:42.000000', 'зп', true, 2000.000000000000000, 3, 3, 1);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (2, '2021-09-28 00:01:55.000000', '2021-09-28 00:01:57.000000', 'по 500', false, 500.000000000000000, 1, 2, 1);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (7, '2021-09-28 00:05:19.000000', '2021-09-28 00:05:20.000000', 'за квартиру', true, -900.000000000000000, 2, 1, 3);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (5, '2021-09-28 00:05:19.000000', '2021-09-28 00:05:20.000000', null, false, -80.000000000000000, 2, 1, 2);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (8, '2021-09-28 00:05:19.000000', '2021-09-28 00:05:20.000000', 'продукты', false, -500.000000000000000, 2, 1, 3);
+INSERT INTO public.operation (operation_id, operation_date, modify_date, description, is_cash, amount, currency_id, user_id, operation_type_id) VALUES (10, '2021-09-28 00:09:15.000000', '2021-09-28 00:09:18.000000', 'в каталоге не было лотерей', true, -1100.000000000000000, 6, 2, null);
