@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+
+app:
+  db-encryption-key: YfV78Fg2TOsyUWaVPZt7lw==
+  db-encryption-iv: TzCPfbR9peAO0wMdMTtXkQ==
+  session-ttl-days: 10
