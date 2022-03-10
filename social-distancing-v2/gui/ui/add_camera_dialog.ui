@@ -24,9 +24,24 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QGraphicsView" name="preview">
-      <property name="autoFillBackground">
-       <bool>true</bool>
+     <widget class="QLabel" name="previewLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>500</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Connecting...</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -47,10 +62,19 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="maxLength">
+         <number>32767</number>
+        </property>
+        <property name="placeholderText">
+         <string>rtsp://192.168.1.1:8080</string>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="connect_button">
+       <widget class="QPushButton" name="connectButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -77,12 +101,15 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="distance">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QDoubleSpinBox" name="doubleSpinBox">
+        <property name="prefix">
+         <string/>
+        </property>
+        <property name="suffix">
+         <string> m</string>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -100,7 +127,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="add_button">
+       <widget class="QPushButton" name="addButton">
         <property name="text">
          <string>Add</string>
         </property>
