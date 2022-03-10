@@ -1,0 +1,3 @@
+{
+    "files": ["gui/ui/main_window.ui","widget.py","gui/ui/add_camera_dialog.ui"]
+}
