@@ -1,8 +1,8 @@
 import cv2
 import uuid
 
-from vision.mappers.core.frame_context import FrameContext
-from vision.mappers.core.context_mapper import ContextMapper
+from lib.mappers.core.frame_context import FrameContext
+from lib.mappers.core.context_mapper import ContextMapper
 
 
 class VideoDisplay(ContextMapper[FrameContext]):

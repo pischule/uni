@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from vision.mappers.core.detected_object import DetectedObject
+from lib.mappers.core.detected_object import DetectedObject
 
 
 @dataclass(init=False)

@@ -1,9 +1,9 @@
-from vision.mappers.capture.video_capture import VideoCapture
-from vision.mappers.display.video_display import VideoDisplay
-from vision.mappers.overlay.info_overlay import InfoOverlay
-from vision.mappers.capture.fps_counter import FpsCounter
-from vision.mappers.detector.opencv_detector import PersonDetector
-from vision.mappers.overlay.draw_boxes import DrawBoxes
+from lib.mappers.capture.video_capture import VideoCapture
+from lib.mappers.display.video_display import VideoDisplay
+from lib.mappers.overlay.info_overlay import InfoOverlay
+from lib.mappers.capture.fps_counter import FpsCounter
+from lib.mappers.detector.opencv_detector import PersonDetector
+from lib.mappers.overlay.draw_boxes import DrawBoxes
 
 
 # from pipe.detectors.tf_detector import TensorflowDetector

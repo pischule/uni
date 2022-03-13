@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from vision.mappers.util.custom_types import Box
+from lib.mappers.util.custom_types import Box
 
 
 @dataclass

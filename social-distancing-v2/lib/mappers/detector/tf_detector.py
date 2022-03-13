@@ -1,7 +1,7 @@
 
 # import tensorflow_hub as hub
 
-from vision.mappers.core.context_mapper import ContextMapper
+from lib.mappers.core.context_mapper import ContextMapper
 
 import cv2
 

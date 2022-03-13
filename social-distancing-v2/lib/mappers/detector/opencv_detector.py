@@ -1,8 +1,8 @@
 import cv2
 
-from vision.mappers.core.context_mapper import ContextMapper
-from vision.mappers.core.detected_object import DetectedObject
-from vision.mappers.core.frame_context import FrameContext
+from lib.mappers.core.context_mapper import ContextMapper
+from lib.mappers.core.detected_object import DetectedObject
+from lib.mappers.core.frame_context import FrameContext
 
 coco_names = ('person', 'bicycle', 'car', 'motorbike', 'aeroplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
               'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',

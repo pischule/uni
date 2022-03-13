@@ -1,7 +1,7 @@
 import cv2
 
-from vision.mappers.core.context_mapper import ContextMapper
-from vision.mappers.core.frame_context import FrameContext
+from lib.mappers.core.context_mapper import ContextMapper
+from lib.mappers.core.frame_context import FrameContext
 
 
 class InfoOverlay(ContextMapper[FrameContext]):

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from vision.mappers.util.helper_functions import *
+from lib.mappers.util.helper_functions import *
 
 
 class Test(TestCase):

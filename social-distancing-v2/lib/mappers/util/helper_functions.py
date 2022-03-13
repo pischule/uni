@@ -1,6 +1,6 @@
 import numpy as np
 
-from vision.mappers.util.custom_types import Box, Point, Polygon
+from lib.mappers.util.custom_types import Box, Point, Polygon
 
 
 def box_bottom_center(box: Box) -> Point:

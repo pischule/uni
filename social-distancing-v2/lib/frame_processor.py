@@ -1,14 +1,14 @@
 from enum import Enum
 from typing import Iterable, ContextManager
 
-from vision.mappers.capture.fps_counter import FpsCounter
-from vision.mappers.capture.video_capture import VideoCapture
-from vision.mappers.core.frame_context import FrameContext
-from vision.mappers.detector.opencv_detector import PersonDetector
-from vision.mappers.display.video_display import VideoDisplay
-from vision.mappers.filter.class_filter import ClassFilter
-from vision.mappers.overlay.draw_boxes import DrawBoxes
-from vision.mappers.overlay.info_overlay import InfoOverlay
+from lib.mappers.capture.fps_counter import FpsCounter
+from lib.mappers.capture.video_capture import VideoCapture
+from lib.mappers.core.frame_context import FrameContext
+from lib.mappers.detector.opencv_detector import PersonDetector
+from lib.mappers.display.video_display import VideoDisplay
+from lib.mappers.filter.class_filter import ClassFilter
+from lib.mappers.overlay.draw_boxes import DrawBoxes
+from lib.mappers.overlay.info_overlay import InfoOverlay
 
 
 class Networks(Enum):
