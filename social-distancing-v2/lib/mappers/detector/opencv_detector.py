@@ -15,22 +15,22 @@ coco_names = ('person', 'bicycle', 'car', 'motorbike', 'aeroplane', 'bus', 'trai
               'teddy bear', 'hair drier', 'toothbrush')
 
 
-class PersonDetector(ContextMapper[FrameContext]):
+class OpenCVDetector(ContextMapper[FrameContext]):
 
     def __init__(self, model_config, model_weights, conf_threshold=0.6, nms_threshold=0.4):
         super().__init__()
 
         net = cv2.dnn.readNetFromDarknet(model_config, model_weights)
-        self.model = cv2.dnn_DetectionModel(net)
-        self.model.setInputParams(scale=1 / 255, size=(416, 416), swapRB=True)
+        self._model = cv2.dnn_DetectionModel(net)
+        self._model.setInputParams(scale=1 / 255, size=(416, 416), swapRB=True)
 
-        self.conf_threshold = conf_threshold
-        self.nms_threshold = nms_threshold
+        self._conf_threshold = conf_threshold
+        self._nms_threshold = nms_threshold
 
     def map(self, context: FrameContext):
-        class_ids, confidences, boxes = self.model.detect(context.frame,
-                                                          confThreshold=self.conf_threshold,
-                                                          nmsThreshold=self.nms_threshold)
+        class_ids, confidences, boxes = self._model.detect(context.frame,
+                                                           confThreshold=self._conf_threshold,
+                                                           nmsThreshold=self._nms_threshold)
         objects = []
         for class_id, confidence, box in zip(class_ids, confidences, boxes):
             box_as_tuples = ((box[0], box[1]), (box[0] + box[2], box[1] + box[3]))

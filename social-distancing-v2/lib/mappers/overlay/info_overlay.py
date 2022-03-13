@@ -16,11 +16,11 @@ class InfoOverlay(ContextMapper[FrameContext]):
         self._y = 30
 
         if self._show_fps:
-            self.draw_field(context.frame, 'fps', f'{context.fps:.2f}')
+            self._draw_field(context.frame, 'fps', f'{context.fps:.2f}')
 
         return context
 
-    def draw_field(self, img, key: str, value: str):
+    def _draw_field(self, img, key: str, value: str):
         cv2.putText(img=img,
                     text=f'{key}: {value}',
                     org=(self._x, self._y),

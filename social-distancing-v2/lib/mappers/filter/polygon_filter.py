@@ -9,8 +9,8 @@ from lib.mappers.util.helper_functions import polygon_to_numpy_array
 
 class PolygonFilter(ContextMapper[FrameContext]):
     def __init__(self, polygon: Polygon, inside: bool = True):
-        self.inside: bool = inside
-        self.polygon = polygon_to_numpy_array(polygon)
+        self._inside: bool = inside
+        self._polygon = polygon_to_numpy_array(polygon)
 
     def map(self, context: FrameContext) -> FrameContext:
 
@@ -18,9 +18,9 @@ class PolygonFilter(ContextMapper[FrameContext]):
         for obj in context.detected_objects:
             ((p1_x, p1_y), (p2_x, p2_y)) = obj.box
             bottom_center: Point = (int(p1_x + p2_x) // 2, int(p2_y))
-            dist = cv2.pointPolygonTest(contour=self.polygon, pt=bottom_center, measureDist=False)
+            dist = cv2.pointPolygonTest(contour=self._polygon, pt=bottom_center, measureDist=False)
 
-            if (dist >= 0) == self.inside:
+            if (dist >= 0) == self._inside:
                 filtered_objects.append(obj)
         context.detected_objects = filtered_objects
         return context

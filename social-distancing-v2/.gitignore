@@ -71,10 +71,10 @@ Thumbs.db
 *.dll
 *.exe
 
-/gui/widgets/people_walking.mp4
-
-*.mp4
+# Video
+# -----
+*mp4
 
 /venv/
 /SocialDistance.pyproject.user
-/networks/
+/models/

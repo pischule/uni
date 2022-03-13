@@ -6,8 +6,9 @@ from lib.mappers.core.frame_context import FrameContext
 class ClassFilter(ContextMapper[FrameContext]):
     def __init__(self, allowed_classes: Collection[str] = tuple()):
         super().__init__()
-        self.allowed_classes = allowed_classes
+        self._allowed_classes = allowed_classes
 
     def map(self, context: FrameContext) -> FrameContext:
-        context.detected_objects = [o for o in context.detected_objects if o.class_name in self.allowed_classes]
+        context.detected_objects = [o for o in context.detected_objects
+                                    if o.class_name in self._allowed_classes]
         return context

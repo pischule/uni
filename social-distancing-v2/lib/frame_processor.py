@@ -4,7 +4,7 @@ from typing import Iterable, ContextManager
 from lib.mappers.capture.fps_counter import FpsCounter
 from lib.mappers.capture.video_capture import VideoCapture
 from lib.mappers.core.frame_context import FrameContext
-from lib.mappers.detector.opencv_detector import PersonDetector
+from lib.mappers.detector.opencv_detector import OpenCVDetector
 from lib.mappers.display.video_display import VideoDisplay
 from lib.mappers.filter.class_filter import ClassFilter
 from lib.mappers.overlay.draw_boxes import DrawBoxes
@@ -19,7 +19,7 @@ class Networks(Enum):
 network = Networks.YOLOv3_TINY
 
 print('Loading network...')
-print(f'Network: {network.value}')
+print(f'Network : {network.value}')
 
 
 class FrameProcessor(Iterable[FrameContext], ContextManager):
@@ -35,8 +35,8 @@ class FrameProcessor(Iterable[FrameContext], ContextManager):
             # yolov3(),
             # AddValue('roi', [(10, 10), (640, 10), (640, 500), (10, 400)]),
             VideoCapture(),
-            PersonDetector(model_config=f'../networks/{network.value}/n.cfg',
-                           model_weights=f'../networks/{network.value}/n.weights',
+            OpenCVDetector(model_config=f'../models/{network.value}/n.cfg',
+                           model_weights=f'../models/{network.value}/n.weights',
                            conf_threshold=0.1, nms_threshold=0.1),
             # TensorflowDetector(src='image'),
             ClassFilter(allowed_classes={'person'}),

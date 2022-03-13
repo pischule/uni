@@ -8,9 +8,9 @@ from lib.mappers.util.helper_functions import polygon_to_numpy_array
 
 class DrawPolygon(ContextMapper[FrameContext]):
     def __init__(self, polygon: Polygon = (), color: Color = (255, 255, 0)):
-        self.color = color
-        self.polygon = polygon_to_numpy_array(polygon)
+        self._color = color
+        self._polygon = polygon_to_numpy_array(polygon)
 
     def map(self, context: FrameContext) -> FrameContext:
-        cv2.polylines(context.frame, [self.polygon], True, self.color)
+        cv2.polylines(context.frame, [self._polygon], True, self._color)
         return context
