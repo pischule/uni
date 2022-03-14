@@ -1,10 +1,16 @@
+import os
+
 from enum import Enum
 from typing import Iterable, ContextManager
+
+from cv2 import BackgroundSubtractor
 
 from lib.mappers.capture.fps_counter import FpsCounter
 from lib.mappers.capture.video_capture import VideoCapture
 from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.detector.opencv_detector import OpenCVDetector
+from lib.mappers.detector.tracker import SortTracker
+from lib.mappers.display.frame_scaler import FrameScaler
 from lib.mappers.display.video_display import VideoDisplay
 from lib.mappers.filter.class_filter import ClassFilter
 from lib.mappers.overlay.draw_boxes import DrawBoxes
@@ -34,17 +40,20 @@ class FrameProcessor(Iterable[FrameContext], ContextManager):
         self.pipeline = (
             # yolov3(),
             # AddValue('roi', [(10, 10), (640, 10), (640, 500), (10, 400)]),
-            VideoCapture(),
+            VideoCapture(0, limit_fps=False),
+            # VideoCapture(os.path.join('..', 'video', 'vid1.mp4'), limit_fps=False),
+            # FrameScaler((1280, 720)),
             OpenCVDetector(model_config=f'../models/{network.value}/n.cfg',
                            model_weights=f'../models/{network.value}/n.weights',
                            conf_threshold=0.1, nms_threshold=0.1),
-            # TensorflowDetector(src='image'),
             ClassFilter(allowed_classes={'person'}),
+            SortTracker(max_age=10, min_hits=3),
+            # BackgroundSubtractorDetector(),
             # DrawPolygon('roi'),
             # PolygonFilter(poly_key='roi', obj_key='objects'),
             FpsCounter(every=5),
             InfoOverlay(),
-            DrawBoxes(color=(255, 0, 0), thickness=2, label=True),
+            DrawBoxes(color=(0, 200, 0), thickness=2, label=True),
             VideoDisplay()
         )
         return self

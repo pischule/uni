@@ -15,7 +15,7 @@ coco_names = ('person', 'bicycle', 'car', 'motorbike', 'aeroplane', 'bus', 'trai
               'teddy bear', 'hair drier', 'toothbrush')
 
 
-class OpenCVDetector(ContextMapper[FrameContext]):
+class OpenCVDetector(ContextMapper):
 
     def __init__(self, model_config, model_weights, conf_threshold=0.6, nms_threshold=0.4):
         super().__init__()
@@ -34,6 +34,6 @@ class OpenCVDetector(ContextMapper[FrameContext]):
         objects = []
         for class_id, confidence, box in zip(class_ids, confidences, boxes):
             box_as_tuples = ((box[0], box[1]), (box[0] + box[2], box[1] + box[3]))
-            objects.append(DetectedObject(box_as_tuples, coco_names[class_id], confidence))
+            objects.append(DetectedObject(box_as_tuples, coco_names[class_id], confidence, 0))
         context.detected_objects = objects
         return context

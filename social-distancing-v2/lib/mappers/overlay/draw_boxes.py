@@ -6,17 +6,21 @@ from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.util.custom_types import Color
 
 
-class DrawBoxes(ContextMapper[FrameContext]):
-    def __init__(self, color: Color = (255, 0, 0), thickness=2, label=False):
+class DrawBoxes(ContextMapper):
+    def __init__(self, color: Color = (0, 255, 0), thickness=2, label=False, only_tracked=True):
         super().__init__()
         self._color = color
         self._thickness = thickness
         self._label = label
+        self._only_tracked = only_tracked
 
     def map(self, context: FrameContext):
         for obj in context.detected_objects:
+            if obj.track_id == 0 and self._only_tracked:
+                continue
+
             pt1, pt2 = obj.box
-            text = f"{obj.class_name} : {obj.confidence:.2f}"
+            text = f"{obj.track_id}"
 
             cv2.rectangle(img=context.frame, pt1=pt1, pt2=pt2,
                           color=self._color, thickness=self._thickness)

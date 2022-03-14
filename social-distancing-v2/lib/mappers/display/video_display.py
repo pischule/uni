@@ -5,7 +5,7 @@ from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.core.context_mapper import ContextMapper
 
 
-class VideoDisplay(ContextMapper[FrameContext]):
+class VideoDisplay(ContextMapper):
     def __init__(self, window_name: str = uuid.uuid4().hex):
         super().__init__()
         self._window_name = window_name

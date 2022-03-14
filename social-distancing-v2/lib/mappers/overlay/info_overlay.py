@@ -4,7 +4,7 @@ from lib.mappers.core.context_mapper import ContextMapper
 from lib.mappers.core.frame_context import FrameContext
 
 
-class InfoOverlay(ContextMapper[FrameContext]):
+class InfoOverlay(ContextMapper):
     def __init__(self, show_fps: bool = True):
         super().__init__()
         self._x = 10

@@ -3,7 +3,7 @@ from lib.mappers.core.context_mapper import ContextMapper
 from lib.mappers.core.frame_context import FrameContext
 
 
-class ClassFilter(ContextMapper[FrameContext]):
+class ClassFilter(ContextMapper):
     def __init__(self, allowed_classes: Collection[str] = tuple()):
         super().__init__()
         self._allowed_classes = allowed_classes

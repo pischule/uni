@@ -4,7 +4,7 @@ from lib.mappers.core.context_mapper import ContextMapper
 from lib.mappers.core.frame_context import FrameContext
 
 
-class FpsCounter(ContextMapper[FrameContext]):
+class FpsCounter(ContextMapper):
     def __init__(self, every: int = 5):
         super().__init__()
         self._prev_timestamp = time.time()
