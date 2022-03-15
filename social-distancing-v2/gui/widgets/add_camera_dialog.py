@@ -5,6 +5,7 @@ from gui.ui.add_camera_dialog import Ui_AddCameraDialog
 
 import cv2
 
+
 class AddCameraDialog(QDialog, Ui_AddCameraDialog):
     def __init__(self):
         super().__init__()
@@ -20,6 +21,7 @@ class AddCameraDialog(QDialog, Ui_AddCameraDialog):
         print(f'{self.address.text()}')
         try:
             cap = cv2.VideoCapture(self.address.text())
+            # cap = cv2.VideoCapture(0)
             if cap.isOpened():
                 ret, frame = cap.read()
                 if ret:

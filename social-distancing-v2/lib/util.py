@@ -16,7 +16,7 @@ def box_bottom_center_point(box: Box) -> Point:
     )
 
 
-def polygon_to_ndarray(polygon: Polygon) -> np.ndarray:
+def polygon_to_ndarray(polygon) -> np.ndarray:
     """
     Convert a polygon to a numpy array.
     :param polygon:
