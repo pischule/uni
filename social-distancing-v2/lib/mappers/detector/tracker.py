@@ -31,7 +31,6 @@ class SortTracker(ContextMapper):
         return [
             DetectedObject(
                 box=((o[0], o[1]), (o[2], o[3])),
-                class_name="person",
                 confidence=1.0,
                 track_id=o[4]
             ) for o in detections.astype(np.int32).tolist()

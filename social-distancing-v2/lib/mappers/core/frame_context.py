@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Mapping
 
 from lib.mappers.core.detected_object import DetectedObject
 
@@ -10,3 +10,5 @@ class FrameContext(object):
     frame_number: int = 0
     detected_objects: List[DetectedObject] = field(default_factory=list)
     fps: float = 0.0
+
+    distances: Mapping[int, float] = field(default_factory=dict)
