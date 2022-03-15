@@ -23,6 +23,7 @@ class PolygonDrawer(QtWidgets.QGraphicsView):
         return self._polygon_item
 
     def setPixmap(self, pixmap):
+        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
         self.pixmap_item.setPixmap(pixmap)
 
     def resizeEvent(self, event):
@@ -37,9 +38,38 @@ class PolygonDrawer(QtWidgets.QGraphicsView):
         poly.append(lp)
         self.polygon_item.setPolygon(poly)
 
+    def reset(self):
+        self.polygon_item.setPolygon(QtGui.QPolygonF())
+
+
+class ImageView(QtWidgets.QGraphicsView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        scene = QtWidgets.QGraphicsScene(self)
+        self.setScene(scene)
+
+        self._pixmap_item = QtWidgets.QGraphicsPixmapItem()
+        scene.addItem(self.pixmap_item)
+
+    @property
+    def pixmap_item(self):
+        return self._pixmap_item
+
+    @property
+    def polygon_item(self):
+        return self._polygon_item
+
+    def setPixmap(self, pixmap):
+        self.pixmap_item.setPixmap(pixmap)
+        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
+
+    def resizeEvent(self, event):
+        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
+        super().resizeEvent(event)
+
 
 class SquareDrawer(QtWidgets.QGraphicsView):
-    def __init__(self, parent=None, point_radius: int = 10):
+    def __init__(self, parent=None, point_radius: int = 10, line_width: int = 5):
         super().__init__(parent)
         scene = QtWidgets.QGraphicsScene(self)
         self.setScene(scene)
@@ -53,7 +83,7 @@ class SquareDrawer(QtWidgets.QGraphicsView):
             QtCore.QPoint(400, 400),
             QtCore.QPoint(400, 100)
         ], self.pixmap_item)
-        self.polygon_item.setPen(QtGui.QPen(QtCore.Qt.black, 5, QtCore.Qt.SolidLine))
+        self.polygon_item.setPen(QtGui.QPen(QtCore.Qt.black, line_width, QtCore.Qt.SolidLine))
         self.polygon_item.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.VerPattern))
         self._point_radius = point_radius
 
@@ -65,7 +95,7 @@ class SquareDrawer(QtWidgets.QGraphicsView):
         for point in self.polygon_item.polygon():
             item = QtWidgets.QGraphicsEllipseItem(point.x() - self._point_radius, point.y() - self._point_radius,
                                                   self._point_radius * 2, self._point_radius * 2, self._polygon_item)
-            item.setPen(QtGui.QPen(QtCore.Qt.black, 1, QtCore.Qt.SolidLine))
+            item.setPen(QtGui.QPen(QtCore.Qt.black, line_width, QtCore.Qt.SolidLine))
             item.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.SolidPattern))
             self._point_items.append(item)
 
@@ -78,6 +108,7 @@ class SquareDrawer(QtWidgets.QGraphicsView):
         return self._polygon_item
 
     def setPixmap(self, pixmap):
+        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
         self.pixmap_item.setPixmap(pixmap)
 
     def resizeEvent(self, event):
