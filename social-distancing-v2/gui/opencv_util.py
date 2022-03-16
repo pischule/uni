@@ -8,7 +8,7 @@ def get_frame(address):
         real_address = 0 if address == '0' else address
         cap = cv2.VideoCapture(real_address)
         if cap.isOpened():
-            for _ in range(10):
+            for _ in range(15):
                 cap.read()
             ret, frame = cap.read()
             if ret:
