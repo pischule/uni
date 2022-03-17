@@ -74,7 +74,7 @@ class Page2(QWizardPage):
         layout = QVBoxLayout()
         layout.addWidget(QLabel("Calibration pattern:"))
         self._frame = None
-        self._square_drawer = SquareDrawer(self, point_radius=10, line_width=2)
+        self._square_drawer = SquareDrawer(self, point_radius=5, line_width=2)
         self._square_drawer.polygonChanged.connect(self.polygon_changed)
         layout.addWidget(self._square_drawer)
 

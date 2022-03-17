@@ -74,6 +74,7 @@ Thumbs.db
 # Video
 # -----
 *mp4
+*avi
 
 /venv/
 /SocialDistance.pyproject.user
