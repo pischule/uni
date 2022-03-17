@@ -15,11 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
-    QFrame, QGraphicsView, QGridLayout, QHBoxLayout,
-    QLabel, QMainWindow, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox, QFrame,
+    QGraphicsView, QGridLayout, QHBoxLayout, QLabel,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -79,18 +78,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.cameraLine)
 
-        self.detectionCheckBox = QCheckBox(self.centralwidget)
-        self.detectionCheckBox.setObjectName(u"detectionCheckBox")
-
-        self.verticalLayout.addWidget(self.detectionCheckBox)
-
-        self.detectionLine = QFrame(self.centralwidget)
-        self.detectionLine.setObjectName(u"detectionLine")
-        self.detectionLine.setFrameShape(QFrame.HLine)
-        self.detectionLine.setFrameShadow(QFrame.Sunken)
-
-        self.verticalLayout.addWidget(self.detectionLine)
-
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.distanceLabel = QLabel(self.centralwidget)
@@ -120,7 +107,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 754, 24))
+        self.menubar.setGeometry(QRect(0, 0, 754, 21))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -135,7 +122,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.cameraLabel.setText(QCoreApplication.translate("MainWindow", u"Camera:", None))
         self.addCameraPushButton.setText(QCoreApplication.translate("MainWindow", u"+", None))
-        self.detectionCheckBox.setText(QCoreApplication.translate("MainWindow", u"Detection", None))
         self.distanceLabel.setText(QCoreApplication.translate("MainWindow", u"Distance", None))
         self.distanceSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" m", None))
     # retranslateUi

@@ -13,9 +13,10 @@ from lib.mappers.overlay.draw_boxes import DrawBoxes
 
 class CameraThread(QThread):
     changePixmap = Signal(QImage)
-    draw_boxes = DrawBoxes(color=(0, 200, 0), thickness=2, label=True)
+    draw_boxes = DrawBoxes(color=(0, 200, 0), thickness=2, label=False, only_tracked=False)
+    camera_mutex = QtCore.QMutex()
 
-    def __init__(self, parent: Optional[QtCore.QObject] = ..., source: Optional[Union[str, int]] = 0):
+    def __init__(self, parent: Optional[QtCore.QObject] = ..., source: Optional[Union[str, int]] = None):
         super(CameraThread, self).__init__(parent)
         self._continue_loop = False
         self._source = source
@@ -26,39 +27,64 @@ class CameraThread(QThread):
         self._last_pipeline_data = FrameContext()
         self._last_pipeline_data.detected_objects = []
 
+        self._delay = 0.01
+        self._skip_result = False
+
     def run(self):
         self._continue_loop = True
         while self._continue_loop:
             self.process_tick()
-            time.sleep(0.01)
+            time.sleep(self._delay)
 
     @Slot(FrameContext)
     def update_pipeline_result(self, result: FrameContext) -> None:
+        if self._skip_result:
+            self._skip_result = False
+            return
         self._last_pipeline_data = result
 
     def process_tick(self) -> None:
+        self.camera_mutex.lock()
         if self._cap is None:
+            self.camera_mutex.unlock()
             return
-
         ret, frame = self._cap.read()
+        self.camera_mutex.unlock()
         if not ret:
             return
-        self._pipeline_thread.pass_image(frame)
 
         # draw boxes
-        fc = FrameContext()
-        fc.frame = frame
-        fc.detected_objects = self._last_pipeline_data.detected_objects or []
-        fc = self.draw_boxes.map(fc)
+        # if self._show_detection:
+        self._pipeline_thread.pass_image(frame)
+        fc = self.draw_boxes.map(FrameContext.from_frame(frame, self._last_pipeline_data.detected_objects))
         self.changePixmap.emit(self._cv_to_qt_image(fc.frame))
 
+    def reset_pipeline(self):
+        self._last_pipeline_data.detected_objects = list()
+        self._last_pipeline_data.frame = None
+
     def update_video_source(self, source: str) -> None:
-        if self._source != source:
+        print('here')
+        if source == '0':
+            source = 0
+        if self._source == source:
             return
-        self._source = 0 if source == "0" else source
+        new_cap = cv2.VideoCapture(source)
+        if not new_cap.isOpened():
+            return
+        self.camera_mutex.lock()
         if self._cap is not None:
             self._cap.release()
-        self._cap = cv2.VideoCapture(self._source)
+        self._cap = new_cap
+        self._source = source
+        self._skip_result = True
+        self.camera_mutex.unlock()
+
+        fps = self._cap.get(cv2.CAP_PROP_FPS)
+        if fps > 0:
+            self._delay = 1 / fps
+        else:
+            self._delay = 0.01
 
     @staticmethod
     def _cv_to_qt_image(frame) -> QImage:

@@ -73,20 +73,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="detectionCheckBox">
-          <property name="text">
-           <string>Detection</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Line" name="detectionLine">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
            <widget class="QLabel" name="distanceLabel">
@@ -132,7 +118,7 @@
      <x>0</x>
      <y>0</y>
      <width>754</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

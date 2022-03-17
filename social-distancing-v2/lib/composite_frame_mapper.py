@@ -24,7 +24,7 @@ class FrameProcessor(GenericMapper[np.ndarray, np.ndarray]):
             model_config=f'/Users/maksim/Projects/SocialDistance/SocialDistance/models/{network.value}/n.cfg',
             model_weights=f'/Users/maksim/Projects/SocialDistance/SocialDistance/models/{network.value}/n.weights',
             conf_threshold=0.01, nms_threshold=0.01)
-        self._tracker = SortTracker(max_age=30, min_hits=10)
+        # self._tracker = SortTracker(max_age=30, min_hits=2)
         perspective_matrix = util.square_perspective_transform_matrix(
             util.point_to_tetragon((100, 100)),
             0.5
@@ -35,6 +35,6 @@ class FrameProcessor(GenericMapper[np.ndarray, np.ndarray]):
         context = FrameContext()
         context.frame = frame
         context = self._detector.map(context)
-        context = self._tracker.map(context)
+        # context = self._tracker.map(context)
         context = self._position_calculator.map(context)
         return context

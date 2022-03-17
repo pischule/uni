@@ -1,5 +1,4 @@
 import sys
-from typing import Optional, Union
 
 import PySide6
 from PySide6 import QtWidgets, QtCore
@@ -19,12 +18,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camThread.start()
         self.setupUi(self)
 
-        # self.addCameraPushButton.clicked.connect(self.add_camera)
-        # self.detectionEnabledCheckBox.stateChanged.connect(self.toggle_detection())
-
         self._cameras = [
-            ('webcam', 0),
-            ('people_walking.mp4', 'people_walking.mp4'),
+            ("0",),
+            ('../../video/vid0.mp4',),
+            ('../../video/vid1.mp4',),
         ]
 
         self._scene = QtWidgets.QGraphicsScene(self)
@@ -33,12 +30,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
         self.cameraGraphicsView.setScene(self._scene)
 
-        for k, v in self._cameras:
-            self.cameraComboBox.addItem(k)
+        for k in self._cameras:
+            self.cameraComboBox.addItem(k[0])
 
         self.addCameraPushButton.clicked.connect(self.add_camera)
 
-        self.camThread.update_video_source(self._cameras[0][1])
+        self.camThread.update_video_source(self._cameras[0][0])
+        self.cameraComboBox.currentIndexChanged.connect(self.switch_camera)
 
     def resizeEvent(self, event: PySide6.QtGui.QResizeEvent) -> None:
         self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
@@ -62,6 +60,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print('square_length:', square_length)
         print('square_polygon:', square_polygon)
         print('roi_polygon:', roi_polygon)
+
+        self._cameras.append((address, address))
+        self.cameraComboBox.addItem(address)
+
+    @QtCore.Slot(int)
+    def switch_camera(self, index: int):
+        self.camThread.update_video_source(self._cameras[index][0])
 
     def closeEvent(self, event: PySide6.QtGui.QCloseEvent) -> None:
         self.camThread.quit()

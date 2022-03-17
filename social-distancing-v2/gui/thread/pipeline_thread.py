@@ -31,7 +31,7 @@ class PipelineThread(QThread):
                 self.frameProcessed.emit(result)
                 self._image = None
             else:
-                time.sleep(0.1)
+                time.sleep(0.01)
 
     def process_image(self, image: np.ndarray) -> FrameContext:
         return self._frame_processor.map(image)

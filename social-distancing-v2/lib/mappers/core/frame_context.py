@@ -14,3 +14,10 @@ class FrameContext(object):
     fps: float = 0.0
 
     distances: Mapping[int, float] = field(default_factory=dict)
+
+    @staticmethod
+    def from_frame(frame: np.ndarray, detected_objects: List[DetectedObject]) -> "FrameContext":
+        fc = FrameContext()
+        fc.frame = frame.copy()
+        fc.detected_objects = detected_objects.copy()
+        return fc
