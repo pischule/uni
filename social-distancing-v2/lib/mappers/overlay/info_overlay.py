@@ -18,8 +18,8 @@ class InfoOverlay(ContextMapper):
         if self._show_fps:
             self._draw_field(context.frame, 'fps', f'{context.fps:.2f}')
 
-        self._draw_field(context.frame, 'current', f'{len(context.detected_objects)}')
-        self._draw_field(context.frame, 'total', f'{max([o.track_id for o in context.detected_objects])}')
+        # self._draw_field(context.frame, 'current', f'{len(context.detected_objects)}')
+        # self._draw_field(context.frame, 'total', f'{max([o.track_id for o in context.detected_objects])}')
 
         return context
 

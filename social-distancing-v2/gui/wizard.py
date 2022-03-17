@@ -80,11 +80,11 @@ class Page2(QWizardPage):
 
         self.setLayout(layout)
         self.registerField("square_polygon", self._square_drawer)
-        self.setField("square_polygon", self._square_drawer.polygon)
 
     def initializePage(self) -> None:
         preview: QPixmap = self.field("preview")
         self._square_drawer.setPixmap(preview)
+        self.setField("square_polygon", self._square_drawer.polygon)
 
     @Slot(QtGui.QPolygonF)
     def polygon_changed(self, polygon):
@@ -131,13 +131,13 @@ class Page4(QWizardPage):
         self.setLayout(layout)
 
         self.registerField("roi_polygon", self._roi_edit)
-        self.setField("roi_polygon", self._roi_edit.polygon)
 
     def _reset_button_clicked(self):
         self._roi_edit.reset()
 
     def initializePage(self) -> None:
         self._roi_edit.setPixmap(self.field("preview"))
+        self.setField("roi_polygon", self._roi_edit.polygon)
 
     @Slot(QtGui.QPolygonF)
     def polygon_changed(self, polygon):
@@ -145,8 +145,8 @@ class Page4(QWizardPage):
 
 
 class CameraAddWizard(QWizard):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         self.addPage(Page1(self))
         self.addPage(Page2(self))
@@ -155,8 +155,6 @@ class CameraAddWizard(QWizard):
 
         self.setWizardStyle(QWizard.ModernStyle)
         self.setWindowTitle("Add a new camera")
-
-
 
 
 if __name__ == "__main__":

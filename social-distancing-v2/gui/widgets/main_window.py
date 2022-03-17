@@ -2,68 +2,70 @@ import sys
 from typing import Optional, Union
 
 import PySide6
-from PySide6.QtCore import Slot
-from PySide6.QtGui import QImage, QPixmap
+from PySide6 import QtWidgets, QtCore
+from PySide6.QtGui import QImage
 from PySide6.QtWidgets import QMainWindow, QApplication
 
-from gui.ui.main_window import Ui_MainWindow
-from gui.widgets.add_camera_dialog import AddCameraDialog
-from gui.widgets.camera_thread import CameraThread
+from gui.thread.camera_thread import CameraThread
+from gui.pyui.main_window import Ui_MainWindow
+from gui.wizard import CameraAddWizard
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.camThread = None
-        self.setWindowTitle('Main Window')
+        self.camThread = CameraThread(self)
+        self.camThread.changePixmap.connect(self.set_image)
+        self.camThread.start()
         self.setupUi(self)
 
-        self.addCameraButton.clicked.connect(self.add_camera)
-        self.detectionEnabledCheckBox.stateChanged.connect(self.toggle_detection())
+        # self.addCameraPushButton.clicked.connect(self.add_camera)
+        # self.detectionEnabledCheckBox.stateChanged.connect(self.toggle_detection())
 
-        self.cameras = [
+        self._cameras = [
             ('webcam', 0),
             ('people_walking.mp4', 'people_walking.mp4'),
         ]
-        for k, v in self.cameras:
-            self.camerasComboBox.addItem(k)
 
-        self.camerasComboBox.currentIndexChanged.connect(self.camera_changed)
+        self._scene = QtWidgets.QGraphicsScene(self)
+        self._pixmap_item = QtWidgets.QGraphicsPixmapItem()
+        self._scene.addItem(self._pixmap_item)
+        self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
+        self.cameraGraphicsView.setScene(self._scene)
 
-        self.init_camera()
+        for k, v in self._cameras:
+            self.cameraComboBox.addItem(k)
 
-    def camera_changed(self, index: int):
-        self.terminate_camera()
-        self.init_camera(self.cameras[index][1])
+        self.addCameraPushButton.clicked.connect(self.add_camera)
 
-    def init_camera(self, source: Optional[Union[str, int]] = 0):
-        self.camThread = CameraThread(self, source)
-        self.camThread.changePixmap.connect(self.set_image)
-        self.camThread.start()
-        
-    def terminate_camera(self):
-        if self.camThread:
-            self.camThread.quit()
-            self.camThread.wait()
-            self.camThread = None
+        self.camThread.update_video_source(self._cameras[0][1])
+
+    def resizeEvent(self, event: PySide6.QtGui.QResizeEvent) -> None:
+        self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
+        super().resizeEvent(event)
+
+    def set_image(self, image: QImage):
+        pixmap = PySide6.QtGui.QPixmap.fromImage(image)
+        self._pixmap_item.setPixmap(pixmap)
+        self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
 
     def add_camera(self):
-        print('add camera')
-        dlg = AddCameraDialog()
-        dlg.exec()
+        dlg = CameraAddWizard(self)
+        if not dlg.exec():
+            return
+        address = dlg.field("address")
+        square_length = dlg.field("square_length")
+        square_polygon = dlg.field("square_polygon")
+        roi_polygon = dlg.field("roi_polygon")
 
-    @Slot(QImage)
-    def set_image(self, image):
-        self.videoLabel.setPixmap(QPixmap.fromImage(image))
-
-    def toggle_detection(self):
-        if self.detectionEnabledCheckBox.isChecked():
-            print('detection enabled')
-        else:
-            print('detection disabled')
+        print('address:', address)
+        print('square_length:', square_length)
+        print('square_polygon:', square_polygon)
+        print('roi_polygon:', roi_polygon)
 
     def closeEvent(self, event: PySide6.QtGui.QCloseEvent) -> None:
-        self.terminate_camera()
+        self.camThread.quit()
+        self.camThread.wait()
 
 
 if __name__ == '__main__':
