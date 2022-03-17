@@ -2,18 +2,18 @@ import time
 from typing import Optional, Union
 
 import cv2
-import numpy as np
-from PySide6 import QtCore, QtGui
+from PySide6 import QtCore
 from PySide6.QtCore import Signal, QThread, Slot
-from PySide6.QtGui import QImage, Qt
-from numpy import ndarray
+from PySide6.QtGui import QImage
 
 from gui.thread.pipeline_thread import PipelineThread
-from lib.composite_frame_mapper import FrameProcessor
+from lib.mappers.core.frame_context import FrameContext
+from lib.mappers.overlay.draw_boxes import DrawBoxes
 
 
 class CameraThread(QThread):
     changePixmap = Signal(QImage)
+    draw_boxes = DrawBoxes(color=(0, 200, 0), thickness=2, label=True)
 
     def __init__(self, parent: Optional[QtCore.QObject] = ..., source: Optional[Union[str, int]] = 0):
         super(CameraThread, self).__init__(parent)
@@ -23,18 +23,18 @@ class CameraThread(QThread):
         self._pipeline_thread = PipelineThread(self)
         self._pipeline_thread.frameProcessed.connect(self.update_pipeline_result)
         self._pipeline_thread.start()
-        self._last_pipeline_data = None
+        self._last_pipeline_data = FrameContext()
+        self._last_pipeline_data.detected_objects = []
 
     def run(self):
         self._continue_loop = True
         while self._continue_loop:
             self.process_tick()
+            time.sleep(0.01)
 
-    @Slot(QtGui.QImage)
-    def update_pipeline_result(self, result: ndarray) -> None:
-        print('called')
+    @Slot(FrameContext)
+    def update_pipeline_result(self, result: FrameContext) -> None:
         self._last_pipeline_data = result
-        print('pipeline result is done')
 
     def process_tick(self) -> None:
         if self._cap is None:
@@ -44,7 +44,13 @@ class CameraThread(QThread):
         if not ret:
             return
         self._pipeline_thread.pass_image(frame)
-        self.changePixmap.emit(self._cv_to_qt_image(frame))
+
+        # draw boxes
+        fc = FrameContext()
+        fc.frame = frame
+        fc.detected_objects = self._last_pipeline_data.detected_objects or []
+        fc = self.draw_boxes.map(fc)
+        self.changePixmap.emit(self._cv_to_qt_image(fc.frame))
 
     def update_video_source(self, source: str) -> None:
         if self._source != source:

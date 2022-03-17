@@ -7,7 +7,6 @@ from lib.mappers.capture.video_capture import VideoCapture
 from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.detector.opencv_detector import OpenCVDetector
 from lib.mappers.detector.tracker import SortTracker
-from lib.mappers.display.frame_scaler import FrameScaler
 from lib.mappers.display.video_display import VideoDisplay
 from lib.mappers.overlay.draw_boxes import DrawBoxes
 from lib.mappers.overlay.info_overlay import InfoOverlay

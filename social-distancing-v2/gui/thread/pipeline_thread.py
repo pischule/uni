@@ -5,14 +5,18 @@ import PySide6
 import numpy as np
 from PySide6.QtCore import QThread, Slot
 
+from lib.composite_frame_mapper import FrameProcessor
+from lib.mappers.core.frame_context import FrameContext
+
 
 class PipelineThread(QThread):
-    frameProcessed = PySide6.QtCore.Signal(np.ndarray)
+    frameProcessed = PySide6.QtCore.Signal(FrameContext)
 
     def __init__(self, parent=None):
         super(PipelineThread, self).__init__(parent)
         self._image: Optional[np.ndarray] = None
         self._keep_running = False
+        self._frame_processor = FrameProcessor()
 
     @Slot(np.ndarray)
     def pass_image(self, image):
@@ -29,9 +33,8 @@ class PipelineThread(QThread):
             else:
                 time.sleep(0.1)
 
-    def process_image(self, image: np.ndarray) -> np.ndarray:
-        print("Processing image...")
-        return image
+    def process_image(self, image: np.ndarray) -> FrameContext:
+        return self._frame_processor.map(image)
 
     def quit(self) -> None:
         self._keep_running = False
