@@ -2,7 +2,7 @@ from PySide6 import QtGui
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWizard, QWizardPage, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton, QSpinBox, \
-    QDoubleSpinBox
+    QDoubleSpinBox, QGridLayout
 from gui.opencv_util import *
 from gui.drawer2 import SquareDrawer, ImageView, PolygonDrawer
 
@@ -97,8 +97,8 @@ class Page3(QWizardPage):
         self.setTitle("Square side length")
         self.setSubTitle("Input square side length")
 
-        layout = QVBoxLayout()
-        layout.addWidget(QLabel("Square side length:"))
+        layout = QGridLayout(self)
+        layout.addWidget(QLabel("Square side length:"), 0, 0)
 
         self._length_edit = QDoubleSpinBox()
         self._length_edit.setRange(0.1, 100)
@@ -106,10 +106,21 @@ class Page3(QWizardPage):
         self._length_edit.setValue(1)
         self._length_edit.setSuffix(" m")
 
-        layout.addWidget(self._length_edit)
+        layout.addWidget(self._length_edit, 0, 1)
+
+        layout.addWidget(QLabel("Camera name:"), 1, 0)
+
+        self._camera_name_edit = QLineEdit()
+        self._camera_name_edit.setText(self.field("address"))
+
+        layout.addWidget(self._camera_name_edit, 1, 1)
 
         self.setLayout(layout)
         self.registerField("square_length", self._length_edit, "value", "valueChanged")
+        self.registerField("camera_name", self._camera_name_edit)
+
+    def initializePage(self) -> None:
+        self._camera_name_edit.setText(self.field("address"))
 
 
 class Page4(QWizardPage):
@@ -167,11 +178,13 @@ if __name__ == "__main__":
     app.exec()
 
     address = demo.field("address")
+    camera_name = demo.field("camera_name")
     square_length = demo.field("square_length")
     square_polygon = demo.field("square_polygon")
     roi_polygon = demo.field("roi_polygon")
 
     print('address:', address)
+    print('camera_name:', camera_name)
     print('square_length:', square_length)
     print('square_polygon:', square_polygon)
     print('roi_polygon:', roi_polygon)

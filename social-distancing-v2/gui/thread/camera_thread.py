@@ -1,3 +1,4 @@
+import os
 import time
 from typing import Optional, Union
 
@@ -18,6 +19,7 @@ class CameraThread(QThread):
 
     def __init__(self, parent: Optional[QtCore.QObject] = ..., source: Optional[Union[str, int]] = None):
         super(CameraThread, self).__init__(parent)
+        os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;udp"
         self._continue_loop = False
         self._source = source
         self._cap = None
@@ -64,7 +66,6 @@ class CameraThread(QThread):
         self._last_pipeline_data.frame = None
 
     def update_video_source(self, source: str) -> None:
-        print('here')
         if source == '0':
             source = 0
         if self._source == source:

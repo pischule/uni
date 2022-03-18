@@ -4,7 +4,6 @@ import sys
 
 import PySide6
 from PySide6 import QtWidgets, QtCore
-from PySide6.QtCore import QPoint
 from PySide6.QtGui import QImage, QPolygon
 from PySide6.QtWidgets import QMainWindow, QApplication
 
@@ -26,19 +25,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         with open('cameras2.json', 'r') as f:
             self._cameras = [Camera(**c) for c in json.load(f)]
 
-        # self._cameras = [
-        #     # ("0",),
-        #     # ('../../video/vid0.mp4',),
-        #     # ('../../video/vid1.mp4',),
-        #     # ('../../video/vid2.avi',),
-        #     Camera.from_wizard("../../video/vid2.avi", 100,
-        #                        [(-132.49023090586147, 173.9253996447602), (-47.57371225577265, 206.66429840142095),
-        #                         (-2.0461811722912966, 162.15985790408524), (-74.1740674955595, 145.27886323268206)],
-        #                        [(-172.38336347197108, 69.7866184448463), (-86.45207956600362, 48.95479204339964),
-        #                         (13.01989150090416, 55.725135623869804), (12.499095840867994, 146.86437613019893),
-        #                         (-172.38336347197108, 147.90596745027125)])
-        # ]
-
         self.cameraComboBox.currentIndexChanged.connect(self.switch_camera)
         self.addCameraPushButton.clicked.connect(self.add_camera)
 
@@ -50,9 +36,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cameraGraphicsView.setScene(self._scene)
 
         for k in self._cameras:
-            self.cameraComboBox.addItem(k.address)
-
-        self.addCameraPushButton.clicked.connect(self.add_camera)
+            self.cameraComboBox.addItem(k.name)
 
         self.camThread.update_video_source(self._cameras[0].address)
         self.cameraComboBox.currentIndexChanged.connect(self.switch_camera)
@@ -74,18 +58,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         square_length = dlg.field("square_length")
         square_polygon: QPolygon = dlg.field("square_polygon")
         roi_polygon: QPolygon = dlg.field("roi_polygon")
-        print('address:', address)
-        print('square_length:', square_length)
-        print('square_polygon:', [p.toTuple() for p in square_polygon.toList()])
-        print('roi_polygon:', [p.toTuple() for p in roi_polygon.toList()])
+        camera_name: str = dlg.field("camera_name")
 
         self._cameras.append(Camera.from_wizard(
+            camera_name,
             address,
             float(square_length),
             [p.toTuple() for p in square_polygon.toList()],
             [p.toTuple() for p in roi_polygon.toList()]
         ))
-        self.cameraComboBox.addItem(address)
+        self.cameraComboBox.addItem(camera_name)
+        self.switch_camera(self.cameraComboBox.count() - 1)
 
     @QtCore.Slot(int)
     def switch_camera(self, index: int):

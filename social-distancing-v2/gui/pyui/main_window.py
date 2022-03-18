@@ -45,6 +45,9 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(1)
         sizePolicy1.setHeightForWidth(self.cameraGraphicsView.sizePolicy().hasHeightForWidth())
         self.cameraGraphicsView.setSizePolicy(sizePolicy1)
+        self.cameraGraphicsView.setAcceptDrops(False)
+        self.cameraGraphicsView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.cameraGraphicsView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.horizontalLayout.addWidget(self.cameraGraphicsView)
 
@@ -107,7 +110,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 754, 21))
+        self.menubar.setGeometry(QRect(0, 0, 754, 24))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")

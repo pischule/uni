@@ -23,8 +23,8 @@ class FrameProcessor(GenericMapper[np.ndarray, np.ndarray]):
         self._detector = OpenCVDetector(
             model_config=f'/Users/maksim/Projects/SocialDistance/SocialDistance/models/{network.value}/n.cfg',
             model_weights=f'/Users/maksim/Projects/SocialDistance/SocialDistance/models/{network.value}/n.weights',
-            conf_threshold=0.01, nms_threshold=0.01)
-        # self._tracker = SortTracker(max_age=30, min_hits=2)
+            conf_threshold=0.6, nms_threshold=0.4)
+        # self._tracker = SortTracker(max_age=2, min_hits=3)
         perspective_matrix = util.square_perspective_transform_matrix(
             util.point_to_tetragon((100, 100)),
             0.5
