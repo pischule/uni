@@ -79,3 +79,4 @@ Thumbs.db
 /venv/
 /SocialDistance.pyproject.user
 /models/
+/data.json
