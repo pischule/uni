@@ -90,6 +90,7 @@ class Ui_MainWindow(object):
 
         self.distanceSpinBox = QDoubleSpinBox(self.centralwidget)
         self.distanceSpinBox.setObjectName(u"distanceSpinBox")
+        self.distanceSpinBox.setSingleStep(0.200000000000000)
         self.distanceSpinBox.setValue(2.000000000000000)
 
         self.horizontalLayout_4.addWidget(self.distanceSpinBox)
@@ -110,7 +111,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 754, 24))
+        self.menubar.setGeometry(QRect(0, 0, 754, 21))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")

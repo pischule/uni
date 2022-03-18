@@ -1,15 +1,19 @@
+import numpy as np
 from PySide6 import QtGui
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QPointF
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QWizard, QWizardPage, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton, QSpinBox, \
+from PySide6.QtWidgets import QWizard, QWizardPage, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton, \
     QDoubleSpinBox, QGridLayout
-from gui.opencv_util import *
-from gui.drawer2 import SquareDrawer, ImageView, PolygonDrawer
+
+from gui.util import *
+from gui.widgets.drawers import SquareDrawer, ImageView, PolygonDrawer
+from lib.mappers.core.frame_context import FrameContext
+from lib.mappers.display.frame_scaler import FrameScaler
 
 
-class Page1(QWizardPage):
+class CamaraUrlPage(QWizardPage):
     def __init__(self, parent=None):
-        super(Page1, self).__init__(parent)
+        super(CamaraUrlPage, self).__init__(parent)
 
         self.setTitle("Connect to camera")
         self.setSubTitle("Input camera address")
@@ -37,6 +41,8 @@ class Page1(QWizardPage):
 
         self.registerField("address", self._address_edit)
         self.registerField("preview", self._preview_view)
+        self.registerField("frame", self)
+        self._scaler = FrameScaler(new_size=(1280, 720))
 
     def _address_changed(self, text):
         self._connect_button.setEnabled(len(text) > 0)
@@ -50,11 +56,13 @@ class Page1(QWizardPage):
             self._address_edit.setStyleSheet("background-color: red")
             return
 
+        self._frame = self._scaler.map(FrameContext.from_frame(self._frame, list())).frame
+
         qt_image = cv_to_qimage(self._frame)
-        self._preview_view.setPixmap(QPixmap.fromImage(qt_image))
-        self._preview_view.resize(600, 300)
+        self._preview_view.pixmap = QPixmap.fromImage(qt_image)
         self.update()
         self.setField("preview", self._preview_view.pixmap)
+        self.setField("frame", self._frame)
         self._is_complete = True
         self.completeChanged.emit()
 
@@ -65,16 +73,16 @@ class Page1(QWizardPage):
         return self._is_complete
 
 
-class Page2(QWizardPage):
+class SquareEditPage(QWizardPage):
     def __init__(self, parent=None):
-        super(Page2, self).__init__(parent)
+        super(SquareEditPage, self).__init__(parent)
         self.setTitle("Calibrate camera")
         self.setSubTitle("Select a calibration pattern")
 
         layout = QVBoxLayout()
         layout.addWidget(QLabel("Calibration pattern:"))
         self._frame = None
-        self._square_drawer = SquareDrawer(self, point_radius=5, line_width=2)
+        self._square_drawer = SquareDrawer(self, point_radius=5, line_width=1)
         self._square_drawer.polygonChanged.connect(self.polygon_changed)
         layout.addWidget(self._square_drawer)
 
@@ -83,7 +91,7 @@ class Page2(QWizardPage):
 
     def initializePage(self) -> None:
         preview: QPixmap = self.field("preview")
-        self._square_drawer.setPixmap(preview)
+        self._square_drawer.pixmap = preview
         self.setField("square_polygon", self._square_drawer.polygon)
 
     @Slot(QtGui.QPolygonF)
@@ -91,9 +99,9 @@ class Page2(QWizardPage):
         self.setField("square_polygon", polygon)
 
 
-class Page3(QWizardPage):
+class DetailsPage(QWizardPage):
     def __init__(self, parent=None):
-        super(Page3, self).__init__(parent)
+        super(DetailsPage, self).__init__(parent)
         self.setTitle("Square side length")
         self.setSubTitle("Input square side length")
 
@@ -123,15 +131,15 @@ class Page3(QWizardPage):
         self._camera_name_edit.setText(self.field("address"))
 
 
-class Page4(QWizardPage):
+class RoiPage(QWizardPage):
     def __init__(self, parent=None):
-        super(Page4, self).__init__(parent)
+        super(RoiPage, self).__init__(parent)
         self.setTitle("ROI")
         self.setSubTitle("Select ROI")
 
         layout = QVBoxLayout()
 
-        self._roi_edit = PolygonDrawer(self, line_width=2)
+        self._roi_edit = PolygonDrawer(self, line_width=1)
         self._roi_edit.polygonChanged.connect(self.polygon_changed)
         layout.addWidget(self._roi_edit)
 
@@ -147,22 +155,107 @@ class Page4(QWizardPage):
         self._roi_edit.reset()
 
     def initializePage(self) -> None:
-        self._roi_edit.setPixmap(self.field("preview"))
+        pixmap: QPixmap = self.field("preview")
+        self._roi_edit.pixmap = pixmap
+        self._roi_edit.polygon = QPolygonF(
+            [
+                QPointF(0, 0),
+                QPointF(pixmap.width(), 0),
+                QPointF(pixmap.width(), pixmap.height()),
+                QPointF(0, pixmap.height()),
+            ]
+        )
+
         self.setField("roi_polygon", self._roi_edit.polygon)
+
 
     @Slot(QtGui.QPolygonF)
     def polygon_changed(self, polygon):
         self.setField("roi_polygon", polygon)
 
 
+class PreviewSettingsPage(QWizardPage):
+    def __init__(self, parent=None):
+        super(PreviewSettingsPage, self).__init__(parent)
+        self.setTitle("Preview settings")
+        self.setSubTitle("Select preview settings")
+
+        layout = QGridLayout()
+
+        layout.addWidget(QLabel("Scale:"), 0, 0)
+        self._scale_edit = QDoubleSpinBox()
+        self._scale_edit.setRange(0.1, 1000)
+        self._scale_edit.setSingleStep(20)
+        self._scale_edit.setValue(100)
+        self._scale_edit.valueChanged.connect(lambda v: self._update_preview())
+
+        layout.addWidget(self._scale_edit, 0, 1)
+
+        layout.addWidget(QLabel("X offset:"), 1, 0)
+        self._x_offset_edit = QDoubleSpinBox()
+        self._x_offset_edit.setRange(-1000, 1000)
+        self._x_offset_edit.setSingleStep(100)
+        self._x_offset_edit.setValue(0)
+        self._x_offset_edit.valueChanged.connect(lambda v: self._update_preview())
+
+        layout.addWidget(self._x_offset_edit, 1, 1)
+
+        layout.addWidget(QLabel("Y offset:"), 2, 0)
+        self._y_offset_edit = QDoubleSpinBox()
+        self._y_offset_edit.setRange(-1000, 1000)
+        self._y_offset_edit.setSingleStep(100)
+        self._y_offset_edit.setValue(0)
+        self._y_offset_edit.valueChanged.connect(lambda v: self._update_preview())
+
+        layout.addWidget(self._y_offset_edit, 2, 1)
+        self._preview = ImageView(self)
+        layout.addWidget(self._preview, 3, 0, 1, 2)
+
+        self.setLayout(layout)
+
+        self.registerField("preview_transform", self)
+
+    def initializePage(self) -> None:
+        self._update_preview()
+
+    def _update_preview(self):
+        self._preview.pixmap = self.field("preview")
+
+        # q_input_square: QPolygonF = self.field("square_polygon")
+        s = self._scale_edit.value()
+        x = self._x_offset_edit.value()
+        y = self._y_offset_edit.value()
+        print("s:", s, "x:", x, "y:", y)
+        output_square = np.asarray(
+            [
+                (x, y),
+                (x, y + s),
+                (x + s, y + s),
+                (x + s, y),
+            ], dtype=np.float32
+        )
+        square_pts = np.asarray(qpolygonf_to_list(self.field("square_polygon")), np.float32)
+        m = cv2.getPerspectiveTransform(square_pts, output_square)
+        self.setField("preview_transform", m)
+        warped = cv2.warpPerspective(
+            self.field("frame"),
+            m,
+            (500, 500),
+
+        )
+        q_image = cv_to_qimage(warped)
+        self._preview.pixmap = QPixmap.fromImage(q_image)
+
+
 class CameraAddWizard(QWizard):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.addPage(Page1(self))
-        self.addPage(Page2(self))
-        self.addPage(Page3(self))
-        self.addPage(Page4(self))
+        self.addPage(CamaraUrlPage(self))
+        self.addPage(SquareEditPage(self))
+        self.addPage(PreviewSettingsPage(self))
+        self.addPage(RoiPage(self))
+        self.addPage(DetailsPage(self))
 
         self.setWizardStyle(QWizard.ModernStyle)
         self.setWindowTitle("Add a new camera")
@@ -182,11 +275,11 @@ if __name__ == "__main__":
     square_length = demo.field("square_length")
     square_polygon = demo.field("square_polygon")
     roi_polygon = demo.field("roi_polygon")
+    preview_transform = demo.field("preview_transform")
 
     print('address:', address)
     print('camera_name:', camera_name)
     print('square_length:', square_length)
     print('square_polygon:', square_polygon)
     print('roi_polygon:', roi_polygon)
-
-    sys.exit(0)
+    print('preview_transform:', preview_transform)

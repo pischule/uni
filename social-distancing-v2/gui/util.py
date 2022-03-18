@@ -1,5 +1,5 @@
 import cv2
-from PySide6.QtGui import QImage, Qt
+from PySide6.QtGui import QImage, Qt, QPolygonF
 
 
 def get_frame(address):
@@ -24,3 +24,6 @@ def cv_to_qimage(frame) -> QImage:
     h, w, ch = rgb_image.shape
     bytes_per_line = ch * w
     return QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
+
+def qpolygonf_to_list(qpolygon: QPolygonF) -> list:
+    return [p.toTuple() for p in qpolygon]

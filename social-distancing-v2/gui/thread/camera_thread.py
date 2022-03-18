@@ -1,3 +1,4 @@
+import json
 import os
 import time
 from typing import Optional, Union
@@ -7,14 +8,18 @@ from PySide6 import QtCore
 from PySide6.QtCore import Signal, QThread, Slot
 from PySide6.QtGui import QImage
 
+from gui.model.camera_model import Camera
 from gui.thread.pipeline_thread import PipelineThread
+from lib.mappers.calculators.safe_unsafe_classifier import SafeUnsafeClassifier
 from lib.mappers.core.frame_context import FrameContext
-from lib.mappers.overlay.draw_boxes import DrawBoxes
+from lib.mappers.display.frame_scaler import FrameScaler
+from lib.mappers.overlay.safe_unsafe_draw_boxes import DrawBoxes
+from lib.mappers.overlay.draw_polygon import DrawPolygon
 
 
 class CameraThread(QThread):
     changePixmap = Signal(QImage)
-    draw_boxes = DrawBoxes(color=(0, 200, 0), thickness=2, label=False, only_tracked=False)
+    _draw_boxes = DrawBoxes(thickness=2, label=False, only_tracked=False)
     camera_mutex = QtCore.QMutex()
 
     def __init__(self, parent: Optional[QtCore.QObject] = ..., source: Optional[Union[str, int]] = None):
@@ -29,8 +34,14 @@ class CameraThread(QThread):
         self._last_pipeline_data = FrameContext()
         self._last_pipeline_data.detected_objects = []
 
+        self._scaler = FrameScaler(new_size=(1280, 720))
+        self.safety_classifier = SafeUnsafeClassifier()
+
         self._delay = 0.01
         self._skip_result = False
+
+        self._polygon_drawer = DrawPolygon(None, (0, 0, 255), alpha=0.2, inverted=True)
+        self.data = []
 
     def run(self):
         self._continue_loop = True
@@ -45,6 +56,13 @@ class CameraThread(QThread):
             return
         self._last_pipeline_data = result
 
+        self.data += [{
+            "time": time.time(),
+            "detected_objects": [
+                obj.to_dict() for obj in result.detected_objects
+            ]
+        }]
+
     def process_tick(self) -> None:
         self.camera_mutex.lock()
         if self._cap is None:
@@ -57,15 +75,21 @@ class CameraThread(QThread):
 
         # draw boxes
         # if self._show_detection:
-        self._pipeline_thread.pass_image(frame)
-        fc = self.draw_boxes.map(FrameContext.from_frame(frame, self._last_pipeline_data.detected_objects))
-        self.changePixmap.emit(self._cv_to_qt_image(fc.frame))
+        context = FrameContext.from_frame(frame)
+        context = self._scaler.map(context)
+        self._pipeline_thread.pass_image(context.frame)
+        context = self._polygon_drawer.map(context)
+        context = FrameContext.from_frame(context.frame, self._last_pipeline_data.detected_objects)
+        context = self.safety_classifier.map(context)
+        context = self._draw_boxes.map(context)
+        self.changePixmap.emit(self._cv_to_qt_image(context.frame))
 
     def reset_pipeline(self):
         self._last_pipeline_data.detected_objects = list()
         self._last_pipeline_data.frame = None
 
-    def update_video_source(self, source: str) -> None:
+    def update_video_source(self, cam: Camera) -> None:
+        source = cam.address
         if source == '0':
             source = 0
         if self._source == source:
@@ -87,6 +111,10 @@ class CameraThread(QThread):
         else:
             self._delay = 0.01
 
+        self._polygon_drawer.polygon = cam.roi
+        self._pipeline_thread.roi_filter.polygon = cam.roi
+        self.data = []
+
     @staticmethod
     def _cv_to_qt_image(frame) -> QImage:
         rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -100,4 +128,8 @@ class CameraThread(QThread):
             self._cap.release()
         self._pipeline_thread.quit()
         self._pipeline_thread.wait()
+
+        with open("data.json", "w") as f:
+            json.dump(self.data, f)
+
         super().quit()

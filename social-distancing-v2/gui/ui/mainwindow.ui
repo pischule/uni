@@ -95,6 +95,9 @@
             <property name="suffix">
              <string> m</string>
             </property>
+            <property name="singleStep">
+             <double>0.200000000000000</double>
+            </property>
             <property name="value">
              <double>2.000000000000000</double>
             </property>
@@ -127,7 +130,7 @@
      <x>0</x>
      <y>0</y>
      <width>754</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

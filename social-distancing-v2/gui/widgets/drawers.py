@@ -1,40 +1,47 @@
 from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import QPointF
+from PySide6.QtGui import QPixmap
 
 
 class PolygonDrawer(QtWidgets.QGraphicsView):
     polygonChanged = QtCore.Signal(QtGui.QPolygonF)
 
-    def __init__(self, parent=None, line_width=2):
+    def __init__(self, parent=None, line_width=1):
         super().__init__(parent)
         scene = QtWidgets.QGraphicsScene(self)
         self.setScene(scene)
 
         self._pixmap_item = QtWidgets.QGraphicsPixmapItem()
-        scene.addItem(self.pixmap_item)
+        scene.addItem(self._pixmap_item)
 
-        self._polygon_item = QtWidgets.QGraphicsPolygonItem(self.pixmap_item)
+        self._polygon_item = QtWidgets.QGraphicsPolygonItem(self._pixmap_item)
         self._polygon_item.setPen(QtGui.QPen(QtCore.Qt.black, line_width, QtCore.Qt.SolidLine))
         self._polygon_item.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.VerPattern))
 
     @property
-    def pixmap_item(self):
-        return self._pixmap_item
+    def pixmap(self):
+        return self._pixmap_item.pixmap()
 
-    def setPixmap(self, pixmap):
+    @pixmap.setter
+    def pixmap(self, pixmap):
+        self._pixmap_item.setPixmap(pixmap)
         self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
-        self.pixmap_item.setPixmap(pixmap)
 
     def resizeEvent(self, event):
-        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
+        self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
         super().resizeEvent(event)
 
     @property
     def polygon(self) -> QtGui.QPolygonF:
-        return QtGui.QPolygonF([self.mapToScene(p.toPoint()) for p in self._polygon_item.polygon()])
+        return self._polygon_item.polygon()
+
+    @polygon.setter
+    def polygon(self, polygon: QtGui.QPolygonF):
+        self._polygon_item.setPolygon(polygon)
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
-        sp = self.mapToScene(event.position().toPoint())
-        lp = self.pixmap_item.mapFromScene(sp)
+        sp: QPointF = self.mapToScene(event.position().toPoint())
+        lp: QPointF = self._pixmap_item.mapFromScene(sp)
 
         poly = self._polygon_item.polygon()
         poly.append(lp)
@@ -54,29 +61,21 @@ class ImageView(QtWidgets.QGraphicsView):
         self.setScene(scene)
 
         self._pixmap_item = QtWidgets.QGraphicsPixmapItem()
-        scene.addItem(self.pixmap_item)
-
-    @property
-    def pixmap_item(self):
-        return self._pixmap_item
-
-    @property
-    def polygon_item(self):
-        return self._polygon_item
-
-    def setPixmap(self, pixmap):
-        self.pixmap_item.setPixmap(pixmap)
-        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
-        self.pixmapChanged.emit(pixmap)
+        scene.addItem(self._pixmap_item)
 
     def resizeEvent(self, event):
-        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
+        self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
         super().resizeEvent(event)
 
     @property
     def pixmap(self) -> QtGui.QPixmap:
-        print('pixmap')
-        return self.pixmap_item.pixmap()
+        return self._pixmap_item.pixmap()
+
+    @pixmap.setter
+    def pixmap(self, pixmap):
+        self._pixmap_item.setPixmap(pixmap)
+        self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
+        self.pixmapChanged.emit(pixmap)
 
 
 class SquareDrawer(QtWidgets.QGraphicsView):
@@ -88,14 +87,14 @@ class SquareDrawer(QtWidgets.QGraphicsView):
         self.setScene(scene)
 
         self._pixmap_item = QtWidgets.QGraphicsPixmapItem()
-        scene.addItem(self.pixmap_item)
+        scene.addItem(self._pixmap_item)
 
         self._polygon_item = QtWidgets.QGraphicsPolygonItem([
             QtCore.QPoint(100, 100),
             QtCore.QPoint(100, 400),
             QtCore.QPoint(400, 400),
             QtCore.QPoint(400, 100)
-        ], self.pixmap_item)
+        ], self._pixmap_item)
         self._polygon_item.setPen(QtGui.QPen(QtCore.Qt.black, line_width, QtCore.Qt.SolidLine))
         self._polygon_item.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.VerPattern))
         self._point_radius = point_radius
@@ -117,19 +116,20 @@ class SquareDrawer(QtWidgets.QGraphicsView):
         return QtGui.QPolygonF([self.mapToScene(p.toPoint()) for p in self._polygon_item.polygon()])
 
     @property
-    def pixmap_item(self):
-        return self._pixmap_item
-
-    @property
     def polygon_item(self):
         return self._polygon_item
 
-    def setPixmap(self, pixmap):
-        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
-        self.pixmap_item.setPixmap(pixmap)
+    @property
+    def pixmap(self) -> QPixmap:
+        return self._pixmap_item.pixmap()
+
+    @pixmap.setter
+    def pixmap(self, pixmap: QPixmap) -> None:
+        self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
+        self._pixmap_item.setPixmap(pixmap)
 
     def resizeEvent(self, event):
-        self.fitInView(self.pixmap_item, QtCore.Qt.KeepAspectRatio)
+        self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
         super().resizeEvent(event)
 
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent) -> None:
@@ -138,7 +138,7 @@ class SquareDrawer(QtWidgets.QGraphicsView):
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         sp = self.mapToScene(event.position().toPoint())
-        lp = self.pixmap_item.mapFromScene(sp)
+        lp = self._pixmap_item.mapFromScene(sp)
 
         for i, point in enumerate(self._point_items):
             if point.contains(lp):
@@ -150,7 +150,7 @@ class SquareDrawer(QtWidgets.QGraphicsView):
             return
 
         sp = self.mapToScene(event.position().toPoint())
-        lp = self.pixmap_item.mapFromScene(sp)
+        lp = self._pixmap_item.mapFromScene(sp)
 
         selected_point = self._point_items[self._selected_point_index]
 

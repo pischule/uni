@@ -10,7 +10,7 @@ from PySide6.QtWidgets import QMainWindow, QApplication
 from gui.model.camera_model import Camera
 from gui.thread.camera_thread import CameraThread
 from gui.pyui.main_window import Ui_MainWindow
-from gui.wizard import CameraAddWizard
+from gui.widgets.wizard import CameraAddWizard
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -24,6 +24,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._cameras = []
         with open('cameras2.json', 'r') as f:
             self._cameras = [Camera(**c) for c in json.load(f)]
+        if not self._cameras:
+            self.add_camera()
 
         self.cameraComboBox.currentIndexChanged.connect(self.switch_camera)
         self.addCameraPushButton.clicked.connect(self.add_camera)
@@ -38,8 +40,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for k in self._cameras:
             self.cameraComboBox.addItem(k.name)
 
-        self.camThread.update_video_source(self._cameras[0].address)
+        self.camThread.update_video_source(self._cameras[0])
         self.cameraComboBox.currentIndexChanged.connect(self.switch_camera)
+
+        self.distanceSpinBox.valueChanged.connect(self.set_distance)
+        self.set_distance(self.distanceSpinBox.value())
 
     def resizeEvent(self, event: PySide6.QtGui.QResizeEvent) -> None:
         self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
@@ -72,7 +77,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @QtCore.Slot(int)
     def switch_camera(self, index: int):
-        self.camThread.update_video_source(self._cameras[index].address)
+        self.camThread.update_video_source(self._cameras[index])
 
     def closeEvent(self, event: PySide6.QtGui.QCloseEvent) -> None:
         self.camThread.quit()
@@ -80,6 +85,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         with open('cameras2.json', 'w') as f:
             json.dump([dataclasses.asdict(c) for c in self._cameras], f)
+
+    def set_distance(self, distance: float):
+        self.camThread.safety_classifier.safe_distance = float(distance)
 
 
 if __name__ == '__main__':

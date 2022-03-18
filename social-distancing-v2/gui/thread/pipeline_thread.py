@@ -7,6 +7,7 @@ from PySide6.QtCore import QThread, Slot
 
 from lib.composite_frame_mapper import FrameProcessor
 from lib.mappers.core.frame_context import FrameContext
+from lib.mappers.filter.polygon_filter import PolygonFilter
 
 
 class PipelineThread(QThread):
@@ -17,11 +18,12 @@ class PipelineThread(QThread):
         self._image: Optional[np.ndarray] = None
         self._keep_running = False
         self._frame_processor = FrameProcessor()
+        self.roi_filter = PolygonFilter()
 
     @Slot(np.ndarray)
     def pass_image(self, image):
         if self._image is None:
-            self._image = image
+            self._image = image.copy()
 
     def run(self):
         self._keep_running = True
@@ -34,7 +36,9 @@ class PipelineThread(QThread):
                 time.sleep(0.01)
 
     def process_image(self, image: np.ndarray) -> FrameContext:
-        return self._frame_processor.map(image)
+        result = self._frame_processor.map(image)
+        result = self.roi_filter.map(result)
+        return result
 
     def quit(self) -> None:
         self._keep_running = False

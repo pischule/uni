@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 from lib.mappers.core.context_mapper import ContextMapper
 
@@ -7,12 +8,16 @@ from lib.mappers.util.custom_types import Polygon, Point
 from lib.util import polygon_to_ndarray
 
 
-class PolygonFilter(ContextMapper[FrameContext]):
-    def __init__(self, polygon: Polygon, inside: bool = True):
+class PolygonFilter(ContextMapper):
+    def __init__(self, polygon=None, inside: bool = True):
+        if polygon is None:
+            polygon = []
         self._inside: bool = inside
-        self._polygon = polygon_to_ndarray(polygon)
+        self.polygon = polygon
 
     def map(self, context: FrameContext) -> FrameContext:
+        if (self.polygon is None) or (len(self.polygon) == 0):
+            return context
 
         filtered_objects = []
         for obj in context.detected_objects:
@@ -24,3 +29,11 @@ class PolygonFilter(ContextMapper[FrameContext]):
                 filtered_objects.append(obj)
         context.detected_objects = filtered_objects
         return context
+
+    @property
+    def polygon(self):
+        return self._polygon
+
+    @polygon.setter
+    def polygon(self, polygon: list):
+        self._polygon = np.asarray(polygon, np.int32).reshape((-1, 1, 2))

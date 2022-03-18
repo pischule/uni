@@ -19,5 +19,4 @@ class AbsolutePositionsCalculator(ContextMapper):
         absolute_points = cv2.perspectiveTransform(np_points, self._transform_matrix)[0]
         for o, p in zip(context.detected_objects, absolute_points):
             o.absolute_position = tuple(p)
-            print(f"{o.track_id} absolute position: {o.absolute_position}")
         return context

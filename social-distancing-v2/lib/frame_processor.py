@@ -24,9 +24,6 @@ class Networks(Enum):
 
 network = Networks.YOLOv3_TINY
 
-print('Loading network...')
-print(f'Network : {network.value}')
-
 
 class FrameProcessor(Iterable[FrameContext], ContextManager):
 
