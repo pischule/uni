@@ -20,5 +20,4 @@ class SafeUnsafeClassifier(ContextMapper):
                     if distance < self.safe_distance:
                         p1.safe = False
                         p2.safe = False
-                        print(f'{i:2d} <--> {j:2d} = {distance:.2f}')
         return context

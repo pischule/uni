@@ -1,5 +1,6 @@
 import dataclasses
 import json
+import os
 import sys
 
 import PySide6
@@ -22,8 +23,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self._cameras = []
-        with open('cameras2.json', 'r') as f:
-            self._cameras = [Camera(**c) for c in json.load(f)]
+        try:
+            with open(os.path.join('conf', 'cameras.json'), 'r') as f:
+                self._cameras = [Camera(**c) for c in json.load(f)]
+        except FileNotFoundError:
+            pass
         if not self._cameras:
             self.add_camera()
 
@@ -83,11 +87,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camThread.quit()
         self.camThread.wait()
 
-        with open('cameras2.json', 'w') as f:
+        with open(os.path.join('conf', 'cameras.json'), 'w') as f:
             json.dump([dataclasses.asdict(c) for c in self._cameras], f)
 
     def set_distance(self, distance: float):
-        self.camThread.safety_classifier.safe_distance = float(distance)
+        self.camThread.set_safe_distance(float(distance))
 
 
 if __name__ == '__main__':

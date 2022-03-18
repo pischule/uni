@@ -9,7 +9,7 @@ from PySide6.QtCore import Signal, QThread, Slot
 from PySide6.QtGui import QImage
 
 from gui.model.camera_model import Camera
-from gui.thread.pipeline_thread import PipelineThread
+from gui.thread.pipeline_thread import PipelineThread, Networks
 from lib.mappers.calculators.safe_unsafe_classifier import SafeUnsafeClassifier
 from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.display.frame_scaler import FrameScaler
@@ -28,14 +28,13 @@ class CameraThread(QThread):
         self._continue_loop = False
         self._source = source
         self._cap = None
-        self._pipeline_thread = PipelineThread(self)
+        self._pipeline_thread = PipelineThread(self, Networks.YOLOv3)
         self._pipeline_thread.frameProcessed.connect(self.update_pipeline_result)
         self._pipeline_thread.start()
         self._last_pipeline_data = FrameContext()
         self._last_pipeline_data.detected_objects = []
 
         self._scaler = FrameScaler(new_size=(1280, 720))
-        self.safety_classifier = SafeUnsafeClassifier()
 
         self._delay = 0.01
         self._skip_result = False
@@ -79,8 +78,7 @@ class CameraThread(QThread):
         context = self._scaler.map(context)
         self._pipeline_thread.pass_image(context.frame)
         context = self._polygon_drawer.map(context)
-        context = FrameContext.from_frame(context.frame, self._last_pipeline_data.detected_objects)
-        context = self.safety_classifier.map(context)
+        context.detected_objects = self._last_pipeline_data.detected_objects
         context = self._draw_boxes.map(context)
         self.changePixmap.emit(self._cv_to_qt_image(context.frame))
 
@@ -92,8 +90,6 @@ class CameraThread(QThread):
         source = cam.address
         if source == '0':
             source = 0
-        if self._source == source:
-            return
         new_cap = cv2.VideoCapture(source)
         if not new_cap.isOpened():
             return
@@ -114,6 +110,7 @@ class CameraThread(QThread):
         self._polygon_drawer.polygon = cam.roi
         self._pipeline_thread.roi_filter.polygon = cam.roi
         self.data = []
+        self._pipeline_thread.position_calculator.transform_matrix = cam.transform_matrix
 
     @staticmethod
     def _cv_to_qt_image(frame) -> QImage:
@@ -121,6 +118,9 @@ class CameraThread(QThread):
         h, w, ch = rgb_image.shape
         bytes_per_line = ch * w
         return QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
+
+    def set_safe_distance(self, distance: float):
+        self._pipeline_thread.safety_classifier.safe_distance = distance
 
     def quit(self) -> None:
         self._continue_loop = False
