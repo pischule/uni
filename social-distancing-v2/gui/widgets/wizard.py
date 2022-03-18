@@ -253,7 +253,7 @@ class CameraAddWizard(QWizard):
 
         self.addPage(CamaraUrlPage(self))
         self.addPage(SquareEditPage(self))
-        self.addPage(PreviewSettingsPage(self))
+        # self.addPage(PreviewSettingsPage(self))
         self.addPage(RoiPage(self))
         self.addPage(DetailsPage(self))
 

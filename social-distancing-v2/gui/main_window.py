@@ -29,7 +29,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except FileNotFoundError:
             pass
         if not self._cameras:
-            self.add_camera()
+            if not self.add_camera():
+                self.camThread.quit()
+                self.camThread.wait()
+                sys.exit(1)
 
         self.cameraComboBox.currentIndexChanged.connect(self.switch_camera)
         self.addCameraPushButton.clicked.connect(self.add_camera)
@@ -59,10 +62,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._pixmap_item.setPixmap(pixmap)
         self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
 
-    def add_camera(self):
+    def add_camera(self) -> bool:
         dlg = CameraAddWizard(self)
         if not dlg.exec():
-            return
+            return False
         address = dlg.field("address")
         square_length = dlg.field("square_length")
         square_polygon: QPolygon = dlg.field("square_polygon")
@@ -78,6 +81,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ))
         self.cameraComboBox.addItem(camera_name)
         self.switch_camera(self.cameraComboBox.count() - 1)
+        return True
 
     @QtCore.Slot(int)
     def switch_camera(self, index: int):
