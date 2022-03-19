@@ -13,6 +13,7 @@ from gui.camera_model import Camera
 from gui.pyui.main_window import Ui_MainWindow
 from gui.thread.camera_thread import CameraThread
 from gui.widgets.wizard.wizard import CameraAddWizard
+from lib.mappers.core.frame_context import FrameContext
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -45,6 +46,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.distanceSpinBox.valueChanged.connect(self.set_distance)
         self.set_distance(self.distanceSpinBox.value())
+        self.set_stats_label(0, 0)
+        self.camThread.dataChange.connect(self.data_changed)
 
     def resizeEvent(self, event: PySide6.QtGui.QResizeEvent) -> None:
         self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
@@ -109,3 +112,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         fname = f"{'_'.join(self.cameraComboBox.currentText().split())}-{int(time.time())}.json"
         QFileDialog.saveFileContent(bytes(data, 'utf-8'), fname)
+
+    def data_changed(self, context: FrameContext):
+        total = len(context.detected_objects)
+        safe = len([o for o in context.detected_objects if o.safe])
+        self.set_stats_label(safe, total - safe)
+
+    def set_stats_label(self, safe_count: int, unsafe_count: int):
+        text = f'Safe: {safe_count}\nUnsafe: {unsafe_count}\nTotal: {safe_count + unsafe_count}'
+        self.statisticsBodyLabel.setText(text)

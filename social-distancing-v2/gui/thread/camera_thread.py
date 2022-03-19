@@ -18,6 +18,7 @@ from lib.mappers.overlay.draw_polygon import DrawPolygon
 
 class CameraThread(QThread):
     changePixmap = Signal(QImage)
+    dataChange = Signal(FrameContext)
     _draw_boxes = DrawBoxes(thickness=2, label=False, only_tracked=False)
     camera_mutex = QtCore.QMutex()
 
@@ -53,6 +54,7 @@ class CameraThread(QThread):
             self._skip_result = False
             return
         self._last_pipeline_data = result
+        self.dataChange.emit(result)
 
         self.data += [{
             "time": time.time(),

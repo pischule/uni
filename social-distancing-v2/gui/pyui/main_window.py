@@ -93,6 +93,23 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.distanceSpinBox)
 
+        self.line = QFrame(self.centralwidget)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.HLine)
+        self.line.setFrameShadow(QFrame.Sunken)
+
+        self.verticalLayout.addWidget(self.line)
+
+        self.label = QLabel(self.centralwidget)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout.addWidget(self.label)
+
+        self.statisticsBodyLabel = QLabel(self.centralwidget)
+        self.statisticsBodyLabel.setObjectName(u"statisticsBodyLabel")
+
+        self.verticalLayout.addWidget(self.statisticsBodyLabel)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -128,6 +145,8 @@ class Ui_MainWindow(object):
         self.addCameraPushButton.setText(QCoreApplication.translate("MainWindow", u"+", None))
         self.distanceLabel.setText(QCoreApplication.translate("MainWindow", u"Safe distance:", None))
         self.distanceSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" m", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Statistics:", None))
+        self.statisticsBodyLabel.setText("")
         self.saveDataPushButton.setText(QCoreApplication.translate("MainWindow", u"Save data", None))
     # retranslateUi
 
