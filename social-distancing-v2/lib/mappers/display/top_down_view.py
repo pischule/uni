@@ -1,8 +1,6 @@
-import numpy as np
+import cv2
 
 from lib.mappers.core.context_mapper import ContextMapper
-
-import cv2
 
 
 class TopDownView(ContextMapper):

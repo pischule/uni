@@ -3,9 +3,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-import urllib.request
-
-from gui.main_window import MainWindow
+from gui.widgets.main_window import MainWindow
 from util import download_file
 
 

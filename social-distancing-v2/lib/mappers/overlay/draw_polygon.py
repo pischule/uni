@@ -17,17 +17,17 @@ class DrawPolygon(ContextMapper):
         self._inverted = inverted
 
     def map(self, context: FrameContext) -> FrameContext:
-        if not self._inverted:
-            # frame = cv2.polylines(context.frame.copy(), [self.polygon], True, self._color, 2)
-            frame = cv2.fillPoly(context.frame.copy(), [self.polygon], self._color, lineType=cv2.LINE_AA)
-            context.frame = cv2.addWeighted(context.frame, 1 - self._alpha, frame, self._alpha, 0)
-        else:
+        if self._inverted:
             img_red = np.zeros_like(context.frame)
             img_red[:, :, -1] = 255
             mask = np.full_like(context.frame, (1, 1, 1), dtype=np.float32)
             mask = cv2.fillPoly(mask, [self.polygon], (0, 0, 0), lineType=cv2.LINE_AA)
             result = cv2.add(context.frame * (1 - mask), img_red * mask).astype(np.uint8)
             context.frame = cv2.addWeighted(context.frame, 1 - self._alpha, result, self._alpha, 0)
+        else:
+            # frame = cv2.polylines(context.frame.copy(), [self.polygon], True, self._color, 2)
+            frame = cv2.fillPoly(context.frame.copy(), [self.polygon], self._color, lineType=cv2.LINE_AA)
+            context.frame = cv2.addWeighted(context.frame, 1 - self._alpha, frame, self._alpha, 0)
         return context
 
     @property

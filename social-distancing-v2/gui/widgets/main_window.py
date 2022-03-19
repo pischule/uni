@@ -12,7 +12,7 @@ from PySide6.QtWidgets import QMainWindow, QFileDialog
 from gui.camera_model import Camera
 from gui.pyui.main_window import Ui_MainWindow
 from gui.thread.camera_thread import CameraThread
-from gui.widgets.wizard import CameraAddWizard
+from gui.widgets.wizard.wizard import CameraAddWizard
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):

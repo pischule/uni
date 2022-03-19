@@ -52,7 +52,7 @@ class PolygonDrawer(QtWidgets.QGraphicsView):
         self._polygon_item.setPolygon(QtGui.QPolygonF())
 
 
-class ImageView(QtWidgets.QGraphicsView):
+class ImageDrawer(QtWidgets.QGraphicsView):
     pixmapChanged = QtCore.Signal(QtGui.QPixmap)
 
     def __init__(self, parent=None):
@@ -162,22 +162,11 @@ class SquareDrawer(QtWidgets.QGraphicsView):
                                self._point_radius * 2, self._point_radius * 2)
 
 
-class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        view = SquareDrawer()
-        self.setCentralWidget(view)
-
-        view.setPixmap(QtGui.QPixmap("img.jpg"))
-
-        self.resize(640, 480)
-
-
 if __name__ == "__main__":
-    import sys
-
-    app = QtWidgets.QApplication(sys.argv)
-    w = MainWindow()
-    w.show()
-    sys.exit(app.exec())
+    app = QtWidgets.QApplication()
+    window = QtWidgets.QMainWindow()
+    window.setWindowTitle("Polygon Editor")
+    window.resize(800, 600)
+    window.setCentralWidget(PolygonDrawer(window))
+    window.show()
+    app.exec()

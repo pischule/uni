@@ -5,7 +5,6 @@ from lib.mappers.core.context_mapper import ContextMapper
 
 from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.util.custom_types import Polygon, Point
-from lib.util import polygon_to_ndarray
 
 
 class PolygonFilter(ContextMapper):
