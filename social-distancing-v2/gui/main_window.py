@@ -2,7 +2,7 @@ import dataclasses
 import json
 import os
 import sys
-from datetime import datetime
+import time
 
 import PySide6
 from PySide6 import QtWidgets, QtCore, QtGui
@@ -107,5 +107,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         data = json.dumps(self.camThread.data)
         if not data:
             return
-        fname = f"{self.cameraComboBox.currentText()}-{datetime.now().isoformat()}.json"
+        fname = f"{'_'.join(self.cameraComboBox.currentText().split())}-{int(time.time())}.json"
         QFileDialog.saveFileContent(bytes(data, 'utf-8'), fname)
