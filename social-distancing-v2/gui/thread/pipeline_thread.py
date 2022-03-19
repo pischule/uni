@@ -15,8 +15,8 @@ from lib.mappers.filter.polygon_filter import PolygonFilter
 
 
 class Networks(Enum):
-    YOLOv3 = 'yolo3'
-    YOLOv3_TINY = 'yolo3_tiny'
+    YOLOv3 = 'yolov3'
+    YOLOv3_TINY = 'yolov3-tiny'
     # SSD_MOBILENET = 'ssd_mobilenet'
 
 
@@ -29,8 +29,8 @@ class PipelineThread(QThread):
         self._keep_running = False
         # self._frame_processor = FrameProcessor()
         self.detector = OpenCVDetector(
-            model_config=os.path.join('models', network.value, 'n.cfg'),
-            model_weights=os.path.join('models', network.value, 'n.weights'),
+            model_config=os.path.join('models', network.value + '.cfg'),
+            model_weights=os.path.join('models', network.value + '.weights'),
             conf_threshold=0.6, nms_threshold=0.4)
         self.roi_filter = PolygonFilter()
         self.position_calculator = AbsolutePositionsCalculator()

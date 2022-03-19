@@ -81,26 +81,26 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.cameraLine)
 
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.distanceLabel = QLabel(self.centralwidget)
         self.distanceLabel.setObjectName(u"distanceLabel")
 
-        self.horizontalLayout_4.addWidget(self.distanceLabel)
+        self.verticalLayout.addWidget(self.distanceLabel)
 
         self.distanceSpinBox = QDoubleSpinBox(self.centralwidget)
         self.distanceSpinBox.setObjectName(u"distanceSpinBox")
         self.distanceSpinBox.setSingleStep(0.200000000000000)
         self.distanceSpinBox.setValue(2.000000000000000)
 
-        self.horizontalLayout_4.addWidget(self.distanceSpinBox)
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.verticalLayout.addWidget(self.distanceSpinBox)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.saveDataPushButton = QPushButton(self.centralwidget)
+        self.saveDataPushButton.setObjectName(u"saveDataPushButton")
+
+        self.verticalLayout.addWidget(self.saveDataPushButton)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -111,7 +111,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 754, 21))
+        self.menubar.setGeometry(QRect(0, 0, 754, 24))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -123,10 +123,11 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Social Distance Monitoring Tool", None))
         self.cameraLabel.setText(QCoreApplication.translate("MainWindow", u"Camera:", None))
         self.addCameraPushButton.setText(QCoreApplication.translate("MainWindow", u"+", None))
-        self.distanceLabel.setText(QCoreApplication.translate("MainWindow", u"Distance", None))
+        self.distanceLabel.setText(QCoreApplication.translate("MainWindow", u"Safe distance:", None))
         self.distanceSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" m", None))
+        self.saveDataPushButton.setText(QCoreApplication.translate("MainWindow", u"Save data", None))
     # retranslateUi
 

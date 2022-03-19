@@ -1,7 +1,13 @@
-from PySide6.QtGui import QImage
+import os
+import urllib.request
 
 
-def open_image_to_qimage(cvImg):
-    height, width, channel = cvImg.shape
-    bytes_per_line = 3 * width
-    return QImage(cvImg.data, width, height, bytes_per_line, QImage.Format_RGB888)
+def download_file(url, filename):
+    if os.path.exists(filename):
+        print("File already exists: {}".format(filename))
+        return
+    print("Downloading {} to {}".format(url, filename))
+    opener = urllib.request.build_opener()
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    urllib.request.install_opener(opener)
+    urllib.request.urlretrieve(url, filename)

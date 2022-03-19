@@ -8,9 +8,8 @@ from PySide6 import QtCore
 from PySide6.QtCore import Signal, QThread, Slot
 from PySide6.QtGui import QImage
 
-from gui.model.camera_model import Camera
+from gui.camera_model import Camera
 from gui.thread.pipeline_thread import PipelineThread, Networks
-from lib.mappers.calculators.safe_unsafe_classifier import SafeUnsafeClassifier
 from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.display.frame_scaler import FrameScaler
 from lib.mappers.overlay.safe_unsafe_draw_boxes import DrawBoxes
@@ -128,8 +127,5 @@ class CameraThread(QThread):
             self._cap.release()
         self._pipeline_thread.quit()
         self._pipeline_thread.wait()
-
-        with open("data.json", "w") as f:
-            json.dump(self.data, f)
 
         super().quit()

@@ -2,15 +2,16 @@ import dataclasses
 import json
 import os
 import sys
+from datetime import datetime
 
 import PySide6
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtGui import QImage, QPolygon
-from PySide6.QtWidgets import QMainWindow, QApplication
+from PySide6.QtWidgets import QMainWindow, QFileDialog
 
-from gui.model.camera_model import Camera
-from gui.thread.camera_thread import CameraThread
+from gui.camera_model import Camera
 from gui.pyui.main_window import Ui_MainWindow
+from gui.thread.camera_thread import CameraThread
 from gui.widgets.wizard import CameraAddWizard
 
 
@@ -22,20 +23,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camThread.start()
         self.setupUi(self)
 
-        self._cameras = []
-        try:
-            with open(os.path.join('conf', 'cameras.json'), 'r') as f:
-                self._cameras = [Camera(**c) for c in json.load(f)]
-        except FileNotFoundError:
-            pass
-        if not self._cameras:
-            if not self.add_camera():
-                self.camThread.quit()
-                self.camThread.wait()
-                sys.exit(1)
+        self._load_cameras()
 
         self.cameraComboBox.currentIndexChanged.connect(self.switch_camera)
         self.addCameraPushButton.clicked.connect(self.add_camera)
+
+        self.saveDataPushButton.clicked.connect(self.save_data)
 
         self._scene = QtWidgets.QGraphicsScene(self)
 
@@ -97,10 +90,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_distance(self, distance: float):
         self.camThread.set_safe_distance(float(distance))
 
+    def _load_cameras(self):
+        self._cameras = []
+        try:
+            with open(os.path.join('conf', 'cameras.json'), 'r') as f:
+                self._cameras = [Camera(**c) for c in json.load(f)]
+        except FileNotFoundError:
+            pass
+        if not self._cameras:
+            if not self.add_camera():
+                self.camThread.quit()
+                self.camThread.wait()
+                sys.exit(1)
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-
-    window = MainWindow()
-    window.show()
-    app.exec()
+    def save_data(self):
+        data = json.dumps(self.camThread.data)
+        if not data:
+            return
+        fname = f"{self.cameraComboBox.currentText()}-{datetime.now().isoformat()}.json"
+        QFileDialog.saveFileContent(bytes(data, 'utf-8'), fname)
