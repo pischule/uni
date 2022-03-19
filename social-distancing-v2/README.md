@@ -2,8 +2,7 @@
 
 <img width="866" alt="image" src="https://user-images.githubusercontent.com/41614960/159116451-00faf7b9-8a99-458c-9d81-080f9d274bce.png">
 
-
-[![Social Distancing v2 App Demo](https://yt-embed.herokuapp.com/embed?v=Czs4a9fHq8E)](https://www.youtube.com/watch?v=Czs4a9fHq8E "Social Distancing v2 App Demo")
+[![Social Distancing v2 App Demo](https://user-images.githubusercontent.com/41614960/159116972-32a332e6-3101-4175-b1b3-85aea39e6f61.png)](https://www.youtube.com/watch?v=Czs4a9fHq8E "Social Distancing v2 App Demo")
 
 
 Это приложение преднозначено для контроля социальной дистанции. 
