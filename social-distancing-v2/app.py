@@ -1,10 +1,21 @@
 import os.path
 import sys
+import urllib
 
 from PySide6.QtWidgets import QApplication
 
 from gui.widgets.main_window import MainWindow
-from util import download_file
+
+
+def download_file(url, filename):
+    if os.path.exists(filename):
+        print("File already exists: {}".format(filename))
+        return
+    print("Downloading {} to {}".format(url, filename))
+    opener = urllib.request.build_opener()
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    urllib.request.install_opener(opener)
+    urllib.request.urlretrieve(url, filename)
 
 
 def download_large_files():
