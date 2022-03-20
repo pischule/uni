@@ -18,5 +18,5 @@
 
 - [YOLOv3](https://pjreddie.com/darknet/yolo/)
 - [OpenCV](https://opencv.org/)
-- [Qt6](https://www.qt.io/product/qt6)
+- [Qt 6](https://www.qt.io/product/qt6)
 <!-- - [SORT](https://github.com/abewley/sort) -->
