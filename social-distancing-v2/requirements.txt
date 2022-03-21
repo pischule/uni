@@ -1,4 +1,8 @@
+altgraph==0.17.2
+macholib==1.16
 numpy==1.22.3
 opencv-python==4.5.5.64
+pyinstaller==4.10
+pyinstaller-hooks-contrib==2022.2
 PySide6==6.2.4
 shiboken6==6.2.4

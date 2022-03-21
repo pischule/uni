@@ -21,9 +21,7 @@ def download_file(url, filename):
 def download_large_files():
     nextcloud_folder = "https://nextcloud.pischulenok.xyz/s/iTpNXgwZbfEA4Ws/download?path=&files="
     files = [
-        ('video', 'vid0.mp4'),
         ('video', 'vid1.mp4'),
-        ('video', 'vid2.avi'),
         ('models', 'yolov3.weights'),
         ('models', 'yolov3-tiny.weights'),
     ]
@@ -32,6 +30,7 @@ def download_large_files():
 
 
 def main():
+    # if getattr(sys, 'frozen', False):
     download_large_files()
     app = QApplication(sys.argv)
     window = MainWindow()

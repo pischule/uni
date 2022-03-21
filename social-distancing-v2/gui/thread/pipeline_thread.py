@@ -17,7 +17,6 @@ from lib.mappers.filter.polygon_filter import PolygonFilter
 class Networks(Enum):
     YOLOv3 = 'yolov3'
     YOLOv3_TINY = 'yolov3-tiny'
-    # SSD_MOBILENET = 'ssd_mobilenet'
 
 
 class PipelineThread(QThread):

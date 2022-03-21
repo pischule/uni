@@ -88,7 +88,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camThread.wait()
 
         with open(os.path.join('conf', 'cameras.json'), 'w') as f:
-            json.dump([dataclasses.asdict(c) for c in self._cameras], f)
+            json.dump([dataclasses.asdict(c) for c in self._cameras], f, indent=2, sort_keys=True)
 
     def set_distance(self, distance: float):
         self.camThread.set_safe_distance(float(distance))

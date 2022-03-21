@@ -80,3 +80,7 @@ Thumbs.db
 /SocialDistance.pyproject.user
 /models/*.weights
 /data.json
+
+
+/build/
+/dist/
