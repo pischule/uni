@@ -1,6 +1,6 @@
 import os.path
 import sys
-import urllib
+import urllib.request
 
 from PySide6.QtWidgets import QApplication
 
