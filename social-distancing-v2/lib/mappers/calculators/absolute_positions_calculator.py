@@ -8,7 +8,7 @@ from lib.util import box_bottom_center_point
 
 
 class AbsolutePositionsCalculator(ContextMapper):
-    def __init__(self, transform_matrix: np.diag(np.ones(3, dtype=np.float32))) -> None:
+    def __init__(self, transform_matrix: np.ndarray = np.diag(np.ones(3, dtype=np.float32))) -> None:
         self._transform_matrix = transform_matrix
 
     def map(self, context: FrameContext) -> FrameContext:
