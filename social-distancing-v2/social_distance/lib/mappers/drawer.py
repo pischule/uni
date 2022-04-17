@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from lib.types import Color, ContextMapper, FrameContext, Point
+from social_distance.lib.types import Color, ContextMapper, FrameContext, Point
 
 
 class PolygonDrawer(ContextMapper):

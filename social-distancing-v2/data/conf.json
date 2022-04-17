@@ -1,6 +1,6 @@
 [
   {
-    "address": "video/vid1.mp4",
+    "address": "data/video/vid1.mp4",
     "name": "train station",
     "roi": [
       [

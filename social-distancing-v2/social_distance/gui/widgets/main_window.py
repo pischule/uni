@@ -9,11 +9,11 @@ from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtGui import QImage, QPolygon
 from PySide6.QtWidgets import QMainWindow, QFileDialog
 
-from gui.camera_model import Camera
-from gui.generated_ui.main_window import Ui_MainWindow
-from gui.thread import CameraThread
-from gui.widgets.wizard.wizard import CameraAddWizard
-from lib.types import FrameContext
+from social_distance.gui.camera_model import Camera
+from social_distance.gui.generated_ui.main_window import Ui_MainWindow
+from social_distance.gui.thread import CameraThread
+from social_distance.gui.widgets.wizard.wizard import CameraAddWizard
+from social_distance.lib.types import FrameContext
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -87,7 +87,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camThread.quit()
         self.camThread.wait()
 
-        with open(os.path.join('conf', 'cameras.json'), 'w') as f:
+        with open(os.path.join('data', 'conf.json'), 'w') as f:
             json.dump([dataclasses.asdict(c) for c in self._cameras], f, indent=2, sort_keys=True)
 
     def set_distance(self, distance: float):
@@ -96,7 +96,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _load_cameras(self):
         self._cameras = []
         try:
-            with open(os.path.join('conf', 'cameras.json'), 'r') as f:
+            with open(os.path.join('data', 'conf.json'), 'r') as f:
                 self._cameras = [Camera(**c) for c in json.load(f)]
         except FileNotFoundError:
             pass

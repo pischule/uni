@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 
-from lib.types import ContextMapper, FrameContext
+from social_distance.lib.types import ContextMapper, FrameContext
 
-from lib.util import box_bottom_center_point
+from social_distance.lib.util import box_bottom_center_point
 
 
 class AbsolutePositionsCalculator(ContextMapper):

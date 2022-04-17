@@ -1,6 +1,6 @@
 import cv2
 
-from lib.types import ContextMapper, FrameContext, DetectedObject
+from social_distance.lib.types import ContextMapper, FrameContext, DetectedObject
 
 PERSON_CLASS_ID = 0
 

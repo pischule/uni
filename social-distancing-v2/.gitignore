@@ -78,7 +78,7 @@ Thumbs.db
 
 /venv/
 /SocialDistance.pyproject.user
-/models/*.weights
+*.weights
 /data.json
 
 

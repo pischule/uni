@@ -10,13 +10,13 @@ from PySide6 import QtCore
 from PySide6.QtCore import QThread, Signal, Slot
 from PySide6.QtGui import QImage
 
-from gui.camera_model import Camera
-from lib.mappers.calculator import AbsolutePositionsCalculator
-from lib.mappers.classifier import SafeDistanceClassifier
-from lib.mappers.detector import OpenCVDetector
-from lib.mappers.drawer import BoxesDrawer, FrameScaler, PolygonDrawer
-from lib.mappers.filter import PolygonFilter
-from lib.types import FrameContext
+from social_distance.gui.camera_model import Camera
+from social_distance.lib.mappers.calculator import AbsolutePositionsCalculator
+from social_distance.lib.mappers.classifier import SafeDistanceClassifier
+from social_distance.lib.mappers.detector import OpenCVDetector
+from social_distance.lib.mappers.drawer import BoxesDrawer, FrameScaler, PolygonDrawer
+from social_distance.lib.mappers.filter import PolygonFilter
+from social_distance.lib.types import FrameContext
 
 
 class CameraThread(QThread):
@@ -149,8 +149,8 @@ class PipelineThread(QThread):
         self._image: Optional[np.ndarray] = None
         self._keep_running = False
         self.detector = OpenCVDetector(
-            model_config=os.path.join('models', network.value + '.cfg'),
-            model_weights=os.path.join('models', network.value + '.weights'),
+            model_config=os.path.join('data', 'models', network.value + '.cfg'),
+            model_weights=os.path.join('data', 'models', network.value + '.weights'),
             conf_threshold=0.6, nms_threshold=0.4)
         self.roi_filter = PolygonFilter()
         self.position_calculator = AbsolutePositionsCalculator()

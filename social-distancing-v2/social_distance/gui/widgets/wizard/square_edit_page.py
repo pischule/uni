@@ -3,7 +3,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWizardPage, QLabel, QVBoxLayout
 
-from gui.widgets.drawers import SquareDrawer
+from social_distance.gui.widgets.drawers import SquareDrawer
 
 
 class SquareEditPage(QWizardPage):

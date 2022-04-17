@@ -1,6 +1,6 @@
 import math
 
-from lib.types import ContextMapper, FrameContext
+from social_distance.lib.types import ContextMapper, FrameContext
 
 
 class SafeDistanceClassifier(ContextMapper):

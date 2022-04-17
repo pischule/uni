@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from lib.types import Box, Point, Tetragon
+from social_distance.lib.types import Box, Point, Tetragon
 
 
 def box_bottom_center_point(box: Box) -> Point:

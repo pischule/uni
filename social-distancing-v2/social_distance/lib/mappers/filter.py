@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from lib.types import Point, ContextMapper, FrameContext
+from social_distance.lib.types import Point, ContextMapper, FrameContext
 
 
 class PolygonFilter(ContextMapper):

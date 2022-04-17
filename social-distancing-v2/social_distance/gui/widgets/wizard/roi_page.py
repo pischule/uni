@@ -3,8 +3,8 @@ from PySide6.QtCore import Slot, QPointF
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWizardPage, QVBoxLayout, QPushButton
 
-from gui.util import *
-from gui.widgets.drawers import PolygonDrawer
+from social_distance.gui.util import *
+from social_distance.gui.widgets.drawers import PolygonDrawer
 
 
 class RoiPage(QWizardPage):
