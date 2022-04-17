@@ -20,3 +20,5 @@
 - [OpenCV](https://opencv.org/)
 - [Qt 6](https://www.qt.io/product/qt6)
 <!-- - [SORT](https://github.com/abewley/sort) -->
+
+В мастере настройки можно указать путь к видеофайлу, 0 для веб-камеры и url любой rtsp камеры.
