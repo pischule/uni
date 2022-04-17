@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os.path
 import sys
 import urllib.request
@@ -24,8 +26,15 @@ def download_large_files():
         ('data', 'video', 'vid1.mp4'),
         ('data', 'models', 'yolov3.weights'),
         ('data', 'models', 'yolov3-tiny.weights'),
+        ('data', 'models', 'yolov3.cfg'),
+        ('data', 'models', 'yolov3-tiny.cfg'),
     ]
+
     for path in files:
+        try:
+            os.makedirs(os.path.join(*path[:-1]))
+        except FileExistsError:
+            pass
         download_file(nextcloud_folder + path[-1], os.path.join(*path))
 
 

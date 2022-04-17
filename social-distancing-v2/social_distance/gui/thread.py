@@ -133,7 +133,7 @@ class CameraThread(QThread):
         self._pipeline_thread.quit()
         self._pipeline_thread.wait()
 
-        super().quit()
+        super(CameraThread, self).quit()
 
 
 class Networks(Enum):

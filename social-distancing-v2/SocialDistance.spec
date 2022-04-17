@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['app.py'],
+a = Analysis(['main.py'],
              pathex=[],
              binaries=[],
              datas=[],
@@ -29,7 +29,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True,
+          console=False,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
@@ -42,3 +42,7 @@ coll = COLLECT(exe,
                upx=True,
                upx_exclude=[],
                name='SocialDistance')
+app = BUNDLE(coll,
+             name='SocialDistance.app',
+             icon=None,
+             bundle_identifier=None)
