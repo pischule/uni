@@ -1,24 +1,28 @@
 import os
 import time
+from enum import Enum
 from typing import Optional, Union
 
+import PySide6
 import cv2
+import numpy as np
 from PySide6 import QtCore
-from PySide6.QtCore import Signal, QThread, Slot
+from PySide6.QtCore import QThread, Signal, Slot
 from PySide6.QtGui import QImage
 
 from gui.camera_model import Camera
-from gui.thread.pipeline_thread import PipelineThread, Networks
-from lib.mappers.core.frame_context import FrameContext
-from lib.mappers.display.frame_scaler import FrameScaler
-from lib.mappers.overlay.draw_polygon import DrawPolygon
-from lib.mappers.overlay.safe_unsafe_draw_boxes import DrawBoxes
+from lib.mappers.calculator import AbsolutePositionsCalculator
+from lib.mappers.classifier import SafeDistanceClassifier
+from lib.mappers.detector import OpenCVDetector
+from lib.mappers.drawer import BoxesDrawer, FrameScaler, PolygonDrawer
+from lib.mappers.filter import PolygonFilter
+from lib.types import FrameContext
 
 
 class CameraThread(QThread):
     changePixmap = Signal(QImage)
     dataChange = Signal(FrameContext)
-    _draw_boxes = DrawBoxes(thickness=2, label=False, only_tracked=False)
+    _draw_boxes = BoxesDrawer(thickness=2, label=False, only_tracked=False)
     camera_mutex = QtCore.QMutex()
 
     def __init__(self, parent: Optional[QtCore.QObject] = ..., source: Optional[Union[str, int]] = None):
@@ -38,7 +42,7 @@ class CameraThread(QThread):
         self._delay = 0.01
         self._skip_result = False
 
-        self._polygon_drawer = DrawPolygon(None, (0, 0, 255), alpha=0.2, inverted=True)
+        self._polygon_drawer = PolygonDrawer(None, (0, 0, 255), alpha=0.2, inverted=True)
         self.data = []
 
     def run(self):
@@ -130,3 +134,53 @@ class CameraThread(QThread):
         self._pipeline_thread.wait()
 
         super().quit()
+
+
+class Networks(Enum):
+    YOLOv3 = 'yolov3'
+    YOLOv3_TINY = 'yolov3-tiny'
+
+
+class PipelineThread(QThread):
+    frameProcessed = PySide6.QtCore.Signal(FrameContext)
+
+    def __init__(self, parent=None, network: Networks = Networks.YOLOv3):
+        super(PipelineThread, self).__init__(parent)
+        self._image: Optional[np.ndarray] = None
+        self._keep_running = False
+        self.detector = OpenCVDetector(
+            model_config=os.path.join('models', network.value + '.cfg'),
+            model_weights=os.path.join('models', network.value + '.weights'),
+            conf_threshold=0.6, nms_threshold=0.4)
+        self.roi_filter = PolygonFilter()
+        self.position_calculator = AbsolutePositionsCalculator()
+        self.safety_classifier = SafeDistanceClassifier()
+
+    @Slot(np.ndarray)
+    def pass_image(self, image):
+        if self._image is None:
+            self._image = image.copy()
+
+    def run(self):
+        self._keep_running = True
+        while self._keep_running:
+            if (self._image is not None) and (self._image.size > 0):
+                result = self.process_image(self._image)
+                self.frameProcessed.emit(result)
+                self._image = None
+            else:
+                time.sleep(0.01)
+
+    def process_image(self, image: np.ndarray) -> FrameContext:
+        c = FrameContext()
+        c.frame = image
+
+        c = self.detector.map(c)
+        c = self.roi_filter.map(c)
+        c = self.position_calculator.map(c)
+        c = self.safety_classifier.map(c)
+        return c
+
+    def quit(self) -> None:
+        self._keep_running = False
+        super(PipelineThread, self).quit()

@@ -1,8 +1,7 @@
 import cv2
 import numpy as np
 
-from lib.mappers.core.context_mapper import ContextMapper
-from lib.mappers.core.frame_context import FrameContext
+from lib.types import ContextMapper, FrameContext
 
 from lib.util import box_bottom_center_point
 

@@ -10,10 +10,10 @@ from PySide6.QtGui import QImage, QPolygon
 from PySide6.QtWidgets import QMainWindow, QFileDialog
 
 from gui.camera_model import Camera
-from gui.pyui.main_window import Ui_MainWindow
-from gui.thread.camera_thread import CameraThread
+from gui.generated_ui.main_window import Ui_MainWindow
+from gui.thread import CameraThread
 from gui.widgets.wizard.wizard import CameraAddWizard
-from lib.mappers.core.frame_context import FrameContext
+from lib.types import FrameContext
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):

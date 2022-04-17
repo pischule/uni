@@ -1,15 +1,10 @@
 import cv2
 import numpy as np
 
-from lib.mappers.util.custom_types import Box, Point, Polygon, Tetragon
+from lib.types import Box, Point, Tetragon
 
 
 def box_bottom_center_point(box: Box) -> Point:
-    """
-    Calculate the bottom center point of a box.
-    :param box:
-    :return:
-    """
     return (
         box[0][0] + (box[1][0] - box[0][0]) // 2,
         box[1][1],
@@ -17,21 +12,10 @@ def box_bottom_center_point(box: Box) -> Point:
 
 
 def polygon_to_ndarray(polygon) -> np.ndarray:
-    """
-    Convert a polygon to a numpy array.
-    :param polygon:
-    :return:
-    """
     return np.asarray(polygon, np.int32).reshape((-1, 1, 2))
 
 
 def box_to_ndarray(box: Box, dtype: type = np.int32) -> np.ndarray:
-    """
-    Convert a box to a numpy array.
-    :param box:
-    :param dtype:
-    :return:
-    """
     return np.asarray(box, dtype).reshape((-1, 1, 2))
 
 

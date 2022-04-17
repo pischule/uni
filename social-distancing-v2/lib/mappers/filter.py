@@ -1,10 +1,7 @@
 import cv2
 import numpy as np
 
-from lib.mappers.core.context_mapper import ContextMapper
-
-from lib.mappers.core.frame_context import FrameContext
-from lib.mappers.util.custom_types import Polygon, Point
+from lib.types import Point, ContextMapper, FrameContext
 
 
 class PolygonFilter(ContextMapper):

@@ -3,8 +3,8 @@ from PySide6.QtWidgets import QWizardPage, QLabel, QLineEdit, QVBoxLayout, QHBox
 
 from gui.util import *
 from gui.widgets.drawers import ImageDrawer
-from lib.mappers.core.frame_context import FrameContext
-from lib.mappers.display.frame_scaler import FrameScaler
+from lib.types import FrameContext
+from lib.mappers.drawer import FrameScaler
 
 
 class CamaraUrlPage(QWizardPage):

@@ -1,10 +1,9 @@
 import math
 
-from lib.mappers.core.context_mapper import ContextMapper
-from lib.mappers.core.frame_context import FrameContext
+from lib.types import ContextMapper, FrameContext
 
 
-class SafeUnsafeClassifier(ContextMapper):
+class SafeDistanceClassifier(ContextMapper):
     def __init__(self):
         self.safe_distance = 0.0
 
