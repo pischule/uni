@@ -1,4 +1,3 @@
-import json
 import os
 import time
 from typing import Optional, Union
@@ -12,8 +11,8 @@ from gui.camera_model import Camera
 from gui.thread.pipeline_thread import PipelineThread, Networks
 from lib.mappers.core.frame_context import FrameContext
 from lib.mappers.display.frame_scaler import FrameScaler
-from lib.mappers.overlay.safe_unsafe_draw_boxes import DrawBoxes
 from lib.mappers.overlay.draw_polygon import DrawPolygon
+from lib.mappers.overlay.safe_unsafe_draw_boxes import DrawBoxes
 
 
 class CameraThread(QThread):

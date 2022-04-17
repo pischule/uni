@@ -1,5 +1,4 @@
 from PySide6.QtGui import QPixmap
-from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWizardPage, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton
 
 from gui.util import *

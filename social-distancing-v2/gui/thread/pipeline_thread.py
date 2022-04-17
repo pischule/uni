@@ -26,7 +26,6 @@ class PipelineThread(QThread):
         super(PipelineThread, self).__init__(parent)
         self._image: Optional[np.ndarray] = None
         self._keep_running = False
-        # self._frame_processor = FrameProcessor()
         self.detector = OpenCVDetector(
             model_config=os.path.join('models', network.value + '.cfg'),
             model_weights=os.path.join('models', network.value + '.weights'),
@@ -51,14 +50,14 @@ class PipelineThread(QThread):
                 time.sleep(0.01)
 
     def process_image(self, image: np.ndarray) -> FrameContext:
-        context = FrameContext()
-        context.frame = image
+        c = FrameContext()
+        c.frame = image
 
-        result = self.detector.map(context)
-        result = self.roi_filter.map(result)
-        result = self.position_calculator.map(result)
-        result = self.safety_classifier.map(result)
-        return result
+        c = self.detector.map(c)
+        c = self.roi_filter.map(c)
+        c = self.position_calculator.map(c)
+        c = self.safety_classifier.map(c)
+        return c
 
     def quit(self) -> None:
         self._keep_running = False

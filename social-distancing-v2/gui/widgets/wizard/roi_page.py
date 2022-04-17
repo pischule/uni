@@ -44,8 +44,6 @@ class RoiPage(QWizardPage):
 
         self.setField("roi_polygon", self._roi_edit.polygon)
 
-
     @Slot(QtGui.QPolygonF)
     def polygon_changed(self, polygon):
         self.setField("roi_polygon", polygon)
-
