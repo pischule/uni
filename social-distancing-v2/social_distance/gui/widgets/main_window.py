@@ -46,7 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.distanceSpinBox.valueChanged.connect(self.set_distance)
         self.set_distance(self.distanceSpinBox.value())
-        self.set_stats_label(0, 0)
+        self.set_stats_label()
         self.camThread.dataChange.connect(self.data_changed)
 
     def resizeEvent(self, event: PySide6.QtGui.QResizeEvent) -> None:
@@ -76,7 +76,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             [p.toTuple() for p in roi_polygon.toList()]
         ))
         self.cameraComboBox.addItem(camera_name)
-        self.switch_camera(self.cameraComboBox.count() - 1)
         return True
 
     @QtCore.Slot(int)
@@ -114,10 +113,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QFileDialog.saveFileContent(bytes(data, 'utf-8'), fname)
 
     def data_changed(self, context: FrameContext):
-        total = len(context.detected_objects)
-        safe = len([o for o in context.detected_objects if o.safe])
-        self.set_stats_label(safe, total - safe)
+        self.set_stats_label(context.violators,
+                             len(context.detected_objects) - context.violators,
+                             context.violations,
+                             context.violation_clusters)
 
-    def set_stats_label(self, safe_count: int, unsafe_count: int):
-        text = f'Safe: {safe_count}\nUnsafe: {unsafe_count}\nTotal: {safe_count + unsafe_count}'
+    def set_stats_label(self, safe_count: int = 0, unsafe_count: int = 0,
+                        violation_count: int = 0, violation_cluster_count: int = 0):
+        text = (f'Safe: {safe_count}\n'
+                f'Unsafe: {unsafe_count}\n'
+                f'Total: {safe_count + unsafe_count}\n'
+                f'Violations: {violation_count}\n'
+                f'Violation Clusters: {violation_cluster_count}\n')
         self.statisticsBodyLabel.setText(text)

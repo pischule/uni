@@ -18,7 +18,8 @@ class DetectedObject(object):
     confidence: float
     track_id: int = 0
     absolute_position: Optional[Point] = None
-    safe = True
+    safe: bool = True
+    distance_to_others: List[float] = field(default_factory=list)
 
     def to_dict(self):
         return {
@@ -37,7 +38,9 @@ class FrameContext(object):
     detected_objects: List[DetectedObject] = field(default_factory=list)
     fps: float = 0.0
 
-    distances: Mapping[int, float] = field(default_factory=dict)
+    violations: int = 0
+    violators: int = 0
+    violation_clusters: int = 0
 
     @staticmethod
     def from_frame(frame: np.ndarray, detected_objects=None) -> "FrameContext":

@@ -12,7 +12,7 @@ from PySide6.QtGui import QImage
 
 from social_distance.gui.camera_model import Camera
 from social_distance.lib.mappers.calculator import AbsolutePositionsCalculator
-from social_distance.lib.mappers.classifier import SafeDistanceClassifier
+from social_distance.lib.mappers.classifier import StatisticsCalculator
 from social_distance.lib.mappers.detector import OpenCVDetector
 from social_distance.lib.mappers.drawer import BoxesDrawer, FrameScaler, PolygonDrawer
 from social_distance.lib.mappers.filter import PolygonFilter
@@ -154,7 +154,7 @@ class PipelineThread(QThread):
             conf_threshold=0.6, nms_threshold=0.4)
         self.roi_filter = PolygonFilter()
         self.position_calculator = AbsolutePositionsCalculator()
-        self.safety_classifier = SafeDistanceClassifier()
+        self.safety_classifier = StatisticsCalculator()
 
     @Slot(np.ndarray)
     def pass_image(self, image):

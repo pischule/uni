@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-pyside6-uic -o gui/generated_ui/main_window.py gui/ui/mainwindow.ui
+pyside6-uic -o social_distance/gui/generated_ui/main_window.py social_distance/gui/ui/mainwindow.ui
