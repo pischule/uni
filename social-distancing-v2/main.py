@@ -25,9 +25,7 @@ def download_large_files():
     files = [
         ('data', 'video', 'vid1.mp4'),
         ('data', 'models', 'yolov3.weights'),
-        ('data', 'models', 'yolov3-tiny.weights'),
         ('data', 'models', 'yolov3.cfg'),
-        ('data', 'models', 'yolov3-tiny.cfg'),
     ]
 
     for path in files:

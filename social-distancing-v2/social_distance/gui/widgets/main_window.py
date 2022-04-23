@@ -5,6 +5,7 @@ import sys
 import time
 
 import PySide6
+import cv2
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtGui import QImage, QPolygon
 from PySide6.QtWidgets import QMainWindow, QFileDialog
@@ -53,10 +54,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
         super().resizeEvent(event)
 
-    def set_image(self, image: QImage):
-        pixmap = PySide6.QtGui.QPixmap.fromImage(image)
-        self._pixmap_item.setPixmap(pixmap)
-        self.cameraGraphicsView.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
+    def set_image(self, context: FrameContext):
+        qimage = self._cv_to_qt_image(context.frame)
+        scale_factor = min(self.cameraGraphicsView.width() / qimage.width(), self.cameraGraphicsView.height() / qimage.height())
+        qimage = qimage.scaled(qimage.width() * scale_factor, qimage.height() * scale_factor)
+        qpainter = QtGui.QPainter()
+        qpainter.begin(qimage)
+        qpainter.setPen(QtGui.QPen(QtGui.QColor(255, 0, 0), 2))
+        red_pen = QtGui.QPen(QtGui.QColor(255, 0, 0), 2)
+        green_pen = QtGui.QPen(QtGui.QColor(0, 255, 0), 2)
+        for o in context.detected_objects:
+            pen = green_pen if o.safe else red_pen
+            qpainter.setPen(pen)
+            box = o.box
+            scaled_box = [
+                box[0][0] * scale_factor,
+                box[0][1] * scale_factor,
+                box[1][0] * scale_factor,
+                box[1][1] * scale_factor
+            ]
+            qpainter.drawRect(scaled_box[0], scaled_box[1], scaled_box[2] - scaled_box[0], scaled_box[3] - scaled_box[1])
+        qpainter.end()
+        self._pixmap_item.setPixmap(QtGui.QPixmap.fromImage(qimage))
+
+    @staticmethod
+    def _cv_to_qt_image(frame) -> QImage:
+        rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb_image.shape
+        bytes_per_line = ch * w
+        return QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
     def add_camera(self) -> bool:
         dlg = CameraAddWizard(self)

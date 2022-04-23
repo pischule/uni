@@ -3,8 +3,6 @@ from PySide6.QtWidgets import QWizardPage, QLabel, QLineEdit, QVBoxLayout, QHBox
 
 from social_distance.gui.util import *
 from social_distance.gui.widgets.drawers import ImageDrawer
-from social_distance.lib.types import FrameContext
-from social_distance.lib.mappers.drawer import FrameScaler
 
 
 class CamaraUrlPage(QWizardPage):
@@ -38,7 +36,6 @@ class CamaraUrlPage(QWizardPage):
         self.registerField("address", self._address_edit)
         self.registerField("preview", self._preview_view)
         self.registerField("frame", self)
-        self._scaler = FrameScaler(new_size=(1280, 720))
 
     def _address_changed(self, text):
         self._connect_button.setEnabled(len(text) > 0)
@@ -51,8 +48,6 @@ class CamaraUrlPage(QWizardPage):
         if self._frame is None:
             self._address_edit.setStyleSheet("background-color: red")
             return
-
-        self._frame = self._scaler.map(FrameContext.from_frame(self._frame, list())).frame
 
         qt_image = cv_to_qimage(self._frame)
         self._preview_view.pixmap = QPixmap.fromImage(qt_image)

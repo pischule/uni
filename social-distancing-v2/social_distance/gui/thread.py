@@ -14,15 +14,14 @@ from social_distance.gui.camera_model import Camera
 from social_distance.lib.mappers.calculator import AbsolutePositionsCalculator
 from social_distance.lib.mappers.classifier import StatisticsCalculator
 from social_distance.lib.mappers.detector import OpenCVDetector
-from social_distance.lib.mappers.drawer import BoxesDrawer, FrameScaler, PolygonDrawer
+from social_distance.lib.mappers.drawer import PolygonDrawer
 from social_distance.lib.mappers.filter import PolygonFilter
 from social_distance.lib.types import FrameContext
 
 
 class CameraThread(QThread):
-    changePixmap = Signal(QImage)
+    changePixmap = Signal(FrameContext)
     dataChange = Signal(FrameContext)
-    _draw_boxes = BoxesDrawer(thickness=2, label=False, only_tracked=False)
     camera_mutex = QtCore.QMutex()
 
     def __init__(self, parent: Optional[QtCore.QObject] = ..., source: Optional[Union[str, int]] = None):
@@ -36,8 +35,6 @@ class CameraThread(QThread):
         self._pipeline_thread.start()
         self._last_pipeline_data = FrameContext()
         self._last_pipeline_data.detected_objects = []
-
-        self._scaler = FrameScaler(new_size=(1280, 720))
 
         self._delay = 0.01
         self._skip_result = False
@@ -79,12 +76,10 @@ class CameraThread(QThread):
         # draw boxes
         # if self._show_detection:
         context = FrameContext.from_frame(frame)
-        context = self._scaler.map(context)
         self._pipeline_thread.pass_image(context.frame)
         context = self._polygon_drawer.map(context)
         context.detected_objects = self._last_pipeline_data.detected_objects
-        context = self._draw_boxes.map(context)
-        self.changePixmap.emit(self._cv_to_qt_image(context.frame))
+        self.changePixmap.emit(context)
 
     def reset_pipeline(self):
         self._last_pipeline_data.detected_objects = list()
@@ -116,12 +111,6 @@ class CameraThread(QThread):
         self.data = []
         self._pipeline_thread.position_calculator.transform_matrix = cam.transform_matrix
 
-    @staticmethod
-    def _cv_to_qt_image(frame) -> QImage:
-        rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgb_image.shape
-        bytes_per_line = ch * w
-        return QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
     def set_safe_distance(self, distance: float):
         self._pipeline_thread.safety_classifier.safe_distance = distance

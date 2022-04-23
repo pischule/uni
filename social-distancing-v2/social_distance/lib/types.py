@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Tuple, Iterable, List, Mapping, Optional
 
 import numpy as np
+from PySide6 import QtCore
 
 Color = Tuple[int, int, int]
 
@@ -16,7 +17,6 @@ Tetragon = Tuple[Point, Point, Point, Point]
 class DetectedObject(object):
     box: Box
     confidence: float
-    track_id: int = 0
     absolute_position: Optional[Point] = None
     safe: bool = True
     distance_to_others: List[float] = field(default_factory=list)
@@ -25,7 +25,6 @@ class DetectedObject(object):
         return {
             'box': np.array(self.box, dtype=int).tolist(),
             'confidence': float(self.confidence),
-            'track_id': int(self.track_id),
             'absolute_position': np.array(self.absolute_position, dtype=float).tolist(),
             'safe': bool(self.safe)
         }
