@@ -1,23 +1,25 @@
 import math
+from typing import List, Dict
 
-from social_distance.lib.types import ContextMapper, FrameContext
 from disjoint_set import DisjointSet
 
+from social_distance.lib.types import DetectedObject
 
-class StatisticsCalculator(ContextMapper):
+
+class StatisticsCalculator:
     def __init__(self):
         self.safe_distance = 0.0
 
-    def map(self, context: FrameContext) -> FrameContext:
-        for p in context.detected_objects:
+    def calc(self, objects: List[DetectedObject]) -> Dict[str, int]:
+        for p in objects:
             p.safe = True
 
         violations = 0
         ds = DisjointSet()
 
         visited = set()
-        for i, p1 in enumerate(context.detected_objects):
-            for j, p2 in enumerate(context.detected_objects):
+        for i, p1 in enumerate(objects):
+            for j, p2 in enumerate(objects):
                 if i == j or (j, i) in visited:
                     continue
                 visited.add((i, j))
@@ -30,10 +32,12 @@ class StatisticsCalculator(ContextMapper):
                     ds.union(i, j)
                     violations += 1
 
-        violators = sum([1 for p in context.detected_objects if not p.safe])
+        violators_count = sum(1 for p in objects if not p.safe)
 
-        context.violations = violations
-        context.violators = violators
-        context.violation_clusters = len(list(ds.itersets()))
-
-        return context
+        return {
+            'Total': len(objects),
+            'Safe': len(objects) - violators_count,
+            'Unsafe': violators_count,
+            'Violations': violations,
+            'Violation Clusters': len(list(ds.itersets()))
+        }

@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
 
-from social_distance.lib.types import Color, ContextMapper, FrameContext, Point
+from social_distance.lib.types import Color, FrameContext
 
 
-class PolygonDrawer(ContextMapper):
+class PolygonDrawer:
     def __init__(self, polygon=None, color: Color = (0, 255, 0), alpha=0.5, inverted=False):
         if polygon is None:
             polygon = list()

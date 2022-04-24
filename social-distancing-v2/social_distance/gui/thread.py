@@ -8,7 +8,6 @@ import cv2
 import numpy as np
 from PySide6 import QtCore
 from PySide6.QtCore import QThread, Signal, Slot
-from PySide6.QtGui import QImage
 
 from social_distance.gui.camera_model import Camera
 from social_distance.lib.mappers.calculator import AbsolutePositionsCalculator
@@ -75,7 +74,7 @@ class CameraThread(QThread):
 
         # draw boxes
         # if self._show_detection:
-        context = FrameContext.from_frame(frame)
+        context = FrameContext(frame=frame)
         self._pipeline_thread.pass_image(context.frame)
         context = self._polygon_drawer.map(context)
         context.detected_objects = self._last_pipeline_data.detected_objects
@@ -161,14 +160,11 @@ class PipelineThread(QThread):
                 time.sleep(0.01)
 
     def process_image(self, image: np.ndarray) -> FrameContext:
-        c = FrameContext()
-        c.frame = image
-
-        c = self.detector.map(c)
-        c = self.roi_filter.map(c)
-        c = self.position_calculator.map(c)
-        c = self.safety_classifier.map(c)
-        return c
+        objects = self.detector.detect(image)
+        objects = self.roi_filter.filter(objects)
+        objects = self.position_calculator.calc(objects)
+        statistics = self.safety_classifier.calc(objects)
+        return FrameContext(frame=image, detected_objects=objects, statistics=statistics)
 
     def quit(self) -> None:
         self._keep_running = False

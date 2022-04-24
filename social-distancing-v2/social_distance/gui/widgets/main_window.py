@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import time
+from typing import Dict
 
 import PySide6
 import cv2
@@ -47,7 +48,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.distanceSpinBox.valueChanged.connect(self.set_distance)
         self.set_distance(self.distanceSpinBox.value())
-        self.set_stats_label()
         self.camThread.dataChange.connect(self.data_changed)
 
     def resizeEvent(self, event: PySide6.QtGui.QResizeEvent) -> None:
@@ -66,14 +66,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for o in context.detected_objects:
             pen = green_pen if o.safe else red_pen
             qpainter.setPen(pen)
-            box = o.box
-            scaled_box = [
-                box[0][0] * scale_factor,
-                box[0][1] * scale_factor,
-                box[1][0] * scale_factor,
-                box[1][1] * scale_factor
-            ]
-            qpainter.drawRect(scaled_box[0], scaled_box[1], scaled_box[2] - scaled_box[0], scaled_box[3] - scaled_box[1])
+            scaled_box = o.rect * scale_factor
+            qpainter.drawRect(scaled_box.to_qrect())
         qpainter.end()
         self._pixmap_item.setPixmap(QtGui.QPixmap.fromImage(qimage))
 
@@ -139,16 +133,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QFileDialog.saveFileContent(bytes(data, 'utf-8'), fname)
 
     def data_changed(self, context: FrameContext):
-        self.set_stats_label(context.violators,
-                             len(context.detected_objects) - context.violators,
-                             context.violations,
-                             context.violation_clusters)
+        self.set_stats_label(context.statistics)
 
-    def set_stats_label(self, safe_count: int = 0, unsafe_count: int = 0,
-                        violation_count: int = 0, violation_cluster_count: int = 0):
-        text = (f'Safe: {safe_count}\n'
-                f'Unsafe: {unsafe_count}\n'
-                f'Total: {safe_count + unsafe_count}\n'
-                f'Violations: {violation_count}\n'
-                f'Violation Clusters: {violation_cluster_count}\n')
+    def set_stats_label(self, stats: Dict[str, int]):
+        text = '\n'.join(f"{k}: {v}" for k, v in stats.items())
         self.statisticsBodyLabel.setText(text)

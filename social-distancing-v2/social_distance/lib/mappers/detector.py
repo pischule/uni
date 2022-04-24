@@ -1,11 +1,12 @@
 import cv2
+import numpy as np
 
-from social_distance.lib.types import ContextMapper, FrameContext, DetectedObject
+from social_distance.lib.types import DetectedObject, Rectangle
 
 PERSON_CLASS_ID = 0
 
 
-class OpenCVDetector(ContextMapper):
+class OpenCVDetector:
 
     def __init__(self, model_config, model_weights, conf_threshold=0.6, nms_threshold=0.4):
         super().__init__()
@@ -17,14 +18,14 @@ class OpenCVDetector(ContextMapper):
         self._conf_threshold = conf_threshold
         self._nms_threshold = nms_threshold
 
-    def map(self, context: FrameContext):
-        class_ids, confidences, boxes = self._model.detect(context.frame,
+
+    def detect(self, image: np.ndarray):
+        class_ids, confidences, boxes = self._model.detect(image,
                                                            confThreshold=self._conf_threshold,
                                                            nmsThreshold=self._nms_threshold)
         objects = []
         for class_id, confidence, box in zip(class_ids, confidences, boxes):
             if class_id == PERSON_CLASS_ID:
-                box_as_tuples = ((box[0], box[1]), (box[0] + box[2], box[1] + box[3]))
-                objects.append(DetectedObject(box_as_tuples, confidence, 0))
-        context.detected_objects = objects
-        return context
+                rect = Rectangle(box[0], box[1], box[2], box[3])
+                objects.append(DetectedObject(rect))
+        return objects

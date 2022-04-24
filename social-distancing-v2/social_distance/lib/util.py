@@ -1,22 +1,11 @@
 import cv2
 import numpy as np
 
-from social_distance.lib.types import Box, Point, Tetragon
-
-
-def box_bottom_center_point(box: Box) -> Point:
-    return (
-        box[0][0] + (box[1][0] - box[0][0]) // 2,
-        box[1][1],
-    )
+from social_distance.lib.types import Point, Tetragon
 
 
 def polygon_to_ndarray(polygon) -> np.ndarray:
     return np.asarray(polygon, np.int32).reshape((-1, 1, 2))
-
-
-def box_to_ndarray(box: Box, dtype: type = np.int32) -> np.ndarray:
-    return np.asarray(box, dtype).reshape((-1, 1, 2))
 
 
 def point_to_tetragon(point: Point) -> Tetragon:
@@ -37,7 +26,7 @@ def square_perspective_transform_matrix(box: Tetragon, target_square_side: float
     """
     # Calculate the perspective transform matrix.
     perspective_transform_matrix = cv2.getPerspectiveTransform(
-        src=box_to_ndarray(box, dtype=np.float32),
+        src=box.to_ndarray(dtype=np.float32),
         dst=np.array(
             [
                 [0, 0],

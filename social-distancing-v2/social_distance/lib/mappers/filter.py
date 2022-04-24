@@ -1,30 +1,30 @@
+from typing import List
+
 import cv2
 import numpy as np
 
-from social_distance.lib.types import Point, ContextMapper, FrameContext
+from social_distance.lib.types import DetectedObject
 
 
-class PolygonFilter(ContextMapper):
+class PolygonFilter:
     def __init__(self, polygon=None, inside: bool = True):
         if polygon is None:
             polygon = []
         self._inside: bool = inside
         self.polygon = polygon
 
-    def map(self, context: FrameContext) -> FrameContext:
+    def filter(self, objects: List[DetectedObject]) -> List[DetectedObject]:
         if (self.polygon is None) or (len(self.polygon) == 0):
-            return context
+            return objects
 
         filtered_objects = []
-        for obj in context.detected_objects:
-            ((p1_x, p1_y), (p2_x, p2_y)) = obj.box
-            bottom_center: Point = (int(p1_x + p2_x) // 2, int(p2_y))
-            dist = cv2.pointPolygonTest(contour=self._polygon, pt=bottom_center, measureDist=False)
+        for obj in objects:
+            x, y = obj.rect.bottom_center
+            dist = cv2.pointPolygonTest(contour=self._polygon, pt=(int(x), int(y)), measureDist=False)
 
             if (dist >= 0) == self._inside:
                 filtered_objects.append(obj)
-        context.detected_objects = filtered_objects
-        return context
+        return filtered_objects
 
     @property
     def polygon(self):

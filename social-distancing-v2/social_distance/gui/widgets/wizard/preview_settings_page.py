@@ -56,7 +56,6 @@ class PreviewSettingsPage(QWizardPage):
         s = self._scale_edit.value()
         x = self._x_offset_edit.value()
         y = self._y_offset_edit.value()
-        print("s:", s, "x:", x, "y:", y)
         output_square = np.asarray(
             [
                 (x, y),
