@@ -1,9 +1,10 @@
 from PySide6.QtWidgets import QWizard
 
-from social_distance.gui.widgets.wizard.camera_wizard_page import CamaraUrlPage
-from social_distance.gui.widgets.wizard.details_page import DetailsPage
-from social_distance.gui.widgets.wizard.roi_page import RoiPage
-from social_distance.gui.widgets.wizard.square_edit_page import SquareEditPage
+from social_distance.widgets.wizard.camera_wizard_page import CamaraUrlPage
+from social_distance.widgets.wizard.details_page import DetailsPage
+from social_distance.widgets.wizard.preview_settings_page import PreviewSettingsPage
+from social_distance.widgets.wizard.roi_page import RoiPage
+from social_distance.widgets.wizard.square_edit_page import SquareEditPage
 
 
 class CameraAddWizard(QWizard):
@@ -14,7 +15,7 @@ class CameraAddWizard(QWizard):
         self.addPage(RoiPage(self))
         self.addPage(SquareEditPage(self))
         self.addPage(DetailsPage(self))
-        # self.addPage(PreviewSettingsPage(self))
+        self.addPage(PreviewSettingsPage(self))
 
         self.setWizardStyle(QWizard.ModernStyle)
         self.setWindowTitle("Add a new camera")

@@ -6,7 +6,8 @@ import urllib.request
 
 from PySide6.QtWidgets import QApplication
 
-from social_distance.gui.widgets.main_window import MainWindow
+from social_distance.core.processing import NETWORK_FILENAMES
+from social_distance.widgets.main_window import MainWindow
 
 
 def download_file(url, filename):
@@ -24,8 +25,8 @@ def download_large_files():
     nextcloud_folder = "https://nextcloud.pischulenok.xyz/s/iTpNXgwZbfEA4Ws/download?path=&files="
     files = [
         ('data', 'video', 'vid1.mp4'),
-        ('data', 'models', 'yolov3.weights'),
-        ('data', 'models', 'yolov3.cfg'),
+        *[('data', 'models', f'{fn}.weights') for fn in NETWORK_FILENAMES],
+        *[('data', 'models', f'{fn}.cfg') for fn in NETWORK_FILENAMES]
     ]
 
     for path in files:

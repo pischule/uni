@@ -49,27 +49,3 @@ class Rectangle:
 
     def to_qrect(self) -> QtCore.QRect:
         return QtCore.QRect(self.x, self.y, self.width, self.height)
-
-
-@dataclass
-class DetectedObject(object):
-    rect: Rectangle
-    absolute_position: Optional[Point] = None
-    safe: bool = True
-    distance_to_others: List[float] = field(default_factory=list)
-
-    def to_dict(self):
-        return {
-            'rect': self.rect.to_points(),
-            'absolute_position': np.array(self.absolute_position, dtype=float).tolist(),
-            'safe': bool(self.safe)
-        }
-
-
-@dataclass
-class FrameContext(object):
-    frame: np.ndarray = None
-    frame_number: int = 0
-    detected_objects: List[DetectedObject] = field(default_factory=list)
-    fps: float = 0.0
-    statistics: Dict[str, int] = field(default_factory=dict)

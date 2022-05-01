@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from social_distance.lib.types import Point, Tetragon
+from social_distance.core.types import Point, Tetragon
 
 
 def polygon_to_ndarray(polygon) -> np.ndarray:
