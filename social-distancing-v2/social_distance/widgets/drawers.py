@@ -1,3 +1,4 @@
+import PySide6
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QPixmap
@@ -27,9 +28,9 @@ class PolygonDrawer(QtWidgets.QGraphicsView):
         self._pixmap_item.setPixmap(pixmap)
         self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
 
-    def resizeEvent(self, event):
+    def paintEvent(self, event: PySide6.QtGui.QPaintEvent) -> None:
         self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
-        super().resizeEvent(event)
+        super().paintEvent(event)
 
     @property
     def polygon(self) -> QtGui.QPolygonF:
@@ -63,9 +64,9 @@ class ImageDrawer(QtWidgets.QGraphicsView):
         self._pixmap_item = QtWidgets.QGraphicsPixmapItem()
         scene.addItem(self._pixmap_item)
 
-    def resizeEvent(self, event):
+    def paintEvent(self, event: PySide6.QtGui.QPaintEvent) -> None:
         self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
-        super().resizeEvent(event)
+        super().paintEvent(event)
 
     @property
     def pixmap(self) -> QtGui.QPixmap:
@@ -128,9 +129,9 @@ class SquareDrawer(QtWidgets.QGraphicsView):
         self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
         self._pixmap_item.setPixmap(pixmap)
 
-    def resizeEvent(self, event):
+    def paintEvent(self, event: PySide6.QtGui.QPaintEvent) -> None:
         self.fitInView(self._pixmap_item, QtCore.Qt.KeepAspectRatio)
-        super().resizeEvent(event)
+        super().paintEvent(event)
 
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent) -> None:
         self._selected_point_index = None

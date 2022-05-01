@@ -38,8 +38,10 @@ class FrameProvider:
 
 if __name__ == '__main__':
     fp = FrameProvider()
-    # fp.set_source('/Users/maksim/Projects/SocialDistance/SocialDistance/data/video/vid1.mp4')
-    fp.set_source('0')
+    fp.set_source('/Users/maksim/Projects/SocialDistance/SocialDistance/data/video/vid1.mp4')
+    # fp.set_source('0')
+
+    cv.imwrite('vid1.jpg', fp.get_frame())
 
     while True:
         frame = fp.get_frame()
