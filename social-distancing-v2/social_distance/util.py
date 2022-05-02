@@ -1,7 +1,7 @@
 import os.path
 
 import cv2
-from PySide6.QtGui import QImage, Qt, QPolygonF
+from PySide6.QtGui import QImage
 
 
 def get_frame(address):
@@ -28,13 +28,6 @@ def cv_to_qimage(frame) -> QImage:
     return QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
 
-def qpolygonf_to_list(qpolygon: QPolygonF) -> list:
-    return [p.toTuple() for p in qpolygon]
-
-
 def get_path(*segments) -> str:
     return os.path.join('data', *segments)
 
-
-def qpolygon_to_list(qpolygon: QPolygonF) -> list:
-    return [p.toTuple() for p in qpolygon]

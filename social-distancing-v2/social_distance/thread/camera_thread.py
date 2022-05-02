@@ -1,4 +1,3 @@
-import time
 from typing import Optional
 
 from PySide6 import QtCore
