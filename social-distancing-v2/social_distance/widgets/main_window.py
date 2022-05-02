@@ -7,14 +7,16 @@ from typing import Dict
 
 import PySide6
 from PySide6 import QtWidgets, QtCore, QtGui
-from PySide6.QtGui import QImage, QPolygon
+from PySide6.QtGui import QImage
 from PySide6.QtWidgets import QMainWindow, QFileDialog
 
 from social_distance.core.camera import Camera
+from social_distance.core.csv_exporter import stats_to_string_csv
+from social_distance.core.processing import NETWORK_NAMES
+from social_distance.core.stats import Stats
 from social_distance.generated_ui.main_window import Ui_MainWindow
 from social_distance.thread.camera_thread import CameraThread
 from social_distance.widgets.wizard.wizard import CameraAddWizard
-from social_distance.core.processing import NETWORK_NAMES
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -124,12 +126,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camera_thread.set_view_mode(index)
 
     def save_data(self):
-        data = json.dumps(self.camera_thread.data)
+        data = stats_to_string_csv(self.camera_thread.data)
         if not data:
             return
-        fname = f"{'_'.join(self.cameraComboBox.currentText().split())}-{int(time.time())}.json"
+        fname = f"{'_'.join(self.cameraComboBox.currentText().split())}-{int(time.time())}.csv"
         QFileDialog.saveFileContent(bytes(data, 'utf-8'), fname)
 
-    def set_stats_label(self, stats: Dict[str, int]):
-        text = '\n'.join(f"{k}: {v}" for k, v in stats.items())
+    def set_stats_label(self, stats: Stats):
+        text = (f'Total: {stats.total}\n'
+                f'Safe: {stats.safe}\n'
+                f'Unsafe: {stats.unsafe}\n'
+                f'Violations: {stats.violations}\n'
+                f'Violation Clusters: {stats.violation_clusters}')
         self.statisticsBodyLabel.setText(text)

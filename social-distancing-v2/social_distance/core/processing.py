@@ -1,9 +1,12 @@
 import math
 import os
-from typing import Any, Tuple, List, Dict
+import time
+from typing import Any, Tuple, List
 
 import cv2 as cv
 import numpy as np
+
+from social_distance.core.stats import Stats
 
 NETWORK_NAMES = ['YOLOv4', 'YOLOv4-TINY', 'YOLOv3']
 NETWORK_FILENAMES = ['yolov4', 'yolov4-tiny', 'yolov3']
@@ -94,7 +97,7 @@ def draw_circles(frame, points, is_safe, radius):
         cv.circle(frame, int_point, int(radius), color, thickness)
 
 
-def calc_statistics(ground_points, safe_distance, is_safe) -> Dict[str, int]:
+def calc_statistics(ground_points, safe_distance, is_safe) -> Stats:
     violations = 0
     ds = DisjointSet()
 
@@ -112,13 +115,14 @@ def calc_statistics(ground_points, safe_distance, is_safe) -> Dict[str, int]:
                 violations += 1
 
     safe_count = sum(is_safe)
-    return {
-        'Total': len(ground_points),
-        'Safe': safe_count,
-        'Unsafe': len(ground_points) - safe_count,
-        'Violations': violations,
-        'Violation Clusters': len(list(ds.itersets()))
-    }
+    return Stats(
+        time=time.time(),
+        total=len(ground_points),
+        safe=safe_count,
+        unsafe=len(ground_points) - safe_count,
+        violations=violations,
+        violation_clusters=len(list(ds.itersets()))
+    )
 
 
 def getPerspectiveTransform(src: list, dst: list):
