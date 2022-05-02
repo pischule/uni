@@ -88,11 +88,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camera_thread.set_camera(self._cameras[index])
 
     def closeEvent(self, event: PySide6.QtGui.QCloseEvent) -> None:
-        self.camera_thread.quit()
-        self.camera_thread.wait()
-
         with open(os.path.join('data', 'conf.json'), 'w') as f:
             json.dump([dataclasses.asdict(c) for c in self._cameras], f, indent=2, sort_keys=True)
+
+        self.camera_thread.quit()
+        self.camera_thread.wait()
 
     def set_distance(self, distance: float):
         self.camera_thread.set_safe_distance(float(distance))
