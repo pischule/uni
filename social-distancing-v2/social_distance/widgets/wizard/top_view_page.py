@@ -11,14 +11,16 @@ class PreviewSettingsPage(QWizardPage):
         self.setSubTitle("Select preview settings")
 
         self.top_view_preview = TopViewPreview(self)
-        self.top_view_preview.data_changed.connect(self.preview_square_changed)
+        self.top_view_preview.data_changed.connect(self.data_changed)
 
         layout = QVBoxLayout()
         layout.addWidget(self.top_view_preview)
         self.setLayout(layout)
 
-    def preview_square_changed(self, square):
+    def data_changed(self, data):
+        square, side_length = data
         self.parent.preview_square = square
+        self.parent.preview_side_length = side_length
 
     def initializePage(self) -> None:
         frame = self.parent.frame

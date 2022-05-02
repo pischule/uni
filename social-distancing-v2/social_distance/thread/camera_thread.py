@@ -4,7 +4,7 @@ from PySide6 import QtCore
 from PySide6.QtCore import QThread, Signal, Slot
 from PySide6.QtGui import QImage
 
-from social_distance.core.camera_model import Camera
+from social_distance.core.camera import Camera
 from social_distance.core.detector import OpenCVPersonDetector
 from social_distance.thread.detector_thread import DetectorThread
 from social_distance.util import cv_to_qimage, get_path
@@ -34,6 +34,8 @@ class CameraThread(QThread):
         self.preview_matrix = np.ones((3, 3), dtype=np.float32)
         self.roi = None
         self.safe_distance = 2
+        self.pixel_per_meter = 1
+        self.view_mode = 0
 
     def run(self):
         self.keep_running = True
@@ -55,13 +57,13 @@ class CameraThread(QThread):
         is_safe = classify_safe_unsafe(ground_points, self.safe_distance)
         stats = calc_statistics(ground_points, self.safe_distance, is_safe)
 
-        if True:
+        if self.view_mode == 0:
             draw_bb(frame, is_safe, bb)
             frame = draw_polygon(frame, self.roi)
         else:
             frame = cv.warpPerspective(frame, self.preview_matrix, (1000, 1000))
             preview_points = project_points(points, self.preview_matrix)
-            draw_circles(frame, preview_points, is_safe, int(50))
+            draw_circles(frame, preview_points, is_safe, self.pixel_per_meter * self.safe_distance / 2)
 
 
         qimage = cv_to_qimage(frame)
@@ -75,6 +77,7 @@ class CameraThread(QThread):
         self.distance_matrix = getPerspectiveTransform(cam.square, distance_square(cam.side_length))
         self.preview_matrix = getPerspectiveTransform(cam.square, cam.preview_square)
         self.roi = np.asarray(cam.roi, np.int32)
+        self.pixel_per_meter = cam.preview_side_length / cam.side_length
         self.m.unlock()
 
     @Slot(list)
@@ -92,6 +95,10 @@ class CameraThread(QThread):
                                         get_path('models', f'{network}.weights'),
                                         conf_threshold=0.1, nms_threshold=0.1)
         self.detector_thread.set_detector(detector)
+
+    @Slot(int)
+    def set_view_mode(self, index) -> None:
+        self.view_mode = index
 
     def quit(self) -> None:
         self.keep_running = False

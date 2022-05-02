@@ -81,15 +81,27 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.cameraLine)
 
-        self.label_2 = QLabel(self.centralwidget)
-        self.label_2.setObjectName(u"label_2")
+        self.modelLabel = QLabel(self.centralwidget)
+        self.modelLabel.setObjectName(u"modelLabel")
 
-        self.verticalLayout.addWidget(self.label_2)
+        self.verticalLayout.addWidget(self.modelLabel)
 
         self.modelComboBox = QComboBox(self.centralwidget)
         self.modelComboBox.setObjectName(u"modelComboBox")
 
         self.verticalLayout.addWidget(self.modelComboBox)
+
+        self.viewLabel = QLabel(self.centralwidget)
+        self.viewLabel.setObjectName(u"viewLabel")
+
+        self.verticalLayout.addWidget(self.viewLabel)
+
+        self.viewComboBox = QComboBox(self.centralwidget)
+        self.viewComboBox.addItem("")
+        self.viewComboBox.addItem("")
+        self.viewComboBox.setObjectName(u"viewComboBox")
+
+        self.verticalLayout.addWidget(self.viewComboBox)
 
         self.distanceLabel = QLabel(self.centralwidget)
         self.distanceLabel.setObjectName(u"distanceLabel")
@@ -124,11 +136,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
-        self.topViewButton = QPushButton(self.centralwidget)
-        self.topViewButton.setObjectName(u"topViewButton")
-
-        self.verticalLayout.addWidget(self.topViewButton)
-
         self.saveDataPushButton = QPushButton(self.centralwidget)
         self.saveDataPushButton.setObjectName(u"saveDataPushButton")
 
@@ -158,12 +165,15 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Social Distance Monitoring Tool", None))
         self.cameraLabel.setText(QCoreApplication.translate("MainWindow", u"Camera:", None))
         self.addCameraPushButton.setText(QCoreApplication.translate("MainWindow", u"+", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Model:", None))
+        self.modelLabel.setText(QCoreApplication.translate("MainWindow", u"Model:", None))
+        self.viewLabel.setText(QCoreApplication.translate("MainWindow", u"View:", None))
+        self.viewComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Regular", None))
+        self.viewComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Top-Down", None))
+
         self.distanceLabel.setText(QCoreApplication.translate("MainWindow", u"Safe distance:", None))
         self.distanceSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" m", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Statistics:", None))
         self.statisticsBodyLabel.setText("")
-        self.topViewButton.setText(QCoreApplication.translate("MainWindow", u"Show top view", None))
         self.saveDataPushButton.setText(QCoreApplication.translate("MainWindow", u"Save data", None))
     # retranslateUi
 

@@ -15,6 +15,7 @@ class CameraAddWizard(QWizard):
         self.roi = None
         self.square = None
         self.preview_square = None
+        self.preview_side_length = None
 
         self.addPage(CamaraUrlPage(self))
         self.addPage(RoiPage(self))
@@ -42,3 +43,4 @@ if __name__ == "__main__":
     print(f'roi: {demo.roi}')
     print(f'square: {demo.square}')
     print(f'preview_square: {demo.preview_square}')
+    print(f'preview_side_length: {demo.preview_side_length}')

@@ -37,13 +37,13 @@ def safe_flag_to_color(is_safe: bool) -> Tuple[int, int, int]:
     return ((0, 0, 230), (0, 230, 0))[is_safe]
 
 
-def classify_safe_unsafe(points, radius):
+def classify_safe_unsafe(points, distance):
     is_safe = [True] * len(points)
     for i, p1 in enumerate(points):
         for j, p2 in enumerate(points):
             if j >= i:
                 break
-            if np.linalg.norm(p1 - p2) < radius:
+            if np.linalg.norm(p1 - p2) < distance:
                 is_safe[i] = False
                 is_safe[j] = False
                 break
@@ -91,7 +91,7 @@ def draw_circles(frame, points, is_safe, radius):
     for s, point in zip(is_safe, points):
         int_point = tuple(int(x) for x in point)
         color = safe_flag_to_color(s)
-        cv.circle(frame, int_point, radius, color, thickness)
+        cv.circle(frame, int_point, int(radius), color, thickness)
 
 
 def calc_statistics(ground_points, safe_distance, is_safe) -> Dict[str, int]:

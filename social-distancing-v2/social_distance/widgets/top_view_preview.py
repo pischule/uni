@@ -1,4 +1,3 @@
-import PySide6
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import QWidget
 
@@ -10,7 +9,7 @@ import numpy as np
 
 
 class TopViewPreview(QWidget, Ui_Form):
-    data_changed = QtCore.Signal(list)
+    data_changed = QtCore.Signal(tuple)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -50,7 +49,7 @@ class TopViewPreview(QWidget, Ui_Form):
             [self.x + self.square_size, self.y + self.square_size],
             [self.x, self.y + self.square_size]
         ], dtype=np.float32)
-        self.data_changed.emit(dest_square.tolist())
+        self.data_changed.emit((dest_square.tolist(), self.square_size))
         self.transform_matrix = cv.getPerspectiveTransform(self.source_square, dest_square)
         self.update()
 

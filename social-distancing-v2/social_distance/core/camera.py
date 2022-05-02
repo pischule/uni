@@ -7,10 +7,11 @@ import json
 class Camera:
     name: str
     address: str
-    side_length: float
     roi: List[Tuple[int, int]]
     square: List[List[float]]
+    side_length: float
     preview_square: List[List[float]]
+    preview_side_length: float = None
 
     def to_json(self):
         return json.dumps(dataclasses.asdict(self))

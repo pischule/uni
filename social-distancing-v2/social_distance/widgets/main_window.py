@@ -10,7 +10,7 @@ from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtGui import QImage, QPolygon
 from PySide6.QtWidgets import QMainWindow, QFileDialog
 
-from social_distance.core.camera_model import Camera
+from social_distance.core.camera import Camera
 from social_distance.generated_ui.main_window import Ui_MainWindow
 from social_distance.thread.camera_thread import CameraThread
 from social_distance.widgets.wizard.wizard import CameraAddWizard
@@ -48,6 +48,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.modelComboBox.currentIndexChanged.connect(self.camera_thread.set_model)
         self.modelComboBox.addItems(NETWORK_NAMES)
 
+        self.viewComboBox.currentIndexChanged.connect(self.switch_view)
+
         os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;udp"
 
     def paintEvent(self, event: PySide6.QtGui.QPaintEvent) -> None:
@@ -70,6 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         roi = dlg.roi
         square = dlg.square
         preview_square = dlg.preview_square
+        preview_side_length = dlg.preview_side_length
 
         camera = Camera(
             name=camera_name,
@@ -77,7 +80,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             side_length=side_length,
             roi=roi,
             square=square,
-            preview_square=preview_square
+            preview_square=preview_square,
+            preview_side_length=preview_side_length
         )
 
         self._cameras.append(camera)
@@ -113,6 +117,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         for k in self._cameras:
             self.cameraComboBox.addItem(k.name)
+
+    def switch_view(self, index: int):
+        # 0 - regular
+        # 1 - top-down
+        self.camera_thread.set_view_mode(index)
 
     def save_data(self):
         data = json.dumps(self.camera_thread.data)
