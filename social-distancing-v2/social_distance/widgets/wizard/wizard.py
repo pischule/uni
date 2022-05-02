@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QWizard
 
-from social_distance.widgets.wizard.camera_wizard_page import CamaraUrlPage
+from social_distance.widgets.wizard.camera_page import CamaraUrlPage
 from social_distance.widgets.wizard.details_page import DetailsPage
-from social_distance.widgets.wizard.preview_settings_page import PreviewSettingsPage
+from social_distance.widgets.wizard.top_view_page import PreviewSettingsPage
 from social_distance.widgets.wizard.roi_page import RoiPage
-from social_distance.widgets.wizard.square_edit_page import SquareEditPage
+from social_distance.widgets.wizard.square_page import SquareEditPage
 
 
 class CameraAddWizard(QWizard):

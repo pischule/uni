@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QApplication
 
 
 class PolygonDrawerWidget(QtWidgets.QLabel):
-    polygon_changed = QtCore.Signal(list)
+    data_changed = QtCore.Signal(list)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -23,6 +23,7 @@ class PolygonDrawerWidget(QtWidgets.QLabel):
     def init(self, image: QImage):
         self.image = image
         self.points = []
+        self.data_changed.emit([p.toTuple() for p in self.get_absolute_points()])
         self.update()
 
     def paintEvent(self, event):
@@ -37,7 +38,6 @@ class PolygonDrawerWidget(QtWidgets.QLabel):
         qp.setPen(pn)
         qp.setBrush(br)
         qp.drawPolygon([self.image_relative_pos_to_widget_pos(p) for p in self.points])
-        self.polygon_changed.emit([p.toTuple() for p in self.get_absolute_points()])
 
     def mousePressEvent(self, event):
         if self.image is None:
@@ -59,6 +59,7 @@ class PolygonDrawerWidget(QtWidgets.QLabel):
 
     def mouseReleaseEvent(self, ev: QtGui.QMouseEvent) -> None:
         self.moving_index = -1
+        self.data_changed.emit([p.toTuple() for p in self.get_absolute_points()])
 
     def mouseMoveEvent(self, ev: QtGui.QMouseEvent) -> None:
         if self.image is None:

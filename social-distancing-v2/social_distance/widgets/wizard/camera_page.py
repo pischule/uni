@@ -2,7 +2,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWizardPage, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton
 
 from social_distance.util import *
-from social_distance.widgets.drawers import ImageDrawer
+from social_distance.widgets.image_drawer import ImageDrawer
 
 
 class CamaraUrlPage(QWizardPage):

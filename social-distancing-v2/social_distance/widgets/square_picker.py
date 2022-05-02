@@ -5,10 +5,10 @@ from PySide6.QtWidgets import QApplication
 
 
 class SquarePickerWidget(QtWidgets.QLabel):
-    square_changed = QtCore.Signal(list)
+    data_changed = QtCore.Signal(list)
 
     def __init__(self, parent=None, circle_radius=0.02):
-        super().__init__()
+        super().__init__(parent)
         self.setGeometry(30, 30, 600, 400)
 
         self.points = [
@@ -35,6 +35,7 @@ class SquarePickerWidget(QtWidgets.QLabel):
             QtCore.QPointF(0.7, 0.7),
             QtCore.QPointF(0.3, 0.7),
         ]
+        self.data_changed.emit([p.toTuple() for p in self.get_absolute_points()])
         self.update()
 
     def paintEvent(self, event):
@@ -49,7 +50,6 @@ class SquarePickerWidget(QtWidgets.QLabel):
         qp.setPen(pn)
         qp.setBrush(br)
         qp.drawPolygon([self.image_relative_pos_to_widget_pos(p) for p in self.points])
-        self.square_changed.emit([p.toTuple() for p in self.get_absolute_points()])
 
     def mousePressEvent(self, event):
         if self.image is None:
@@ -81,6 +81,7 @@ class SquarePickerWidget(QtWidgets.QLabel):
         self.move_point(relative_position)
         self.moving_index = -1
         self.setCursor(QtCore.Qt.OpenHandCursor)
+        self.data_changed.emit([p.toTuple() for p in self.get_absolute_points()])
 
     def move_point(self, new_pos):
         if self.moving_index == -1 or self.image is None:

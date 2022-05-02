@@ -11,7 +11,7 @@ class PreviewSettingsPage(QWizardPage):
         self.setSubTitle("Select preview settings")
 
         self.top_view_preview = TopViewPreview(self)
-        self.top_view_preview.preview_square_changed.connect(self.preview_square_changed)
+        self.top_view_preview.data_changed.connect(self.preview_square_changed)
 
         layout = QVBoxLayout()
         layout.addWidget(self.top_view_preview)

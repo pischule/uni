@@ -14,7 +14,7 @@ class RoiPage(QWizardPage):
         layout = QVBoxLayout()
 
         self.polygon_drawer = PolygonDrawerWidget(self)
-        self.polygon_drawer.polygon_changed.connect(self.polygon_changed)
+        self.polygon_drawer.data_changed.connect(self.polygon_changed)
         layout.addWidget(self.polygon_drawer, stretch=1)
         self.setLayout(layout)
 

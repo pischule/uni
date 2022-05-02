@@ -15,7 +15,7 @@ class SquareEditPage(QWizardPage):
         self.setSubTitle("Select a calibration pattern")
 
         self.square_drawer = SquarePickerWidget(self)
-        self.square_drawer.square_changed.connect(self.square_changed)
+        self.square_drawer.data_changed.connect(self.square_changed)
         layout = QVBoxLayout()
         layout.addWidget(self.square_drawer, stretch=1)
         self.setLayout(layout)
