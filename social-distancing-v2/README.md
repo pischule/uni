@@ -1,6 +1,8 @@
 # social-distancing-v2
 
-<img width="866" alt="image" src="https://user-images.githubusercontent.com/41614960/159138073-74cd8b26-3236-4a87-a3f6-08846b2575d0.png">
+<img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166265315-2370a242-3673-4e7b-a397-dbcb33082c20.png">
+
+<img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166265400-46a11b69-b121-44e6-9946-6e068a5da466.png">
 
 ### [видео](https://www.youtube.com/watch?v=Czs4a9fHq8E)
 
