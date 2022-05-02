@@ -86,6 +86,14 @@ def draw_polygon(frame, polygon) -> np.ndarray:
     return cv.addWeighted(frame, 1 - alpha, result, alpha, 0)
 
 
+def draw_circles(frame, points, is_safe, radius):
+    thickness = min(int(frame.shape[0] / 300), 10)
+    for s, point in zip(is_safe, points):
+        int_point = tuple(int(x) for x in point)
+        color = safe_flag_to_color(s)
+        cv.circle(frame, int_point, radius, color, thickness)
+
+
 def calc_statistics(ground_points, safe_distance, is_safe) -> Dict[str, int]:
     violations = 0
     ds = DisjointSet()
@@ -111,3 +119,18 @@ def calc_statistics(ground_points, safe_distance, is_safe) -> Dict[str, int]:
         'Violations': violations,
         'Violation Clusters': len(list(ds.itersets()))
     }
+
+
+def getPerspectiveTransform(src: list, dst: list):
+    return cv.getPerspectiveTransform(np.asarray(src, np.float32), np.asarray(dst, np.float32))
+
+
+def distance_square(distance):
+    return np.asarray(
+        [
+            [0, 0],
+            [distance, 0],
+            [distance, distance],
+            [0, distance]
+        ], np.float32
+    )

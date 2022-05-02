@@ -5,11 +5,13 @@ from PySide6.QtWidgets import QApplication
 
 
 class SquarePickerWidget(QtWidgets.QLabel):
-    def __init__(self, image, parent=None, points=None, circle_radius=0.02):
+    square_changed = QtCore.Signal(list)
+
+    def __init__(self, parent=None, circle_radius=0.02):
         super().__init__()
         self.setGeometry(30, 30, 600, 400)
 
-        self.points = points or [
+        self.points = [
             QtCore.QPointF(0.3, 0.3),
             QtCore.QPointF(0.7, 0.3),
             QtCore.QPointF(0.7, 0.7),
@@ -20,12 +22,24 @@ class SquarePickerWidget(QtWidgets.QLabel):
         self.circle_radius = circle_radius
         self.moving_index = -1
         self.thickness = 1
-        self.image = image
-        self.scaled_image_size = self.image.size()
+        self.image = None
+        self.scaled_image_size = QPointF(1, 1)
 
         self.show()
 
+    def init(self, image: QImage):
+        self.image = image
+        self.points = [
+            QtCore.QPointF(0.3, 0.3),
+            QtCore.QPointF(0.7, 0.3),
+            QtCore.QPointF(0.7, 0.7),
+            QtCore.QPointF(0.3, 0.7),
+        ]
+        self.update()
+
     def paintEvent(self, event):
+        if self.image is None:
+            return
         qp = QtGui.QPainter(self)
         scaled_image = self.image.scaled(self.width(), self.height(), Qt.KeepAspectRatio)
         self.scaled_image_size = scaled_image.size()
@@ -35,8 +49,11 @@ class SquarePickerWidget(QtWidgets.QLabel):
         qp.setPen(pn)
         qp.setBrush(br)
         qp.drawPolygon([self.image_relative_pos_to_widget_pos(p) for p in self.points])
+        self.square_changed.emit([p.toTuple() for p in self.get_absolute_points()])
 
     def mousePressEvent(self, event):
+        if self.image is None:
+            return
         relative_position = self.widget_pos_to_image_relative_pos(event.position())
         self.moving_index = self.get_clicked_point(relative_position)
         # change cursor
@@ -46,6 +63,8 @@ class SquarePickerWidget(QtWidgets.QLabel):
         self.setCursor(QtCore.Qt.ClosedHandCursor)
 
     def mouseMoveEvent(self, event):
+        if self.image is None:
+            return
         relative_position =  self.widget_pos_to_image_relative_pos(event.position())
         self.move_point(relative_position)
 
@@ -56,13 +75,15 @@ class SquarePickerWidget(QtWidgets.QLabel):
                 self.setCursor(QtCore.Qt.ArrowCursor)
 
     def mouseReleaseEvent(self, event):
+        if self.image is None:
+            return
         relative_position = self.widget_pos_to_image_relative_pos(event.position())
         self.move_point(relative_position)
         self.moving_index = -1
         self.setCursor(QtCore.Qt.OpenHandCursor)
 
     def move_point(self, new_pos):
-        if self.moving_index == -1:
+        if self.moving_index == -1 or self.image is None:
             return
         self.points[self.moving_index] = new_pos
         self.update()
@@ -84,8 +105,10 @@ class SquarePickerWidget(QtWidgets.QLabel):
         return QPointF(image_pos.x() * image_size.width(), image_pos.y() * image_size.height())
 
     def closeEvent(self, event: QtGui.QCloseEvent) -> None:
-        q_points = [self.image_relative_to_absolute_pos(p) for p in self.points]
-        print(repr(list(map(lambda p: p.toTuple(), q_points))))
+        print(self.get_absolute_points())
+
+    def get_absolute_points(self):
+        return [self.image_relative_to_absolute_pos(p) for p in self.points]
 
 
 if __name__ == "__main__":
@@ -94,7 +117,8 @@ if __name__ == "__main__":
     image = QImage('/Users/maksim/Projects/SocialDistance/SocialDistance/data/video/first_frame.jpg')
 
     app = QApplication(sys.argv)
-    window = SquarePickerWidget(image=image)
+    window = SquarePickerWidget()
+    window.init(image)
     window.resize(800, 600)
     window.show()
     sys.exit(app.exec())

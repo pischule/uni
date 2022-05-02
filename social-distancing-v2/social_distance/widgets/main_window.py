@@ -48,7 +48,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.modelComboBox.currentIndexChanged.connect(self.camera_thread.set_model)
         self.modelComboBox.addItems(NETWORK_NAMES)
 
-
         os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;udp"
 
     def paintEvent(self, event: PySide6.QtGui.QPaintEvent) -> None:
@@ -64,19 +63,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dlg = CameraAddWizard(self)
         if not dlg.exec():
             return False
-        address = dlg.field("address")
-        square_length = dlg.field("square_length")
-        square_polygon: QPolygon = dlg.field("square_polygon")
-        roi_polygon: QPolygon = dlg.field("roi_polygon")
-        camera_name: str = dlg.field("camera_name")
 
-        self._cameras.append(Camera.from_wizard(
-            camera_name,
-            address,
-            float(square_length),
-            [p.toTuple() for p in square_polygon.toList()],
-            [p.toTuple() for p in roi_polygon.toList()]
-        ))
+        address = dlg.field("address")
+        camera_name: str = dlg.field("camera_name")
+        side_length = dlg.field("side_length")
+        roi = dlg.roi
+        square = dlg.square
+        preview_square = dlg.preview_square
+
+        camera = Camera(
+            name=camera_name,
+            address=address,
+            side_length=side_length,
+            roi=roi,
+            square=square,
+            preview_square=preview_square
+        )
+
+        self._cameras.append(camera)
         self.cameraComboBox.addItem(camera_name)
         return True
 

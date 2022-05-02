@@ -34,3 +34,7 @@ def qpolygonf_to_list(qpolygon: QPolygonF) -> list:
 
 def get_path(*segments) -> str:
     return os.path.join('data', *segments)
+
+
+def qpolygon_to_list(qpolygon: QPolygonF) -> list:
+    return [p.toTuple() for p in qpolygon]

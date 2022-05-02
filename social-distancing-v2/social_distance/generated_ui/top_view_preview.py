@@ -22,11 +22,13 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(676, 638)
+        Form.resize(652, 641)
         self.gridLayout = QGridLayout(Form)
         self.gridLayout.setObjectName(u"gridLayout")
         self.graphicsView = QGraphicsView(Form)
         self.graphicsView.setObjectName(u"graphicsView")
+        self.graphicsView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.graphicsView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.gridLayout.addWidget(self.graphicsView, 1, 1, 1, 1)
 
@@ -57,7 +59,7 @@ class Ui_Form(object):
         self.scaleSlider = QSlider(Form)
         self.scaleSlider.setObjectName(u"scaleSlider")
         self.scaleSlider.setMinimum(1)
-        self.scaleSlider.setMaximum(1000)
+        self.scaleSlider.setMaximum(2000)
         self.scaleSlider.setValue(400)
         self.scaleSlider.setOrientation(Qt.Horizontal)
 

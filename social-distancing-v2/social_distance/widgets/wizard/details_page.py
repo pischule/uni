@@ -26,7 +26,7 @@ class DetailsPage(QWizardPage):
         layout.addWidget(self._camera_name_edit, 1, 1)
 
         self.setLayout(layout)
-        self.registerField("square_length", self._length_edit, "value", "valueChanged")
+        self.registerField("side_length", self._length_edit, "value", "valueChanged")
         self.registerField("camera_name", self._camera_name_edit)
 
     def initializePage(self) -> None:

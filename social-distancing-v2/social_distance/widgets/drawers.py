@@ -92,9 +92,9 @@ class SquareDrawer(QtWidgets.QGraphicsView):
 
         self._polygon_item = QtWidgets.QGraphicsPolygonItem([
             QtCore.QPoint(100, 100),
-            QtCore.QPoint(100, 400),
+            QtCore.QPoint(400, 100),
             QtCore.QPoint(400, 400),
-            QtCore.QPoint(400, 100)
+            QtCore.QPoint(100, 400),
         ], self._pixmap_item)
         self._polygon_item.setPen(QtGui.QPen(QtCore.Qt.black, line_width, QtCore.Qt.SolidLine))
         self._polygon_item.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.VerPattern))

@@ -11,14 +11,20 @@ class CameraAddWizard(QWizard):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.pixmap = None
+        self.roi = None
+        self.square = None
+        self.preview_square = None
+
         self.addPage(CamaraUrlPage(self))
         self.addPage(RoiPage(self))
         self.addPage(SquareEditPage(self))
-        self.addPage(DetailsPage(self))
         self.addPage(PreviewSettingsPage(self))
+        self.addPage(DetailsPage(self))
 
         self.setWizardStyle(QWizard.ModernStyle)
         self.setWindowTitle("Add a new camera")
+        # disable background
 
 
 if __name__ == "__main__":
@@ -32,7 +38,7 @@ if __name__ == "__main__":
 
     print(f'address: {demo.field("address")}')
     print(f'camera_name: {demo.field("camera_name")}')
-    print(f'square_length: {demo.field("square_length")}')
-    print(f'square_polygon: {demo.field("square_polygon")}')
-    print(f'roi_polygon: {demo.field("roi_polygon")}')
-    print(f'preview_transform: {demo.field("preview_transform")}')
+    print(f'side_length: {demo.field("side_length")}')
+    print(f'roi: {demo.roi}')
+    print(f'square: {demo.square}')
+    print(f'preview_square: {demo.preview_square}')

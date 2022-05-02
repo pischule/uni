@@ -6,8 +6,9 @@ from social_distance.widgets.drawers import ImageDrawer
 
 
 class CamaraUrlPage(QWizardPage):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super(CamaraUrlPage, self).__init__(parent)
+        self.parent = parent
 
         self.setTitle("Connect to camera")
         self.setSubTitle("Input camera address")
@@ -20,6 +21,7 @@ class CamaraUrlPage(QWizardPage):
         self._address_edit = QLineEdit()
         self._address_edit.textChanged.connect(self._address_changed)
         address_layout.addWidget(self._address_edit)
+        self.registerField("address", self._address_edit)
 
         self._connect_button = QPushButton("Connect")
         self._connect_button.clicked.connect(self._connect_button_clicked)
@@ -32,10 +34,6 @@ class CamaraUrlPage(QWizardPage):
         layout.addWidget(self._preview_view)
 
         self.setLayout(layout)
-
-        self.registerField("address", self._address_edit)
-        self.registerField("preview", self._preview_view)
-        self.registerField("frame", self)
 
     def _address_changed(self, text):
         self._connect_button.setEnabled(len(text) > 0)
@@ -52,8 +50,7 @@ class CamaraUrlPage(QWizardPage):
         qt_image = cv_to_qimage(self._frame)
         self._preview_view.pixmap = QPixmap.fromImage(qt_image)
         self.update()
-        self.setField("preview", self._preview_view.pixmap)
-        self.setField("frame", self._frame)
+        self.parent.frame = self._frame
         self._is_complete = True
         self.completeChanged.emit()
 

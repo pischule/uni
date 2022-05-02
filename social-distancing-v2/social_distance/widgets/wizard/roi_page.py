@@ -1,49 +1,30 @@
-from PySide6 import QtGui
-from PySide6.QtCore import Slot, QPointF
-from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QWizardPage, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import QWizardPage, QVBoxLayout
 
 from social_distance.util import *
-from social_distance.widgets.drawers import PolygonDrawer
+from social_distance.widgets.polygon_drawer import PolygonDrawerWidget
 
 
 class RoiPage(QWizardPage):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super(RoiPage, self).__init__(parent)
+        self.parent = parent
         self.setTitle("ROI")
         self.setSubTitle("Select ROI")
 
         layout = QVBoxLayout()
 
-        self._roi_edit = PolygonDrawer(self, line_width=1)
-        self._roi_edit.polygonChanged.connect(self.polygon_changed)
-        layout.addWidget(self._roi_edit)
-
-        self._reset_button = QPushButton("Reset")
-        self._reset_button.clicked.connect(self._reset_button_clicked)
-        layout.addWidget(self._reset_button)
-
+        self.polygon_drawer = PolygonDrawerWidget(self)
+        self.polygon_drawer.polygon_changed.connect(self.polygon_changed)
+        layout.addWidget(self.polygon_drawer, stretch=1)
         self.setLayout(layout)
 
-        self.registerField("roi_polygon", self._roi_edit)
-
-    def _reset_button_clicked(self):
-        self._roi_edit.reset()
-
     def initializePage(self) -> None:
-        pixmap: QPixmap = self.field("preview")
-        self._roi_edit.pixmap = pixmap
-        self._roi_edit.polygon = QPolygonF(
-            [
-                QPointF(0, 0),
-                QPointF(pixmap.width(), 0),
-                QPointF(pixmap.width(), pixmap.height()),
-                QPointF(0, pixmap.height()),
-            ]
-        )
+        qimage = cv_to_qimage(self.parent.frame)
+        self.polygon_drawer.init(qimage)
 
-        self.setField("roi_polygon", self._roi_edit.polygon)
-
-    @Slot(QtGui.QPolygonF)
     def polygon_changed(self, polygon):
-        self.setField("roi_polygon", polygon)
+        self.parent.roi = polygon
+        self.completeChanged.emit()
+
+    def isComplete(self):
+        return self.parent.roi is not None and len(self.parent.roi) >= 3

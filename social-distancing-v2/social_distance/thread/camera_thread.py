@@ -11,6 +11,8 @@ from social_distance.util import cv_to_qimage, get_path
 from social_distance.core.frame_provider import FrameProvider
 from social_distance.core.processing import *
 
+import cv2 as cv
+
 
 class CameraThread(QThread):
     pixmap_changed = Signal(QImage)
@@ -28,7 +30,8 @@ class CameraThread(QThread):
         self.detector_thread.start()
 
         self.current_bb = []
-        self.perspective_matrix = np.ones((3, 3), dtype=np.float32)
+        self.distance_matrix = np.ones((3, 3), dtype=np.float32)
+        self.preview_matrix = np.ones((3, 3), dtype=np.float32)
         self.roi = None
         self.safe_distance = 2
 
@@ -48,11 +51,18 @@ class CameraThread(QThread):
         bb = self.current_bb
         bb = filter_except_in_polygon(bb, self.roi)
         points = bb_points(bb)
-        ground_points = project_points(points, self.perspective_matrix)
+        ground_points = project_points(points, self.distance_matrix)
         is_safe = classify_safe_unsafe(ground_points, self.safe_distance)
-        draw_bb(frame, is_safe, bb)
-        frame = draw_polygon(frame, self.roi)
         stats = calc_statistics(ground_points, self.safe_distance, is_safe)
+
+        if True:
+            draw_bb(frame, is_safe, bb)
+            frame = draw_polygon(frame, self.roi)
+        else:
+            frame = cv.warpPerspective(frame, self.preview_matrix, (1000, 1000))
+            preview_points = project_points(points, self.preview_matrix)
+            draw_circles(frame, preview_points, is_safe, int(50))
+
 
         qimage = cv_to_qimage(frame)
         self.pixmap_changed.emit(qimage)
@@ -62,7 +72,8 @@ class CameraThread(QThread):
     def set_camera(self, cam: Camera) -> None:
         self.m.lock()
         self.fp.set_source(cam.address)
-        self.perspective_matrix = np.asarray(cam.transform_matrix, dtype=np.float32)
+        self.distance_matrix = getPerspectiveTransform(cam.square, distance_square(cam.side_length))
+        self.preview_matrix = getPerspectiveTransform(cam.square, cam.preview_square)
         self.roi = np.asarray(cam.roi, np.int32)
         self.m.unlock()
 
