@@ -1,4 +1,5 @@
 import csv
+import datetime
 from io import StringIO
 from typing import List
 
@@ -16,7 +17,7 @@ def stats_to_string_csv(stats: List[Stats]) -> str:
 
 
 if __name__ == '__main__':
-    s1 = Stats(time=1, total=2, safe=3, unsafe=4, violations=5, violation_clusters=6)
-    s2 = Stats(time=2, total=3, safe=4, unsafe=5, violations=6, violation_clusters=7)
+    s1 = Stats(time=datetime.datetime.now().isoformat(), total=2, safe=3, unsafe=4, violations=5, violation_clusters=6)
+    s2 = Stats(time=datetime.datetime.now().isoformat(), total=3, safe=4, unsafe=5, violations=6, violation_clusters=7)
 
     print(stats_to_string_csv([s1, s2]))

@@ -3,7 +3,7 @@ import dataclasses
 
 @dataclasses.dataclass
 class Stats:
-    time: float
+    time: str
     total: int
     safe: int
     unsafe: int

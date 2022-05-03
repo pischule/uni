@@ -1,6 +1,6 @@
 import math
 import os
-import time
+from datetime import datetime
 from typing import Any, Tuple, List
 
 import cv2 as cv
@@ -72,7 +72,7 @@ def bb_points(boxes):
 
 
 def project_points(image_points, perspective_matrix):
-    if not image_points:
+    if image_points is None or len(image_points) == 0:
         return []
     return cv.perspectiveTransform(np.asarray([image_points], np.float32), perspective_matrix)[0]
 
@@ -94,6 +94,7 @@ def draw_circles(frame, points, is_safe, radius):
     for s, point in zip(is_safe, points):
         int_point = tuple(int(x) for x in point)
         color = safe_flag_to_color(s)
+        cv.circle(frame, int_point, thickness*2, color, -1)
         cv.circle(frame, int_point, int(radius), color, thickness)
 
 
@@ -116,7 +117,7 @@ def calc_statistics(ground_points, safe_distance, is_safe) -> Stats:
 
     safe_count = sum(is_safe)
     return Stats(
-        time=time.time(),
+        time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         total=len(ground_points),
         safe=safe_count,
         unsafe=len(ground_points) - safe_count,

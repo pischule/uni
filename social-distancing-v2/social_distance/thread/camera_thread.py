@@ -55,9 +55,9 @@ class CameraThread(QThread):
             return
 
         self.detector_thread.pass_image(frame)
+        frame = draw_polygon(frame, self.roi)
         if self.view_mode == 0:
             draw_bb(frame, self.is_safe, self.current_bb)
-            frame = draw_polygon(frame, self.roi)
         else:
             frame = cv.warpPerspective(frame, self.preview_matrix, (1000, 1000))
             preview_points = project_points(self.points, self.preview_matrix)
