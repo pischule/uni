@@ -5,9 +5,11 @@ import sys
 import urllib.request
 
 from PySide6.QtWidgets import QApplication
+from PySide6 import QtGui
 
 from social_distance.core.processing import NETWORK_FILENAMES
 from social_distance.widgets.main_window import MainWindow
+import resources
 
 
 def download_file(url, filename):
@@ -41,6 +43,7 @@ def main():
     # if getattr(sys, 'frozen', False):
     download_large_files()
     app = QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(':/icon.png'))
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

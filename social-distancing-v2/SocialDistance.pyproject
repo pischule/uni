@@ -1,3 +1,3 @@
 {
-    "files": ["social_distance/ui/mainwindow.ui","social_distance/ui/top_view_preview.ui"]
+    "files": ["social_distance/ui/top_view_preview.ui","social_distance/ui/mainwindow.ui","resources.qrc"]
 }
