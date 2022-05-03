@@ -4,7 +4,8 @@
 
 <img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166265400-46a11b69-b121-44e6-9946-6e068a5da466.png">
 
-<img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166509212-a45a6698-6a42-4ee7-91d4-8a6ff380b3a8.png">
+<img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166545484-3072f5f5-da0b-4a45-907d-8fbaa5990140.png">
+
 
 
 ### [видео](https://www.youtube.com/watch?v=Czs4a9fHq8E)
