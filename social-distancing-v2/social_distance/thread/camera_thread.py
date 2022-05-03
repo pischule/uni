@@ -32,6 +32,7 @@ class CameraThread(QThread):
         self.current_bb = []
         self.distance_matrix = np.ones((3, 3), dtype=np.float32)
         self.preview_matrix = np.ones((3, 3), dtype=np.float32)
+        self.preview_matrix_inv = np.ones((3, 3), dtype=np.float32)
         self.roi = None
         self.safe_distance = 2
         self.pixel_per_meter = 1
@@ -56,12 +57,17 @@ class CameraThread(QThread):
 
         self.detector_thread.pass_image(frame)
         frame = draw_polygon(frame, self.roi)
+        preview_points = project_points(self.points, self.preview_matrix)
         if self.view_mode == 0:
             draw_bb(frame, self.is_safe, self.current_bb)
-        else:
+        elif self.view_mode == 1:
             frame = cv.warpPerspective(frame, self.preview_matrix, (1000, 1000))
-            preview_points = project_points(self.points, self.preview_matrix)
             draw_circles(frame, preview_points, self.is_safe, self.pixel_per_meter * self.safe_distance / 2)
+        else:
+            warped = np.zeros((1000, 1000, 3), np.uint8)
+            draw_circles(warped, preview_points, self.is_safe, self.pixel_per_meter * self.safe_distance / 2)
+            unwarped = cv.warpPerspective(warped, self.preview_matrix_inv, (frame.shape[1], frame.shape[0]))
+            cv.add(frame, unwarped, frame)
 
 
         qimage = cv_to_qimage(frame)
@@ -73,6 +79,7 @@ class CameraThread(QThread):
         self.fp.set_source(cam.address)
         self.distance_matrix = getPerspectiveTransform(cam.square, distance_square(cam.side_length))
         self.preview_matrix = getPerspectiveTransform(cam.square, cam.preview_square)
+        self.preview_matrix_inv = np.linalg.inv(self.preview_matrix)
         self.roi = np.asarray(cam.roi, np.int32)
         self.pixel_per_meter = cam.preview_side_length / cam.side_length
         self.m.unlock()

@@ -99,6 +99,7 @@ class Ui_MainWindow(object):
         self.viewComboBox = QComboBox(self.centralwidget)
         self.viewComboBox.addItem("")
         self.viewComboBox.addItem("")
+        self.viewComboBox.addItem("")
         self.viewComboBox.setObjectName(u"viewComboBox")
 
         self.verticalLayout.addWidget(self.viewComboBox)
@@ -169,6 +170,7 @@ class Ui_MainWindow(object):
         self.viewLabel.setText(QCoreApplication.translate("MainWindow", u"View:", None))
         self.viewComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Regular", None))
         self.viewComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Top-Down", None))
+        self.viewComboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Projected Circles", None))
 
         self.distanceLabel.setText(QCoreApplication.translate("MainWindow", u"Safe distance:", None))
         self.distanceSpinBox.setSuffix(QCoreApplication.translate("MainWindow", u" m", None))
