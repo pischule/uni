@@ -89,12 +89,13 @@ def draw_polygon(frame, polygon) -> np.ndarray:
     return cv.addWeighted(frame, 1 - alpha, result, alpha, 0)
 
 
-def draw_circles(frame, points, is_safe, radius):
+def draw_circles(frame, points, is_safe, radius, with_points=True):
     thickness = min(int(frame.shape[0] / 300), 10)
     for s, point in zip(is_safe, points):
         int_point = tuple(int(x) for x in point)
         color = safe_flag_to_color(s)
-        cv.circle(frame, int_point, thickness*2, color, -1)
+        if with_points:
+            cv.circle(frame, int_point, thickness * 2, color, -1)
         cv.circle(frame, int_point, int(radius), color, thickness)
 
 

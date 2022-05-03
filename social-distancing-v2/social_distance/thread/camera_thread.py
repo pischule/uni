@@ -43,6 +43,8 @@ class CameraThread(QThread):
         self.ground_points = []
         self.is_safe = []
 
+        self.background_subtractor = cv.createBackgroundSubtractorKNN(detectShadows=False)
+
     def run(self):
         self.keep_running = True
         while self.keep_running:
@@ -56,6 +58,7 @@ class CameraThread(QThread):
             return
 
         self.detector_thread.pass_image(frame)
+        fgmask = self.background_subtractor.apply(frame)
         frame = draw_polygon(frame, self.roi)
         preview_points = project_points(self.points, self.preview_matrix)
         if self.view_mode == 0:
@@ -65,9 +68,10 @@ class CameraThread(QThread):
             draw_circles(frame, preview_points, self.is_safe, self.pixel_per_meter * self.safe_distance / 2)
         else:
             warped = np.zeros((1000, 1000, 3), np.uint8)
-            draw_circles(warped, preview_points, self.is_safe, self.pixel_per_meter * self.safe_distance / 2)
+            draw_circles(warped, preview_points, self.is_safe, self.pixel_per_meter * self.safe_distance / 2, with_points=False)
             unwarped = cv.warpPerspective(warped, self.preview_matrix_inv, (frame.shape[1], frame.shape[0]))
-            cv.add(frame, unwarped, frame)
+            cv.bitwise_not(fgmask, fgmask)
+            cv.add(frame, unwarped, frame, fgmask)
 
 
         qimage = cv_to_qimage(frame)
