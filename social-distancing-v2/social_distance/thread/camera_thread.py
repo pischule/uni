@@ -43,7 +43,7 @@ class CameraThread(QThread):
         self.ground_points = []
         self.is_safe = []
 
-        self.background_subtractor = cv.createBackgroundSubtractorKNN(detectShadows=False)
+        self.background_subtractor = cv.createBackgroundSubtractorKNN(detectShadows=True)
 
     def run(self):
         self.keep_running = True
@@ -59,6 +59,8 @@ class CameraThread(QThread):
 
         self.detector_thread.pass_image(frame)
         fgmask = self.background_subtractor.apply(frame)
+        fgmask = cv.GaussianBlur(fgmask, (15, 15), 0)
+        fgmask = cv.threshold(fgmask, 175, 255, cv.THRESH_BINARY)[1]
         frame = draw_polygon(frame, self.roi)
         preview_points = project_points(self.points, self.preview_matrix)
         if self.view_mode == 0:
