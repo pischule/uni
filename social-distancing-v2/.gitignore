@@ -85,3 +85,4 @@ Thumbs.db
 /build/
 /dist/
 /social_distance/core/vid1.jpg
+/data/video/*.mp4
