@@ -63,7 +63,14 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QComboBox" name="cameraComboBox"/>
+           <widget class="QComboBox" name="cameraComboBox">
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="addCameraPushButton">

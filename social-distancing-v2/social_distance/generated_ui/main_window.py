@@ -63,6 +63,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.cameraComboBox = QComboBox(self.centralwidget)
         self.cameraComboBox.setObjectName(u"cameraComboBox")
+        self.cameraComboBox.setMaximumSize(QSize(160, 16777215))
 
         self.horizontalLayout_3.addWidget(self.cameraComboBox)
 
