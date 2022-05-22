@@ -27,9 +27,9 @@ def download_large_files():
     nextcloud_folder = "https://nextcloud.pischulenok.xyz/s/iTpNXgwZbfEA4Ws/download?path=&files="
     files = [
         ('data', 'video', 'VID_20220506_123738_720p.mp4'),
-        ('data', 'video', 'VID_20220506_123738_1080.mp4'),
-        ('data', 'video', 'VID_20220506_124411_720.mp4'),
-        ('data', 'video', 'VID_20220506_124411_1080.mp4'),
+        # ('data', 'video', 'VID_20220506_123738_1080.mp4'),
+        # ('data', 'video', 'VID_20220506_124411_720.mp4'),
+        # ('data', 'video', 'VID_20220506_124411_1080.mp4'),
         *[('data', 'models', f'{fn}.weights') for fn in NETWORK_FILENAMES],
         *[('data', 'models', f'{fn}.cfg') for fn in NETWORK_FILENAMES],
     ]

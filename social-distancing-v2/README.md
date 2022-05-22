@@ -25,3 +25,10 @@ https://youtu.be/1NOkuQelV7E
 - [Qt 6](https://www.qt.io/product/qt6)
 
 В мастере настройки можно указать путь к видеофайлу, 0 для веб-камеры и url любой rtsp камеры.
+
+---
+
+pyinstaller build command
+```bash
+pyinstaller main.py --onefile -n 'SocialDistancing' --windowed --icon=icon.png
+```
