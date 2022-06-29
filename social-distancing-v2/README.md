@@ -2,15 +2,11 @@
 
 https://youtu.be/1NOkuQelV7E
 
-<img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166265315-2370a242-3673-4e7b-a397-dbcb33082c20.png">
-
-<img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166265400-46a11b69-b121-44e6-9946-6e068a5da466.png">
-
-<img width="1148" alt="image" src="https://user-images.githubusercontent.com/41614960/166545484-3072f5f5-da0b-4a45-907d-8fbaa5990140.png">
+<img width="1050" alt="Screenshot 2022-06-29 at 22 24 22" src="https://user-images.githubusercontent.com/41614960/176519330-cd2b8197-dccd-4db8-9a08-c813aac56797.png">
 
 ---
 
-Это приложение предназначено для контроля социальной дистанции. 
+Это приложение для контроля социальной дистанции.
 
 Как это работает:
 
