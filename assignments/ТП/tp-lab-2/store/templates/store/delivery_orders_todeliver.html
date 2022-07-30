@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>To Deliver</h1>
+
+    <table class="table">
+    <tr>
+        <th>Product</th>
+        <th>Buyer</th>
+        <th>Seller</th>
+        {% comment %} <th>Placed at</th> {% endcomment %}
+        {% comment %} <th>Count</th> {% endcomment %}
+        <th>Total price</th>
+        <th>Deliver</th>
+    </tr>
+    {% for order in order_list %}
+        <tr>
+            <td>
+            <a href="{% url 'store:product-detail' order.product.pk %}">{{ order.product.title }}</a>
+            </td>
+            <td>{{ order.buyer }}</td>
+            <td>{{ order.product.seller }}</td>
+            {% comment %} <td>{{ order.placed_at }}</td> {% endcomment %}
+            {% comment %} <td>{{ order.count }}</td> {% endcomment %}
+            <td>{{ order.total_price }}</td>
+            <td>
+                <button type="button" class="btn btn-outline-primary" onclick="location.href='{% url 'store:delivery-order-update' order.id %}'">
+                    <i class="bi bi-truck"></i>
+                </button>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}

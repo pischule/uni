@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Catalog</h1>
+
+    <table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Seller</th>
+        <th>Count</th>
+
+        {% if user.user_type == 'b' %}
+        <th>Order</th>
+        {% endif %}
+
+    </tr>
+    {% for product_instance in productinstance_list %}
+        <tr>
+            <td><a href="{{ product_instance.product.get_absolute_url }}">
+                {{ product_instance.product.title }}</a>
+            </td>
+            <td>{{ product_instance.product.price }}</td>
+            <td>{{ product_instance.product.seller}}</td>
+            <td>{{ product_instance.count }}</td>
+
+            {% if user.user_type == 'b' %}
+            <td>
+            <button type="button" class="btn btn-outline-primary" onclick=location.href="{% url 'store:user-order-product-instance' product_instance.pk  %}">
+                <i class="bi bi-cart-dash"></i>
+            </button>
+            {% comment %} <td><a href="{% url 'store:user-order-product-instance' product_instance.pk  %}">Order</a></td> {% endcomment %}
+            </td>
+            {% endif %}
+
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>Product instance</h2>
+
+    <p><strong>Title:</strong> {{ productinstance.product.title }} </p>
+    <p><strong>Price:</strong> {{ productinstance.product.price }}</p>
+    <p><strong>Seller:</strong> {{ productinstance.product.seller }}</p>
+    <p><strong>Count:</strong> {{ productinstance.count }}</p>
+
+{% endblock %}
