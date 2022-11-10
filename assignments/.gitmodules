@@ -1,0 +1,3 @@
+[submodule "КБРС/encrypted-notes"]
+	path = КБРС/encrypted-notes
+	url = git@github.com:pischule/encrypted-notes.git
