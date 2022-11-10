@@ -10,6 +10,8 @@ Repository for university labs on [FAMCS](http://fpmi.bsu.by/), [BSU](https://bs
 
 ---
 
+## Лабы
+
 - [Архитектура компьютеров](АК/) - C++
 - [Компьютерная безопасность распределенных систем](КБРС/) - Java, JS, HTML
 - [Компьютерные сети](КС/) - Packet Tracer, C++
@@ -23,3 +25,6 @@ Repository for university labs on [FAMCS](http://fpmi.bsu.by/), [BSU](https://bs
 - [Учебная практика](УП/) - Python
 - [Функциональный анализ и интегральные уравнения](ФАиИУ/) - TeX
 
+## Всякое
+
+- [Автозаполнение посещаемости на edufpmi](https://github.com/pischule/edufpmi-automation)
