@@ -1,3 +1,6 @@
 [submodule "КБРС/encrypted-notes"]
 	path = КБРС/encrypted-notes
 	url = git@github.com:pischule/encrypted-notes.git
+[submodule "ПРБП/vaadin-movie-database"]
+	path = ПРБП/vaadin-movie-database
+	url = git@github.com:pischule/vaadin-movie-database.git
