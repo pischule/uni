@@ -1,0 +1,41 @@
+\documentclass[a4paper,14pt]{extreport}
+
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{relsize}
+\usepackage[figure,table]{totalcount}
+ \usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{graphics}
+\graphicspath{ {images/} }
+\usepackage{subcaption}
+
+\hypersetup{unicode=true}
+
+\usepackage{graphicx}
+
+\usepackage{styles/bsumain}
+\usepackage{blindtext}
+
+\newcommand*{\jobtitle}[1]{\gdef\@jobtitle{#1}}
+\newcommand{\quotes}[1]{``#1''}
+
+\jobtitle{КОМПЬЮТЕРНОЕ ЗРЕНИЕ ДЛЯ СОЦИАЛЬНОГО ДИСТАНЦИРОВАНИЯ}
+
+\begin{document}
+
+\input{titlepage.tex}
+\setcounter{page}{2}
+\input{annotation.tex}
+% \input{essay.tex}
+\input{contents.tex}
+\input{introduction.tex}
+\input{theory.tex}
+\input{conclusions.tex}
+\input{literature.tex}
+% \input{appendix.tex}
+
+\end{document}
+
+
