@@ -1,0 +1,244 @@
+% !TeX spellcheck = ru_RU
+\documentclass[a4paper]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\begin{document}
+\begin{titlepage}
+
+
+  \newgeometry{margin=1cm}
+  
+  \centerline{\large \bf МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ИНФОРМАТИКИ}
+  \vfill
+  \vfill
+  \vfill
+  \centerline{\Large \bf ФУНКЦИОНАЛЬНЫЙ АНАЛИЗ И ИНТЕГРАЛЬНЫЕ УРАВНЕНИЯ}
+  \bigskip
+  \bigskip
+  \vfill
+  \begin{centering}
+    {\large
+    Домашняя работа\\
+    студента 2 курса 2 группы \\}
+  \end{centering}
+  \centerline{\large \bf Пищулёнка Максима Сергеевича}
+  \vfill
+  \vfill
+  \hfill
+  \begin{minipage}{0.25\textwidth}
+    {\large{\bf Преподаватель} \\
+  {\it Дайняк Виктор \\ Владимирович}}
+  \end{minipage}
+  \vfill
+  \vfill
+  \centerline{\Large \bf Минск 2020}
+  
+  \end{titlepage}
+
+\begin{center}
+\end{center}
+
+\leavevmode\thispagestyle{empty}\newpage
+
+\section*{162}
+$f(x) = \sqrt{x}$\\
+\textbf{Решение}\\
+Не выполняется условие 2 при $\lambda < 0$\\
+\textbf{Ответ}\\
+Нет.
+\section*{163}
+$f(x)=\sqrt{|x|}$\\
+\textbf{Решение}\\
+Не выполняется условие 2 при $|\lambda| \neq 1$\\
+\textbf{Ответ}\\Нет.
+
+\section*{164}
+$f(x) = |x-1|$\\
+\textbf{Решение}\\
+Не выполняется условие 1: $x = 0, \ \|x\| = |x - 1| = |0 - 1| = 1 \ne 0$\\
+\textbf{Ответ}\\Нет.
+
+\section*{165}
+$f(x) = \sqrt{x^2}$\\
+\textbf{Решение}\\
+$\sqrt{x^2} = |x|$. Модуль является нормой\\
+\textbf{Ответ}\\Да.
+
+\section*{166}
+$f(x) = 5 |x|$\\
+\textbf{Решение}\\
+Если $\|x\|$ - норма, то для положительных $\alpha$: $\alpha\|x\|=0 \Leftrightarrow \|x\|=0$. $\|\lambda \alpha x\| = |\lambda\|\alpha\||x\| = |\lambda\||\alpha x\|$. 
+3. Неравенство можно домножать на коэффициент.\\
+\textbf{Ответ}\\Да.
+
+\section*{167}
+$f(x) = x^2$\\
+\textbf{Решение}\\
+$\lambda = 2,\ x = 2$:  $(2*2)^2 \neq 2*2^2$\\
+\textbf{Ответ}\\Нет.
+
+\section*{168}
+$f(x) = |\arctan x| $\\
+\textbf{Решение}\\
+$\lambda = 3,\ x = \frac{\sqrt{3}}{3}$:  $|arctg(3*\frac{\sqrt{3}}{3})| = \frac{\pi}{3} \neq 3*|arctg(\frac{\sqrt{3}}{3})| = \frac{\pi}{2}$\\
+\textbf{Ответ}\\Нет.
+
+\section*{169}
+$f(x) = \ln |x| $\\
+\textbf{Решение}\\
+$\lambda = 2,\ x = e$:  $\ln 2e \neq 2\ln e$\\
+\textbf{Ответ}\\Нет.
+
+\section*{170}
+$f(\overline{a}) = \sqrt{xy}$\\
+\textbf{Решение}\\
+$a = [0,1], b = [1,0]. \|a + b\| = 1,\|a\|=0, \|b\|=0$. То есть не выполняется 3 условие.\\
+\textbf{Ответ}\\Нет.
+
+\section*{171}
+$f(\overline{a}) = |x| + |y|$\\
+\textbf{Решение}\\
+\rule{5mm}{0pt}1. Сумма модулей равна 0 $\Leftrightarrow$ все модули равны 0.\\
+\rule{5mm}{0pt}2. $|\lambda x|+|\lambda y| = |\lambda|(|x|+|y|).$ \\
+\rule{5mm}{0pt}3. Модуль суммы не больше суммы модулей.\\
+\textbf{Ответ}\\Да.
+
+\section*{172}
+$f(\overline{a}) = \max (|x| + |y|)$\\
+\textbf{Решение}\\
+Первые два условия очевидны. Рассмотрим третье.\\ $max(|x_1+x_2|,|y_1+y_2|) \le max(|x_1|+|x_2|,|y_1|+|y_2|).$ Без ограничения общности считаем $|x_1| \le |y_1|$. \\Пусть $|x_2| \le |y_2|$. Тогда $max(|x_1|+|x_2|,|y_1|+|y_2|) = |y_1|+|y_2| = max(|x_1|,|y_1|) + max(|x_2|,|y_2|).$ \\Пусть теперь $|y_2| \le |x_2|$. Тогда либо $max(|x_1|+|x_2|,|y_1|+|y_2|) = |x_1|+|x_2| \le |y_1|+|x_2| = max(|x_1|,|y_1|) + max(|x_2|,|y_2|)$, либо $max(|x_1|+|x_2|,|y_1|+|y_2|) = |y_1|+|y_2| \le |y_1|+|x_2| = max(|x_1|,|y_1|) + max(|x_2|,|y_2|)$.\\
+\textbf{Ответ}\\Да.
+
+\section*{173}
+$f(\overline{a}) = \sqrt{x^2 + y^2} + \sqrt{xy}$\\
+\textbf{Решение}\\
+$a = [0,1], b = [1,0]. \|a + b\|=\sqrt{2}+1>\|a\|+\|b\|=2$\\
+\textbf{Ответ}\\Нет.
+
+\section*{174}
+$f( \overline{a}) = |x^2 - y^2| $\\
+\textbf{Решение}\\
+$\lambda = 2,\ x = e$:  $\ln 2e \neq 2\ln e$\\
+\textbf{Ответ}\\Нет.
+
+\section*{175}
+$f(\overline{a}) = \sqrt[3]{x^6 + y^6} $\\
+\textbf{Решение}\\
+$\lambda = 2, x = (1, 1)$: $\|\lambda x\| = 4\sqrt[3]{2} \neq 2\|x\| = 2\sqrt[3]{2}$\\
+\textbf{Ответ}\\Нет.
+
+\section*{176}
+$\max_{t\in [a, b]} (x(t))$\\
+\textbf{Решение}\\
+Максимум модуля = 0 $\Leftrightarrow$ подмодульное выражение = 0. Коэффициент легко выносится за максимум. Максимум суммы не больше суммы максимумов.\\
+\textbf{Ответ}\\Да.
+
+\section*{177}
+$\max_{t\in [a, b]} (x'(t))$\\
+\textbf{Решение}\\
+$x(t) = 3, \|x\| = 0$\\
+\textbf{Ответ}\\Нет.
+
+\section*{178}
+$|x(b) - x(a)| + \max_{t\in [a, b]} |x'(t)|$\\
+\textbf{Решение}\\
+$x(t) = 3, \|x\| = 0$\\
+\textbf{Ответ}\\Нет.
+
+\section*{179}
+$\int_a^b |x(t)|dt + \max_{t\in [a, b]} |x'(t)|$\\
+\textbf{Решение}\\
+Интеграл от неотрицательной функции равен 0 $\Leftrightarrow$ функция тождественно равна 0. Так как из интеграла и производной можно выносить константы, выполняется второе условие. А так как производная суммы равна сумме производных, модуль суммы не больше суммы модулей и максимум суммы не больше суммы максимумов, а также учитывая, что интеграл суммы равен сумме интегралов, имеет место неравенство 3\\
+\textbf{Ответ}\\Да.
+
+\section*{180}
+$|x(a)| + \max_{t\in [a,b]} |x'(t)|$\\
+\textbf{Решение}\\
+В первом условии при $\|x\| = 0$ из равенства нулю второго слагаемого имеем x(t) = C, из равенства нулю первого получаем C = 0. Второе условие очевидно выполняется, так как константа выносится за модуль, максимум, производную. Третье выполняется, так как модуль суммы не больше суммы модулей, а производная суммы равна сумме производных.\\
+\textbf{Ответ}\\Да.
+
+\section*{178}
+$|x(b) - x(a)| + \max_{t\in [a, b]} |x'(t)|$\\
+\textbf{Решение}\\
+$x(t) = 3, \|x\| = 0$\\
+\textbf{Ответ}\\Нет.
+
+
+Для \textbf{182-184} проверим, могут ли расстояния в $C[a,b]$ и $L_2[a,b]$ выступать в качестве норм. Для этого достаточно проверить второе условие (остальные условия выполняются за счет того, что совпадают с условиями задания расстояния).\\ Из максимума и модуля коэффициент лямбда легко выносится, следовательно в $C[a,b]$ расстояние можно рассматривать как норму. \\$\|\lambda x\| = (\int_a^b(\lambda x(t))^2dt)^{\frac{1}{2}} = (\int_a^b\lambda^2 (x(t))^2dt)^{\frac{1}{2}} = |\lambda|(\int_a^b(x(t))^2dt)^{\frac{1}{2}} = |\lambda| \|x\|$. Итого в $L_2[a,b]$ тоже норма.\\
+Так же из предыдущих заданий убедились, что модуль также может выступать в качестве нормы на множестве действительных чисел.\\
+То есть для этих трех норм выполняются все условия норм. Причем несложно заметить, что все эти нормы неотрицательны при любых аргументах (максимум модуля, интеграл квадрата и собственно сам модуль, все они не бывают меньше 0). Будем этим пользоваться.\\\\
+
+\section*{182}
+$\| x'' \|_{C[a, b]} + \| x \|_{\tilde{L_2}[a, b]}$\\
+\textbf{Решение}\\
+$\|x\|=\|x''\|_{C[a,b]}+\|x\|_{L_2[a,b]}=0 \Leftrightarrow \|x''\|_{C[a,b]}=0, \|x\|_{L_2[a,b]}=0 \Leftrightarrow x(t) = 0$.\\ $\|\lambda x\|=\|(\lambda x)''\|_{C[a,b]}+\|\lambda x\|_{L_2[a,b]} = \|\lambda x''\|_{C[a,b]}+\|\lambda x\|_{L_2[a,b]} =\\=  |\lambda\||x\|$.\\ $\|x+y\|=\|(y+x)''\|_{C[a,b]}+\|y+x\|_{L_2[a,b]} = \|y''+x''\|_{C[a,b]}+|y+x\|_{L_2[a,b]} \le \|x\|+\|y\|$.\\
+\textbf{Ответ}\\Да.
+
+\section*{183}
+$|x(a)| + |x(b)| + \| x'' \|_{C[a, b]}$\\
+\textbf{Решение}\\
+$\|x\|=\|x''\|_{C[a,b]}+|x(a)|+|x(b)|=0 \Leftrightarrow \|x''\|_{C[a,b]}=0, |x(a)|=0, |x(b)|=0 \Leftrightarrow x''=0, x(a)=0, x(b)=0\Leftrightarrow x=Cx+C_0, x(a)=0, x(b)=0 \Leftrightarrow  x(t)=0$.\\ $\|\lambda x\|=\|\lambda x''\|_{C[a,b]}+|\lambda x(a)|+|\lambda x(b)| =|\lambda\||x\|$.\\ $\|x+y\|=\|(y+x)''\|_{C[a,b]}+|y(a)+x(a)|+|y(b)+x(b)| = \|y''+x''\|_{C[a,b]}+|y(a)+x(a)|+|y(b)+x(b)| \le \|x\|+\|y\|$.\\
+\textbf{Ответ}\\Да.
+
+\section*{184}
+$|x(a)| +  + \| x'' \|_{C[a, b]} + \| x'' \|_{\tilde{L_2}[a, b]}$\\
+\textbf{Решение}\\
+$x(t) = t - a, x''(t) = 0 \Rightarrow |x(a) + \|x''_{C[a,b]}\| + \|x''_{L_2[a,b]}\| = 0$. Не выполняется первое условие нормы.\\
+\textbf{Ответ}\\Нет.
+
+
+\section*{186}
+Если $x_n \to x$, при $x\to  \infty$, то $x_n$ -- ограниченная 
+последовательность.\\
+\textbf{Решение}\\
+Из определения сходимости $\forall \epsilon > 0\ \exists \nu(\epsilon),\ \forall n \ge \nu \Rightarrow \|x_n-x\| < \epsilon $\\
+Так как $\nu(n)$ конечно, то $\exists m = \max\{\{\| x_n - x\|\ |\ i = \overline{1,\ \nu}\}\cup \{\epsilon\}\}$\\
+$\forall n \Rightarrow \ \|x_n-x\| \le m$, т.е. $x_n$ содержится в шаре c радиусом $m$.
+
+\section*{187}
+$\alpha_n x_n \to \alpha x$\\
+\textbf{Решение}\\
+Пусть $ \alpha_n = \alpha + \Delta \alpha_n $, $ x_n = x + \Delta x_n $;\\
+ $\Delta \alpha_n, \Delta x_n$ стремятся к нулю при $ n \rightarrow \infty $. 
+Тогда $\| \alpha_n x_n - \alpha x \| = \| (\alpha + \Delta \alpha_n) (x + \Delta x_n) - \alpha x \|$\\
+$\| \alpha \Delta x_n + \Delta \alpha_n x + \Delta \alpha_n \Delta x_n \| \le \| \alpha \Delta x_n \| + \| \Delta \alpha_n x \| + \| \Delta \alpha_n \Delta x_n \| \rightarrow 0$\\
+
+\section*{188}
+$x_n \to x \Rightarrow \|x_n\| \to \|x\|$\\
+\textbf{Решение}\\
+$\|x_n\| = \|x + (x_n - x)\| \le \|x\| + \|x_n - x\| \Rightarrow \|x_n\| - \|x\| \le \|x_n - x\| $\\
+Аналогично, $ \|x\| - \|x_n\| \le \|x_n - x\| $.\\
+Значит, $ \left|\|x_n\| - \|x\|\right| \le \|x_n - x\| $, при $ \|x_n - x\| \rightarrow 0 \quad \left|\|x_n\| - \|x\|\right| \rightarrow 0$, что и требовалось доказать.\\
+
+
+\section*{189}
+$x_n \to x$ и $\|x_n - y_n\| \to 0$ $\Rightarrow$ $y_n \to y$\\
+\textbf{Решение}\\
+$\|x_n - y_n\| = \|(x_n - x) - (y_n - y)\| \le \|x_n - x\| + \|y_n - y\|$\\
+Т.к. $\|x_n - y_n\| \to 0$ и $\|x_n - x\| \to 0$, то $\|y_n - y\| \to 0$.
+
+\section*{190}
+$x_n \to x \Rightarrow \| x_n - y\| \to \| x-y \|$\\
+\textbf{Решение}\\
+Пусть $x_n = x + \Delta x_n$, $\| \Delta x_n \| \to 0$\\
+$\| x-y\| - \|x_n\| \le \| x_n - y\| = \|x + \Delta x_n - y\| \le \|x-y\| + \|\Delta x_n\|$\\
+Т.к. $\|\Delta x_n\| \to 0$, то $\|x_n-y\| \to \|x-y\|$
+
+\section*{191}
+$x_n \to x$ и $y_n \to y$, то $\|x_n - y_n\| \to \|x-y\|$\\
+\textbf{Решение}\\
+Пусть $x_n = x + \Delta x_n$, $\Delta x_n \to 0$ и $y_n = y + \Delta y_n$, $\Delta y_n \to 0$\\
+$\| x-y\| - \| \Delta x_n - \Delta y_n \| \le \|x_n - y_n\| = \|(x-y) - (x_n - y_n)\|\le \| x - y\| + \| \Delta x_n - \Delta y_n\|$\\
+Т.к. $\|\Delta x_n\| \to 0$ и $\|\Delta y_n\| \to 0$, то $\|x_n-y_n\| \to \|x-y\|$.
+
+
+
+\end{document}

@@ -1,0 +1,110 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[a4paper]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{listingsutf8}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\hfuzz=30pt 
+
+\begin{document}
+\begin{titlepage}
+
+
+  \newgeometry{margin=1cm}
+  
+  \bigskip
+  \centerline{\large \bf БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+  \bigskip
+  \bigskip  
+  \centerline{\large \bf ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ИНФОРМАТИКИ}
+  \vfill
+  \vfill
+  \vfill
+  \centerline{\large \bf <<Компактные множества>>}
+  \bigskip
+  \bigskip
+  \vfill
+  \begin{centering}
+    {\large
+    Домашняя работа\\
+    студента 2 курса 2 группы \\}
+  \end{centering}
+  \centerline{\large \bf Пищулёнка Максима Сергеевича}
+  \vfill
+  \vfill
+  \hfill
+  \begin{minipage}{0.25\textwidth}
+    {\large{\bf Преподаватель} \\
+  {\it Дайняк Виктор \\ Владимирович}}
+  \end{minipage}
+  \vfill
+  \vfill
+  \centerline{\large Минск 2020}
+  
+  \end{titlepage}
+
+\begin{center}
+\end{center}
+
+\textbf{Задание 1.15.} Являются ли относительно компактными следующие множества 
+функций в пространстве $C[0, 1]$?
+
+\[M = \left\{ x(t) : |x(t)|\le B\right\}\]
+
+\textbf{Решение.}
+
+Используем теорему Арцела-Асколи (Множество $M\in C[a, b]$ предкомпактно
+тогда и только тогда, когда оно равномерно ограниченно и равностепенно 
+непрерывно.)
+
+\begin{enumerate}
+  \item Покажем, что множество равномерно ограниченно. Из условия:
+  
+  \[\exists B = const:\ |x(t)| \le B,\ 0 \le t \le 1 \]
+
+  \item Однако $M$ не является равностепенно непрерывным. Построим отрицание
+  определения равностепенной непрерывности и покажем что её нет.
+
+  \[ \exists x(t) \in M,\ \exists \epsilon > 0: \forall \delta > 0\ \exists 
+  t_1, t_2:\ |t_1 - t_2| < \delta \rightarrow |x(t_1) - x(t_2)| \ge \epsilon \]
+  
+  Пусть $x(t) = \frac{x^2}{B}$.
+
+
+   \begin{multline*} 
+    \exists \epsilon = \frac{1}{B}: \forall \delta\ \exists t_1 = 
+   \left( \frac{2}{\delta} + \frac{\delta}{2} \right),\ t_2 = \left( \frac{2}{\delta} \right): 
+   |t_1 - t_2| < \delta:
+   \\ |x(t_1) - x(t_2)| = \frac{1}{B} \left( \frac{4}{\delta^2} + \frac{\delta^2}{4} + 2 - \frac{4}{\delta^2} 
+   \right) > \frac{1}{B}
+   \end{multline*}
+
+   \textbf{Ответ:} $M$ -- не предкомпактное множество. 
+
+\end{enumerate}
+
+\textbf{Задание 2.2.} Доказать, что всякое компактное множество в $C^1[0, 1]$
+компактно в $C[0, 1]$.
+
+\textbf{Решение.}
+
+По теореме Арцела-Асколи, если множество $M$ компактно в $C^1[0, 1]$, то отсюда
+следует непрерывная ограниченность и равностепенная непрерывность M в $C^1[0, 1]$.
+А отсюда следует непрерывная ограниченность и равностепенная непрерывность $M$ в
+$C[0, 1]$. Следовательно, $M$ является компактным в $C[0, 1]$. 
+
+\end{document}

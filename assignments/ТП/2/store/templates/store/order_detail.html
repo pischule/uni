@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <p><Strong>Buyer: </Strong> {{ order.buyer }}</p>
+    <p><Strong>Placed at:</Strong> {{ order.placed_at }}</p>
+    <p><strong>Product:</strong>
+        <a href="{% url 'store:product-detail' order.product.pk %}">{{order.product.title}}</a>
+    </p>
+    <p><strong>Count:</strong> {{ order.count }} </p>
+    <p><strong>Status:</strong> {{ order.status }} </p>
+
+    <p><strong>Total price:</strong> {{ order.total_price }}</p>
+
+{% endblock %}

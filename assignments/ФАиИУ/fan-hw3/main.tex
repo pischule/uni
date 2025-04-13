@@ -1,0 +1,204 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[a4paper]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{listingsutf8}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=4
+}
+
+\lstset{inputencoding=utf8/koi8-r, style=mystyle}
+
+
+\begin{document}
+\begin{titlepage}
+
+
+  \newgeometry{margin=1cm}
+  
+  \centerline{\large \bf МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ИНФОРМАТИКИ}
+  \vfill
+  \vfill
+  \vfill
+  \centerline{\large \bf ФУНКЦИОНАЛЬНЫЙ АНАЛИЗ И ИНТЕГРАЛЬНЫЕ УРАВНЕНИЯ}
+  \bigskip
+  \bigskip
+  \vfill
+  \begin{centering}
+    {\large
+    Домашняя работа\\
+    студента 2 курса 2 группы \\}
+  \end{centering}
+  \centerline{\large \bf Пищулёнка Максима Сергеевича}
+  \vfill
+  \vfill
+  \hfill
+  \begin{minipage}{0.25\textwidth}
+    {\large{\bf Преподаватель} \\
+  {\it Дайняк Виктор \\ Владимирович}}
+  \end{minipage}
+  \vfill
+  \vfill
+  \centerline{\Large \bf Минск, 2020}
+  
+  \end{titlepage}
+
+\begin{center}
+\end{center}
+
+
+\textbf{Задание 1.1}
+
+Провести процесс ортогонализации векторов $x_1,\ x_2,\ x_3$ в гильбертовом 
+пространстве $H_p[a,\ b]$, в котором скалярное произведение имеет вид 
+$(x,\ y) = \int_a^b x(t)y(t)p(t) dt$
+
+\[a = -1,\ b = 1,\ p(t)=1;\ x_1=t\ x_2=2t-t^2,\ x_3=e^t\]
+
+\textbf{Решение.} 
+
+Проведем процесс ортогонализации. Пусть {$b_1, b_2, b_3$} --
+ортогональные вектора. 
+
+\begin{enumerate}
+\item
+\[b_1 = x_1 = t\]
+
+\item
+\[(x_2,\ b_1) = \int_{-1}^1(2t - t^2)tdt = \left[ \frac{2t^3}{3} -\frac{t^4}{4}\right]_{-1}^1 =
+\frac{4}{3}\]
+\[(b_1,\ b_1) = \int_{-1}^1 t^2 dt = \left[ \frac{t^3}{3} \right]_{-1}^1 = \frac{2}{3} \]
+\[b_2 = x_2 - \frac{(x_2,\ b_1)}{(b_1,\ b_1)}b_1 = 2t - t^2 - \frac{4}{3} 
+\frac{3}{2}t = -t^2 \]
+
+\item
+\[\left.(x_3,\ b_1) = \int_{-1}^1 te^t dt = te^t \right|_{-1}^1\ - \int_{-1}^1 e^t dt = 
+e + \frac{1}{e} - e^t|_{-1}^1 = \frac{2}{e}\]
+\[(x_3,\ b_2) = \int_{-1}^1 e^t (-t^2)dt = - \left( t^2 e^t|_{-1}^1 - 2\int_{-1}^1te^tdt \right) =
+-\left(e - \frac{1}{e} - \frac{4}{e} \right) = \frac{5}{e} - e \]
+\[\left. (b_2,\ b_2) = \int_{-1}^1 (-t^2)^2 dt = \frac{t^5}{5}\right|_{-1}^1 = \frac{2}{5} \]
+\[ b_3 = x_3 - \frac{x_3,\ b_1}{b_1,\ b_1}b_1 - \frac{x_3,\ b_2}{b_2,\ b_2}b_2 =
+e^t - \frac{3t}{e} - \left(\frac{5}{e} - e\right) \frac{5}{2} (-t^2) = 
+e^t - \frac{3t}{e} + \frac{25t^2}{2e} - \frac{5t^2e}{2} \]
+\end{enumerate}
+
+\textbf{Ответ: } $b_1 = t$, $b_2=-t^2$,
+ $b_3 = e^t - \frac{3t}{e} + \frac{25t^2}{2e} - \frac{5t^2e}{2}$.
+
+ \pagebreak
+
+\textbf{Задание 2.1} 
+
+Для заданной непрерывно дифференцируемой функции $x(t)$ найти элемент наилучшей
+аппроксимации её многочленами $y(t)$ подпространства $L$ по норме пространства 
+$L_2[0,\ 1]$. Реализовать на ЭВМ алгоритм решения этой задачи со следующими 
+этапами:
+
+\begin{enumerate}
+  \item вычислить элементы матрицы и правые части
+  \item решить систему
+  \item проверить правильность алгоритма на примере функции $x(t) = t$
+\end{enumerate}
+
+\[x(t) = 3^t\]
+
+\textbf{Программа}
+
+\lstinputlisting[language=Python]{main.py}
+
+\textbf{Результат}
+
+\begin{verbatim}
+Приближение функции x(t) = 3^t
+1.00009 t^0 + 1.09601 t^1 + 0.62115 t^2 + 0.17607 t^3 + 0.10658 t^4
+
+Приближение функции x(t) = t
+0.00000 t^0 + 1.00000 t^1 + 0.00000 t^2 + -0.00000 t^3 + -0.00000 t^4
+\end{verbatim}
+
+\pagebreak
+
+\textbf{Задание 3.1} 
+
+В гильбертовом пространстве $l_2$ найти проекцию элемента $x_0 \in l_2$ на
+подпространство $L \subset l_2$.
+
+\[x_0 = \left( 1,\ \frac{1}{3},\ \frac{1}{3^2},\dots \right)\]
+\[
+L = \left\{ \alpha x + \beta y: x = \left( 1, \frac{1}{5},\dots,\frac{1}{5^k},\dots, \right),
+\\y = \left( 1, \frac{1}{6}, \dots, \frac{1}{6^k}, \dots \right),\ \alpha, \beta \in \mathbb{R}  \right\}  \]
+
+\textbf{Решение.}
+
+Обозначим через $z$ проекцию вектора $x_0$ на подпространство $L$, тогда 
+$z=\alpha x + \beta y$ и $x_0 \bot L$, т.е. $(x_0 - z, x) = 0$ и $(x_0 - z, y)=0$.
+Из условия ортогональности для определения коэффициентов $\alpha$ и $\beta$ 
+получим СЛАУ:
+
+\[
+\begin{cases}
+  \alpha (x, x) + \beta (y, x) = (x_0, x);\\
+  \alpha (x, y) + \beta (y, y) = (x_0, y).
+\end{cases}
+\]
+
+\[ (x, x) = \sum_{k=0}^\infty x_k  \cdot x_k = \sum_{k=0}^\infty \frac{1}{25^k} = \frac{25}{24} \]
+\[ (x, y) = (y, x) = \sum_{k=0}^\infty y_k  \cdot x_k = \sum_{k=0}^\infty \frac{1}{30^k} = \frac{30}{29} \]
+\[ (y, y) = \sum_{k=0}^\infty y_k  \cdot y_k = \sum_{k=0}^\infty \frac{1}{36^k} = \frac{36}{35} \]
+\[ (x_0, x) = \sum_{k=0}^\infty x_{0k}  \cdot x_k = \sum_{k=0}^\infty \frac{1}{15^k} = \frac{15}{14} \]
+\[ (x_0, y) = \sum_{k=0}^\infty x_{0k}  \cdot y_k = \sum_{k=0}^\infty \frac{1}{18^k} = \frac{18}{17} \]
+
+Система примет вид.
+
+\[
+\begin{cases}
+  \frac{25}{24}\alpha + \frac{30}{29}\beta = \frac{15}{14}\\
+  \frac{30}{29}\alpha + \frac{36}{35}\beta = \frac{18}{17}
+\end{cases}  
+\]
+
+Решив систему, получим:
+
+\[\alpha = \frac{3132}{595},\ \ \beta=-\frac{145}{34}\]
+
+\[P_L x_0 = \frac{3132}{595} x -\frac{145}{34} y\]
+
+\textbf{Ответ: $P_L x_0 = \frac{3132}{595} x -\frac{145}{34} y$}.
+
+\end{document}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Store App</h1>
+    <p>Welcome to Store App!</p>
+    <p>The store has the following record counts:</p>
+    <ul>
+        <li>
+            <strong>Users:</strong> {{num_user }} 
+            <ul>
+                <li><strong>Sellers: </strong> {{ num_seller }}</li>
+                <li><strong>Buyers: </strong> {{ num_buyer }}</li>
+                <li><strong>Delivery: </strong> {{ num_delivery }}</li>
+            </ul>
+        </li>
+        <li><strong>Product:</strong> {{ num_products }}</li>
+        <li><strong>Orders: </strong>{{ num_orders }}</li>
+    </ul>
+    
+{% endblock %}

@@ -1,0 +1,167 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[a4paper]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{listingsutf8}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\hfuzz=30pt 
+
+\begin{document}
+\begin{titlepage}
+
+
+  \newgeometry{margin=1cm}
+  
+  \centerline{\large \bf МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+  \bigskip
+  \bigskip
+  \centerline{\large \bf ФАКУЛЬТЕТ ПРИКЛАДНОЙ МАТЕМАТИКИ И ИНФОРМАТИКИ}
+  \vfill
+  \vfill
+  \vfill
+  \centerline{\large \bf ФУНКЦИОНАЛЬНЫЙ АНАЛИЗ И ИНТЕГРАЛЬНЫЕ УРАВНЕНИЯ}
+  \bigskip
+  \bigskip
+  \vfill
+  \begin{centering}
+    {\large
+    Домашняя работа\\
+    студента 2 курса 2 группы \\}
+  \end{centering}
+  \centerline{\large \bf Пищулёнка Максима Сергеевича}
+  \vfill
+  \vfill
+  \hfill
+  \begin{minipage}{0.25\textwidth}
+    {\large{\bf Преподаватель} \\
+  {\it Дайняк Виктор \\ Владимирович}}
+  \end{minipage}
+  \vfill
+  \vfill
+  \centerline{\Large \bf Минск, 2020}
+  
+  \end{titlepage}
+
+\begin{center}
+\end{center}
+
+\textbf{Задание 2.1} В гильбертовом пространстве $l_2$ найти проекцию элемента
+$x_0 \in l_2$ на подпространство $L \subset l_2$.
+
+\[x_0 = \left(1, \frac{1}{3}, \frac{1}{3^2},\dots , \frac{1}{3^i}, \dots \right)\]
+\[L = \left\{ \alpha x + \beta y:\ 
+x = \left( 1, \frac{1}{5}, \frac{1}{5^2},\dots, \frac{1}{5^i}, \dots  \right),\ 
+y = \left( 1, \frac{1}{6}, \frac{1}{6^2},\dots , \frac{1}{6^i},\dots  \right)
+,\ \alpha, \beta \in \mathbb{R}  \right\}\]
+
+
+\textbf{Решение}
+
+Обозначим через $z$ проекцию вектора $x_0$ на подпространство $L$, тогда 
+$z=\alpha x + \beta y$ и $x_0 \bot L$, т.е. $(x_0 - z, x) = 0$ и $(x_0 - z, y)=0$.
+Из условия ортогональности для определения коэффициентов $\alpha$ и $\beta$ 
+получим СЛАУ:
+
+\[
+\begin{cases}
+  \alpha (x, x) + \beta (y, x) = (x_0, x);\\
+  \alpha (x, y) + \beta (y, y) = (x_0, y).
+\end{cases}
+\]
+
+\[ (x, x) = \sum_{k=0}^\infty x_k  \cdot x_k = \sum_{k=0}^\infty \frac{1}{25^k} = \frac{25}{24} \]
+\[ (x, y) = (y, x) = \sum_{k=0}^\infty y_k  \cdot x_k = \sum_{k=0}^\infty \frac{1}{30^k} = \frac{30}{29} \]
+\[ (y, y) = \sum_{k=0}^\infty y_k  \cdot y_k = \sum_{k=0}^\infty \frac{1}{36^k} = \frac{36}{35} \]
+\[ (x_0, x) = \sum_{k=0}^\infty x_{0k}  \cdot x_k = \sum_{k=0}^\infty \frac{1}{15^k} = \frac{15}{14} \]
+\[ (x_0, y) = \sum_{k=0}^\infty x_{0k}  \cdot y_k = \sum_{k=0}^\infty \frac{1}{18^k} = \frac{18}{17} \]
+
+Система примет вид.
+
+\[
+\begin{cases}
+  \frac{25}{24}\alpha + \frac{30}{29}\beta = \frac{15}{14}\\
+  \frac{30}{29}\alpha + \frac{36}{35}\beta = \frac{18}{17}
+\end{cases}  
+\]
+
+Решив систему, получим:
+
+\[\alpha = \frac{3132}{595},\ \ \beta=-\frac{145}{34}\]
+
+\[P_L x_0 = \frac{3132}{595} x -\frac{145}{34} y\]
+
+\textbf{Ответ: $P_L x_0 = \frac{3132}{595} x -\frac{145}{34} y$}.
+
+\newpage
+
+\textbf{Задание 3.1} В гильбертовом пространстве $L_2[-\pi, \pi]$ найти
+проекцию функции $x_0(t)$ на подпространство $L \in L_2[-\pi, \pi]$.
+
+\[x_0(t) = t + 8,\ L = \left\{ x(t):\ 
+\int_{-\pi}^{\pi} \sin^2 tx(t) dt = 0,\ \int_{ -\pi}^{\pi} tx(t) dt = 0 \right\}\]
+
+\textbf{Решение}
+
+Перепишем условия, которые задают подпространство $L$:
+
+\[a(t) = \sin^2 t,\ b(t) = t,\ L = \{x(t): (x, a) = (x, b) = 0\}\]
+\[L^\bot = \{ \alpha a(t) + \beta b(t),\ \alpha, \beta \in \mathbb{R}  \}\]
+
+Пусть $y(t)$ -- проекция $x_0$ на $L$.
+
+\[z(t) = (x_0(t) - y(t)) \in L^{\bot},\ y(t) = x_0(t) - z(t) =
+x_0(t) - \alpha a(t) - \beta b(t)\]
+
+\[
+  \begin{cases}
+    (y, a) = 0,\\
+    (y, b) = 0;
+  \end{cases}
+  \begin{cases}
+    (x_0, a) - (z,a) = 0,\\
+    (x_0, b) - (z, b) = 0;
+  \end{cases} 
+  \begin{cases} 
+    (x_0, a) = \alpha (a, a) + \beta (b, a),\\
+    (x_0, b) = \alpha (a, b) + \beta (b, b);
+  \end{cases} 
+\]
+
+\[(x_0, a) = \int_{ - \pi}^{\pi} (t + 8) \sin^2t  dt = 8 \pi \]
+\[(x_0, b) = \int_{ -\pi}^{\pi} t(t + 8)dt = \frac{2 \pi^3}{3} \]
+\[(a, a) = \int_{-\pi}^{\pi}\sin^4 t dt = \frac{3\pi}{4}\]
+\[(b, b) = \int_{-\pi}^{\pi}t^2 dt = \frac{2 \pi^3}{3}\]
+\[(a, b) = \int_{ - \pi}^{\pi} t \sin^2 (t) dt = 0\]
+
+\[
+  \begin{cases}
+    8\pi = \alpha \frac{3\pi}{4},\\
+    \frac{2\pi^3}{3} = \beta \frac{2\pi^3}{3};
+  \end{cases}
+  \begin{cases}
+    \alpha = \frac{32\pi}{3},\\
+    \beta = 1.
+  \end{cases}
+\]
+
+\[ y(t) = P_L x_0(t) = 8 - \frac{32\pi }{8} \sin^2 t \]
+
+
+\end{document}

@@ -1,0 +1,9 @@
+[submodule "КБРС/encrypted-notes"]
+	path = КБРС/encrypted-notes
+	url = git@github.com:pischule/encrypted-notes.git
+[submodule "РКСБП/Лаб DB"]
+	path = РКСБП/Лаб DB
+	url = https://github.com/pischule/vaadin-movie-database.git
+[submodule "РКСБП/Лаб MsOffice"]
+	path = РКСБП/Лаб MsOffice
+	url = https://github.com/pischule/vaadin-docx-generator.git

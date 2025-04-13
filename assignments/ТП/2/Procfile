@@ -1,0 +1,1 @@
+web: gunicorn tp_lab_2.wsgi

@@ -1,0 +1,105 @@
+\documentclass[a4paper, 12pt]{report}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+
+\begin{document}
+
+\begin{titlepage}
+    \newgeometry{margin=1cm}
+    
+    \bigskip
+    \centerline{\large МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+    \bigskip
+    \centerline{\large БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+    \bigskip
+    \centerline{\large Факультет прикладной математики и информатики}
+    \vfill
+    \vfill
+    \vfill
+    \centerline{\LARGE Домашнее задание}
+    \bigskip
+    \bigskip
+    \centerline{\large На тему:}
+    \centerline{\large \bf \sc Операторы в банаховых простарнствах}
+    \bigskip
+    \vfill
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+        {\large{\bf Подготовил:} \\
+        {\it Пищулёнок Максим \\ Сергеевич}\\
+        {студент 2 курса 2 группы}}
+    \end{minipage}
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+      {\large{\bf Проверил:} \\
+    {\it Дайняк Виктор \\ Владимирович}}
+    \end{minipage}
+    \vfill
+    \vfill
+    \centerline{\large Минск, 2020}
+\end{titlepage}
+  
+\subsection*{Задание 1.15}
+
+Найти сопряженный оператор $A^*$  к оператору $A:L_2[0,1] \to L_2[0,1]$, 
+действующему по следующим формулам:
+
+\[Ax(t) = \int_{t}^{t^2}tx(s) ds - \int_0^1 \sin ts^2 x(s) ds\]
+
+\subsection*{Решение.}
+
+По определению сопряженного оператора имеем:
+
+\begin{multline*}
+f(Ax) = (Ax, y)_{L_2[0, 1]} = \int_{0}^{1} A x(t) y(t) dt = \\ =
+ \int_{ 0}^{1} \left( \int_{t}^{t^2} t x(s) ds - \int_{0}^{1} \sin t s^2 x(s) ds \right) y(t) dt = \\ =
+\int_{0}^{1} \left( \int_{t}^{t^2} t x(s) ds \right) y(t) dt - 
+ \int_{0}^{1} \left( \int_{0}^{1} \sin t s^2 x(s) ds \right) y(t) dt = \\ =
+ \int_{0}^{1} x(s) \left( \int_{\sqrt{s}}^{s} t y(t) dt \right) ds - 
+ \int_{0}^{1} x(s) \left( \int_{0}^{1} \sin t s^2 y(t) dt \right) ds = \\ =
+ \int_{0}^{1} \left( \int_{\sqrt{t}}^{t} s y(s) ds - \int_{0}^{1} \sin s t^2 y(s)ds \right) x(t) dt = 
+ (x, A^* y)_{L_2[0, 1]}
+\end{multline*}
+
+Откуда
+
+\[A^* y(t) = \int_{\sqrt{t}}^{t} s y(s) ds - \int_{0}^{1} \sin s t^2 y(s) ds\]
+
+\textbf{Ответ:} $A^* y(t) = \int_{\sqrt{t}}^{t} s y(s) ds - \int_{0}^{1} \sin s t^2 y(s) ds$.
+
+\newpage
+
+\subsection*{Задание 2.15}
+
+Найти сопряженный оператор $A^*$ к $A: \ell_2 \to \ell_2$, действующему по 
+следующим формулам. Будет ли $A$ самосопряженным?
+
+\[Ax = (x_1, 0, x_2, 0, \dots ),\ x = (x_1, x_2, \dots ) \in \ell_2\]
+
+\subsection*{Решение.}
+
+Применим теорему Рисса об общем виде линейного ограниченного функционала в 
+гильбертовом пространстве:
+
+\begin{multline*}
+f(Ax) = (Ax, y)_{\ell_2} = \sum_{i = 1}^{\infty} x_i \overline{y_{2i - 1}} = x_1 \overline{y_1} +
+0 \overline{y_2} + x_2 \overline{y_3} + \dots + x_1 \overline{y_{2i - 1}} \dots  = \\ =
+A^* f(x) = (x, z)_{\ell_2}
+\end{multline*}
+
+\[z = A^* y,\ z_i = y_{2i - 1}\]
+
+Следовательно,
+
+\[A^* y = (y_1, y_3, y_5, \dots , y_{2i - 1}, \dots )\]
+
+\textbf{Ответ: } $A^* y = (y_1, y_3, y_5, \dots , y_{2i - 1}, \dots )$.
+
+\end{document}

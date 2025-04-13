@@ -1,0 +1,340 @@
+\documentclass[12pt, a4paper]{report}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{geometry}
+
+
+\begin{document}
+
+
+\begin{titlepage}
+    \newgeometry{margin=1cm}
+    
+    \bigskip
+    \centerline{\large МИНИСТЕРСТВО ОБРАЗОВАНИЯ РЕСПУБЛИКИ БЕЛАРУСЬ}
+    \bigskip
+    \centerline{\large БЕЛОРУССКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+    \bigskip
+    \centerline{\large Факультет прикладной математики и информатики}
+    \vfill
+    \vfill
+    \vfill
+    \centerline{\LARGE Домашнее задание}
+    \bigskip
+    \bigskip
+    \centerline{\large На тему:}
+    \centerline{\large \bf \sc Линейные ограниченные операторы.}
+    \bigskip
+    \vfill
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+        {\large{\bf Подготовил:} \\
+        {\it Пищулёнок Максим \\ Сергеевич}\\
+        {студент 2 курса 2 группы}}
+    \end{minipage}
+    \vfill
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+      {\large{\bf Проверил:} \\
+    {\it Дайняк Виктор \\ Владимирович}}
+    \end{minipage}
+    \vfill
+    \vfill
+    \centerline{\large Минск, 2020}
+\end{titlepage}
+
+
+\subsection*{Задача 1.15:}
+Доказать, что оператор умножения на непрерывную функцию, действующий в пространстве $X=C[a, b]$ является линейным ограниченным, найти его норму.
+
+\[Ax(t) = \frac{t^3 + 8}{t+2}x(t),\ t\in [3, 5]\]
+
+\subsection*{Решение:}
+Оператор является линейным, если для любых $x(t), y(t)\in C[3, 5]$, и любых $\alpha, \beta \in K$ выполняется условие линейности.
+
+\[A(\alpha x + \beta y) (t) = \frac{t^3 + 8}{t + 2}(\alpha x + \beta y)(t) = 
+\alpha \frac{t^3 + 8}{t + 2}x(t) + \beta\frac{t^3+8}{t + 2}y(t) = 
+\alpha A x(t) + \beta A y(t)\]
+
+Следовательно, оператор $A$ является линейным.
+
+Покажем, что $A$ является ограниченным оператором, т.е. $\exists c > 0$ такое, что
+
+\[ \| A x \|_{C[3, 5]} \le c \|x\|_{C[3, 5]},\ \forall x(t) \in C[3, 5] \]
+
+\[\|Ax\|_{C[3, 5]} \le 
+\max_{3 \le t \le 5} \Big| \frac{t^3 + 8}{t + 2}\Big| \max_{3 ]le t ]le 5}|x(t)| = 
+\Big| \frac{5^3 + 8 }{7} \Big| \| x \|_{C[3, 5]} =19 \|x\|_{C[3, 5]}|\]
+
+Следовательно, $c = 19$.
+
+Мы показали, что $A$ является линейным ограниченным оператором. Из определения нормы линейного оператора следует, что 
+
+\[\| A \| \le 19\]
+
+С другой стороны, взяв в качестве $x(t)$ функцию $x_0(t) = 1$, получим
+
+\[ \| x_0 \|_{C[3, 5]}  = 1 \]
+\[ \| A x_0 \|_{C[3, 5]} = 19\]
+
+Поэтому
+
+\[19 = \frac{\| Ax \|}{\| x \|} \le \| A \| \le 19 \Rightarrow \|A\| = 19\]
+
+
+\subsection*{Задача 2.15:}
+Доказать, что оператор замены переменной в пространстве $X = L_p[a, b]$ является линейным ограниченным и найти его норму.
+
+\[X = L_{3/2}[-1, 1],\ Ax(t) = (t^5 - t^{10}x(\sqrt[5]{t}))\]
+
+\subsection*{Решение: }
+
+Оператор является линейным:
+
+\newpage
+
+\begin{multline*}
+    A(\alpha x + \beta y) (t) = (t^5 - t^{10}) (\alpha x + \beta y) (\sqrt[5]{t}) =\\= 
+    \alpha (t^5 - t^{10}) x(\sqrt[5]{t}) + \beta (t^5 - t^{10}) x(\sqrt[5]{t}) = 
+    \alpha A x(t) + \beta A y(t)
+\end{multline*}
+
+Покажем ограниченность оператора:
+
+\begin{multline*}
+    \| Ax \| = \left( \int_{ - 1}^{1} |(t^5 - t^{10}) x(\sqrt[5]{t}) |^\frac{3}{2} dt \right)^\frac{2}{3} =
+    \left[ t = \tau^5, dt = 5 \tau^4 d\tau \right] =\\=
+    \left( \int_{ -1}^{1} \Big| (\tau^{25} - \tau^{50}) x(\tau)|^\frac{3}{2} 5 \tau^4 d\tau \right)^\frac{2}{3} \le
+    5^\frac{2}{3} \left( \int_{ - 1}^{1} \sup_{ -1 \le \tau \le 1} |\tau^{31} - \tau^{56}|^\frac{3}{2} |x(\tau)|^\frac{3}{2} d\tau  \right)^\frac{2}{3} =\\=
+    5^\frac{2}{3} \left( 2^\frac{3}{2} |x(\tau)|^\frac{3}{2}d\tau  \right)^{\frac{2}{3}} =
+    2 * 5^\frac{2}{3} \| x \|
+\end{multline*}
+
+Мы показали, что $\| A x \| \le 2*5^{\frac{2}{3}} \| x \|_{L_{3/2}[-1, 1]}$, из 
+этого можно сделать вывод, что $\|A\| \le 2*5^{\frac{2}{3}}$. Докажем теперь, что
+$\| A \| \ge 2*5^{\frac{2}{3}}$. Для этого составим последовательность:
+
+\begin{equation*}
+    x_n(t) =
+    \begin{cases}
+        - 1, & - 1 \le t < - 1 + \frac{1}{n}\\
+        0, & - 1 + \frac{1}{n} \le t \le 1
+    \end{cases}
+\end{equation*}
+
+\[\| x_n \| = \left( \int_{ - 1}^{1} |x_n|^\frac{3}{2} dt \right)^\frac{2}{3} = 
+\left( \frac{1}{n} + 1 \right)^\frac{2}{3}\]
+\[ \|Ax_n\| = 5^\frac{2}{5} \left(\int_{ - 1}^{ - 1 + \frac{1}{n}} |\tau^{31} - \tau^{56}| d\tau \right)^\frac{2}{3} =
+\dots \to 2 * 5^\frac{2}{3}\]
+\[\frac{\| Ax_n \|}{\| x_n\|} \to 2*5^\frac{2}{3}\]
+
+Исходя из этого, имеем:
+\[\| A \| = 2*5^{\frac{2}{3}}\]
+
+\subsection*{Задача 3.15:}
+Доказать, что интегральный оператор с вырожденным ядром является линейным и ограниченным оператором, если $A: C[a, b] \to C[\alpha, \beta]$. Вычислить норму оператора.
+
+\[A: C[-1, 3] \to C[-2, 0],\ Ax(t) = \int_{-1}^{1}(t^2 - |t| + 2)s^5 x(s)ds\]
+
+\subsection*{Решение:}
+
+Интегральный оператор Фредгольма в пространстве непрерывных функций линеен.
+Это следует из линейности интеграла Римана.
+
+Исследуем оператор на ограниченность.
+
+\begin{gather*}
+\| Ax(t) \| = \max_{ - 2 \le t \le 0} \int_{ - 1}^{1} (t^2 - |t| + 2)s^5 x(s) ds =\\
+=\max_{ - 2\le t \le 0} \Big| \int_{ - 1}^{1} (t^2 - |t| + 2| s^5 x(s) ds \Big| \le 
+\max_{ - 2 \le t \le 0} \Big| t^2 - |t| + 2 \Big| \int_{ - 1}^{1} |s|^5 |x(s)|ds \le\\
+\le 4 \int_{ - 1}^{1} |s^5| \max_{ - 1 \le s \le 3} |x(s) | ds = 
+8 \max_{ - 1 \le s \le 3} |x(s)| \int_{0}^{1} s^5 ds =
+\frac{4}{3} \| x \|_{C[ - 1, 3]}
+\end{gather*}
+
+Т.к. $\| A x\| \le \frac{4}{3}\|x\|$, то оператор является ограниченным и 
+$\| A \| \le \frac{4}{3}$ 
+
+Покажем, что $\| A \| \ge \frac{4}{3}$. Для этого построим последовательность:
+
+\begin{equation*}
+    x_n(t) = 
+\begin{cases}
+    - 1, & - 1 \le t \le - \frac{1}{n}\\
+    nt, & - \frac{1}{n} \le t \le \frac{1}{n} \\
+    1, & \frac{1}{n} \le t \le 3
+\end{cases}
+\end{equation*}
+
+\[\| x_n(t) \|_{C[ - 1, 3]} = \max_{ - 1 \le t \le 3} | x_n(t)| = 1\]
+
+\begin{multline*}
+    \| Ax \|_{C[ - 2, 0]} =
+     \max_{ - 2 \le t \le 0} \Big| (t^2 - |t| + 2) 
+    \left( \int_{ - 1}^{ - \frac{1}{n}} - s^5 ds + \int_{ - \frac{1}{n}}^{\frac{1}{n}} s^5 nds +
+    \int_{\frac{1}{n}}^{1} s^5 ds \right) \Big| =\\=
+    \frac{4}{3} - O(\frac{1}{n^6})
+\end{multline*}
+
+\[ \Rightarrow \frac{4}{3} - O(\frac{1}{n^6}) \le \| A \| \le \frac{4}{3} \Rightarrow
+\| A \| = \frac{4}{3} \]
+
+\subsection*{Задача 4.15:}
+
+Вычислить норму оператора $A: L_p[a, b] \to L_q[\alpha, \beta]$
+
+\[A: L_4[-1, 3] \to L_2[-2, 0],\ Ax(t)=\int_{-1}^{1}(1 - t)s^5x(s)ds\]
+
+\subsection*{Решение:}
+
+\begin{multline*}
+\| A x \|_{L_2[-2, 0]} = \left( \int_{-2}^{0} \Big| Ax(t) \Big|^2 dt \right)^{\frac{1}{2}} =
+\left( \int_{ - 2}^{0} \Big| (1 - t) \int_{ - 1}^{1} s^5 x(s) ds \Big|^2 dt \right)^\frac{1}{2} =\\
+\left( \int_{ - 2}^{0} (1 - t)^2 dt \left( \int_{ - 1}^{1} s^5 x(s) ds \right)^2 \right)^\frac{1}{2} =
+\sqrt{\frac{26}{3}} \Big| \int_{ - 1}^{1} s^5 x(s) ds \Big| =\\=
+ \left[\text{неравенство Гёльдера для } p = \frac{4}{3}, q = 4\right] \le \\ \le
+ \sqrt{\frac{26}{3}} \Big| \left( \int_{ - 1}^{1} \Big| s \Big|^\frac{20}{3} ds \right)^\frac{3}{4} 
+ \left( \int_{ - 1}^{1} \Big| x(s) \Big|^4 ds \right)^\frac{1}{4} \Big| \le \\ \le
+ \sqrt{\frac{26}{3}} \left( \int_{ - 1}^{1} |s|^\frac{20}{3} ds \right)^\frac{3}{4} \| x \|_{L_4[ - 1, 3]}
+\end{multline*}
+
+Мы показали, что $\| A \| \le  \sqrt{\frac{26}{3}} \left( \int_{ - 1}^{1} |s|^\frac{20}{3} ds \right)^\frac{3}{4}$
+
+Докажем это неравенство в обратную сторону. Для этого составим функцию $x_0(t)$:
+
+\begin{equation*}
+    x_0(t) = 
+    \begin{cases}
+        |t|^\frac{5}{3}, & t \in [ - 1, 1]\\
+        0, & t \in [1, 3]
+    \end{cases}
+\end{equation*}
+
+\[ \| x_0(t) \|_{L_4[ - 1, 3]} = \left( \int_{ - 1}^{1} |t|^\frac{20}{3} dt \right)^\frac{1}{4}\]
+\[ \| A x_0 \|_{L_2[ - 2, 0]} = \sqrt{\frac{26}{3}} \int_{ - 1}^{1} |s|^\frac{20}{3} ds \]
+
+\[\frac{\| Ax_0(t)\|}{\| x_0(t) \|} = \frac{\sqrt{\frac{26}{3}} \int_{-1}^{1} |s|^\frac{20}{3} ds}{\left( \int_{ 1}^{1} |s|^\frac{20}{3} ds \right)^\frac{1}{4}} =\\
+\sqrt{\frac{26}{3}} \left( \int_{ - 1}^{1} |s|^\frac{20}{3} ds \right)^\frac{3}{4} = \\
+2 \sqrt{\frac{26}{3}} \left( \frac{3}{23} \right)^\frac{3}{4} \]
+
+Получим, что $\| A \| = 2 \sqrt{\frac{26}{3}} \left( \frac{3}{23} \right)^\frac{3}{4} $
+
+
+\subsection*{Задача 5.15:}
+
+Вычислить норму оператора $A: C[a, b] \to L_p[0, 1]$
+
+\[Ax(t) = \int_{0}^{1}(s - 1)(t+2)x(s)ds - tx(1),\ x(t) \in C[-1, 1],\ p = 3\]
+
+\subsection*{Решение:}
+Отметим, что указанный оператор как сумма двух линейных операторов является линейным.
+Перейдём к доказательству ограниченности оператора. По определению ограниченности,
+оценим норму
+
+\begin{align*}
+    \|Ax(t)\|_{L_2[0, 1]} = \left( \int_{0}^{1} \Big| Ax(t) \Big|^3 dt \right)^3 =\\
+    \left( \int_{0}^{1} \Big| \int_{0}^{1} (s-1)(t+2)x(s)ds - tx(1) \Big|^3 dt \right)^3    
+\end{align*}
+
+Рассмотрим выражение под интегралом:
+
+\begin{multline*}
+    \Big| \int_{0}^{1} (s-1)(t+2)x(s)ds - tx(1) \Big| \le
+    \Big| (t+2) \int_{0}^{1} (s-1) x(s) ds \Big| + \Big| t x(1) \| \le\\ \le
+    |t+2| \max_{-1 \le s \le 1} |x(s)| \Big| \int_{0}^{1} (s-1) ds \Big| +
+    |t| \max_{-1 \le s \le 1} |x(s)| = \\ =
+    \| x\|_{C[-1, 1]} \left( |t+2| \frac{1}{2} + |t| \right)  
+\end{multline*}
+
+Подставим полученное выражение в оценку $\| Ax\|_{L_3[0, 1]}$
+
+\begin{multline*}
+    \| Ax(t) \| \le \left( \int_{0}^{1} \left( \| x \|_{C[-1, 1]}
+    \left( \frac{|t+2|}{2} + |t|  \right) \right)^3  dt\right)^{\frac{1}{3}} =\\ =
+    \| x \|_{C[-1, 1]} \left( \int_{0}^{1} \left( \frac{3t}{2} +1 \right)^3 dt \right)^{1/3} =
+    \| x \|_{C[-1, 1]} \sqrt[3]{\frac{203}{32}}
+\end{multline*}
+
+Теперь докажем неравенство в обратную сторону. Для этого построим следующую последовательность:
+
+\begin{equation*}
+    x_n(t) = 
+    \begin{cases}
+        -1,      & -1 \le t \le 0\\
+        2n-1,    & 0 \le t \le \frac{1}{n}\\
+        1,       & \frac{1}{n} \le t \le 1
+    \end{cases}
+\end{equation*}
+
+\[
+  \|x_n(t)\|_{C[1, 1]} = 1  
+\]
+
+% \begin{multline*}
+%     \| A x\| = \left( \int_{0}^{1} \Big| \| x \|_{C[ 1, 1]} \left( \frac{t + 2}{2} + |t|  \right) \Big|^3 dt \right)^{\frac{1}{3}} =\\=
+%     \| x \|_{C[ - 1, 1]} \left( \int_{0}^{1} \left( \frac{3t}{2} + 1 \right)^3 dt \right)^{\frac{1}{3}}
+% \end{multline*}
+
+% \begin{gather*}
+%  \Big|\int_{0}^{\frac{1}{n}} (s - 1)(t + 2)(2ns - 1)ds + \int_{\frac{1}{n}}^{1}(s - 1)(t + 2)ds - t| \Big| = \\
+%  \Big| (t + 2) \left(\int_{0}^{\frac{1}{n}}(2ns^2 - s(2n + 1) + 1)ds + \int_{\frac{1}{n}}^{1} (s - 1)ds \right)- t \Big| = \\
+%  \Big|(t + 2) ( - \frac{1}{2} + \frac{1}{n} - \frac{1}{3n^2} - t)\Big| =\\
+%  \Big| 1 - \frac{3t}{2} + O(\frac{1}{n}) \Big|
+% \end{gather*}
+
+\[
+    \| A x_n\| = \left( \int_{0}^{1} \left( \frac{3t}{2} + 1 + O\left( \frac{1}{n} \right) \right)^3 dt\right)^{\frac{1}{3}} \to 
+    \left( \int_{0}^{1} \left( \frac{3t}{2} + 1 \right)^3 dt \right)^{\frac{1}{3}}
+\]
+\[ \frac{\|A x_0\|}{\| x_0 \|} = \left( \int_{0}^{1} \left( \frac{3t}{2} + 1 \right)^3 dt \right)^{\frac{1}{3}} =\\
+\left( \int_{0}^{1} \left( \frac{27t^3}{8} + \frac{27t^2}{4} + \frac{9t}{2} + 1 \right) dt \right)^{\frac{1}{3}} =\\
+\sqrt[3]{\frac{203}{32}} \]
+
+
+\textbf{Задание 6.15:}
+
+Вычислить норму оператора $A: \ell_p \to \ell_q$.
+
+\[A:\ell_7 \to \ell_3,\ Ax = \left(\frac{x_1}{9}, \frac{x_2}{9^2}, \dots, \frac{x_k}{9^k}, \dots \right)\]
+
+\textbf{Решение:} Оператор является ограниченным т.к.
+
+\begin{multline*}
+    \| A x \|_{\ell_3} = \left( \sum_{k = 1}^{\infty} \left( \frac{x}{9^k} \right)^3 \right)^{1/3} =
+    [\text{неравенство Гёльдера } p = 7/3, q = 7/4] \le \\ \le 
+    \left( \left( \sum_{k=1}^{\infty} x_k^7 \right)^{3/7} 
+    \left( \sum_{k=1}^{\infty} \left( \frac{1}{9} \right)^{21k/4} \right)^{4/7} \right) =
+    \| x_k \|_{\ell_7} \left( \sum_{k=1}^{\infty} \left( \frac{1}{9} \right)^{21k/4} \right)^{4/21}
+\end{multline*}
+
+Это значит, что
+
+\[\| A \| \le \left(\sum_{k=1}^{\infty} \left( \frac{1}{9} \right)^{21k/4} \right)^{4/21} \]
+
+Возьмём в качестве $x$ последовательность
+
+\[x_n = \frac{1}{9^{3n/4}}\]
+
+\begin{multline*}
+    \| A x \|_{\ell_3} = \left( \sum_{k = 1}^{\infty} \left( \frac{x_k}{9^k} \right)^3 \right)^{1/3} =\\=
+    \left( \left( \sum_{k=1}^{\infty} \left( \frac{1}{9} \right)^{21k/4} \right)^{3/7}
+    \left( \sum_{k=1}^{\infty} \left( \frac{1}{9} \right)^{21k/4} \right)^{4/7} \right) =
+    \left( \sum_{k = 1}^{\infty} \left( \frac{1}{9} \right)^{21k/4} \right)^{1/3}
+\end{multline*}
+\[
+    \| x \|_{\ell_7} = \left( \sum_{k=1}^{\infty} \frac{1}{9^{21k/4}} \right)^{1/7}
+\]
+
+Таким образом
+
+\[\| A \| \ge \frac{\|Ax_n\|}{\|x_n\|} = \left( \sum_{k = 1}^{\infty} \frac{1}{9^{21k/4}} \right)^{4/21} =
+\left(\frac{1}{3^{21/2} - 1}\right)^{4/21} \approx 0.1111 \]
+
+Следовательно, $\| A \| = \left(\frac{1}{3^{21/2} - 1}\right)^{4/21} \approx 0.1111$.
+
+
+\end{document}
